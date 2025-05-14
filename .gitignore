@@ -1,0 +1,23 @@
+nbproject/private/
+build/
+dist/
+nbbuild/
+nbdist/
+.netbeans/
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Generated files
+*.jar
+*.war
+*.ear
+
+# Backup files
+*~
+*.bak
+*.swp
+/target/
