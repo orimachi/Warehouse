@@ -16,13 +16,13 @@ public class DoiMatKhau extends javax.swing.JFrame {
     
     Account getForm(){
         Account tk = new Account();
-        tk.setUsername(txtTenDN.getText());
+        tk.setUsername(txtUsername.getText());
         tk.setPassword(String.valueOf(txtMatKhauMoi.getPassword()));
         return tk;
     }
 
     private void doiMatKhau() {
-        String tenDN = txtTenDN.getText();
+        String tenDN = txtUsername.getText();
         String matKhau = new String(txtMatKhau.getPassword());
         String matKhauMoi = new String(txtMatKhauMoi.getPassword());
         String matKhauMoi2 = new String(txtMatKhauMoi2.getPassword());
@@ -65,7 +65,7 @@ public class DoiMatKhau extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtTenDN = new javax.swing.JTextField();
+        txtUsername = new javax.swing.JTextField();
         txtMatKhau = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -108,7 +108,7 @@ public class DoiMatKhau extends javax.swing.JFrame {
         jLabel3.setText("Mật khẩu hiện tại");
         jLabel3.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         jPanel1.add(jLabel3);
-        jPanel1.add(txtTenDN);
+        jPanel1.add(txtUsername);
         jPanel1.add(txtMatKhau);
 
         jLabel4.setText("Mật khẩu mới");
@@ -183,6 +183,6 @@ public class DoiMatKhau extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtMatKhau;
     private javax.swing.JPasswordField txtMatKhauMoi;
     private javax.swing.JPasswordField txtMatKhauMoi2;
-    private javax.swing.JTextField txtTenDN;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }

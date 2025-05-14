@@ -6,8 +6,8 @@ package warehouse.entity;
 
 /**
  *
- * @author ADMIN
+ * @author PC
  */
-public class Inventory {
+public class StockOut {
     
 }

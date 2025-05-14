@@ -1,7 +1,6 @@
 package warehouse.dao;
 
-import com.whmanagement.entity.Account;
-import com.whmanagement.utils.JDBC;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

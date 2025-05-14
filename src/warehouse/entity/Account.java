@@ -1,18 +1,23 @@
 package warehouse.entity;
 
+import warehouse.bean.ERole;
+
 
 public class Account {
     private String username;
     private String password;
+    private ERole role;
+
 
     public Account() {
     }
-    
-    public Account(String username, String password) {
+
+    public Account(String username, String password, ERole role) {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
-    
+
     public String getUsername() {
         return username;
     }
@@ -28,5 +33,14 @@ public class Account {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public ERole getRole() {
+        return role;
+    }
+
+    public void setRole(ERole role) {
+        this.role = role;
+    }
+    
     
 }

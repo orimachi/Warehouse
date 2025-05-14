@@ -1,7 +1,7 @@
 package warehouse.controller;
 
-import com.QLK.bean.DanhMuc;
-import com.QLK.view.DonViQuanLyJPanel;
+import warehouse.bean.DanhMuc;
+import warehouse.view.DonViQuanLyJPanel;
 import com.QLK.view.QuanLyHangHoaJPanel;
 import com.QLK.view.ThongTinKhachHangJPanel;
 import com.QLK.view.ThongTinNhaCungCapJPanel;
