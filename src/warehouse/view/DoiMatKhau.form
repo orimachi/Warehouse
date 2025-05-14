@@ -117,7 +117,7 @@
             <Property name="verticalAlignment" type="int" value="3"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtTenDN">
+        <Component class="javax.swing.JTextField" name="txtUsername">
         </Component>
         <Component class="javax.swing.JPasswordField" name="txtMatKhau">
         </Component>
