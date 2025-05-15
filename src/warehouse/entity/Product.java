@@ -1,25 +1,28 @@
 package warehouse.entity;
 
+import java.util.UUID;
+import warehouse.bean.ECalcUnit;
+import warehouse.bean.ECategory;
+
 public class Product {
+
     private String id;
     private String name;
-    private String currency;
-    private Double price;
-    private Double inputPrice;
+    private ECalcUnit calcUnit;
     private String description;
-    private String nameSuppliers;
+    private UUID idSupplier;
+    private ECategory category;
 
     public Product() {
     }
 
-    public Product(String id, String name, String currency, Double price, Double inputPrice, String description, String nameSuppliers) {
+    public Product(String id, String name, int quantity, ECalcUnit calcUnit, String description, UUID idSupplier, ECategory category) {
         this.id = id;
         this.name = name;
-        this.currency = currency;
-        this.price = price;
-        this.inputPrice = inputPrice;
+        this.calcUnit = calcUnit;
         this.description = description;
-        this.nameSuppliers = nameSuppliers;
+        this.idSupplier = idSupplier;
+        this.category = category;
     }
 
     public String getId() {
@@ -38,28 +41,12 @@ public class Product {
         this.name = name;
     }
 
-    public String getCurrency() {
-        return currency;
+    public ECalcUnit getCalcUnit() {
+        return calcUnit;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Double getInputPrice() {
-        return inputPrice;
-    }
-
-    public void setInputPrice(Double inputPrice) {
-        this.inputPrice = inputPrice;
+    public void setCalcUnit(ECalcUnit calcUnit) {
+        this.calcUnit = calcUnit;
     }
 
     public String getDescription() {
@@ -70,13 +57,20 @@ public class Product {
         this.description = description;
     }
 
-    public String getNameSuppliers() {
-        return nameSuppliers;
+    public UUID getIdSupplier() {
+        return idSupplier;
     }
 
-    public void setNameSuppliers(String nameSuppliers) {
-        this.nameSuppliers = nameSuppliers;
+    public void setIdSupplier(UUID idSupplier) {
+        this.idSupplier = idSupplier;
     }
-    
-    
+
+    public ECategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(ECategory category) {
+        this.category = category;
+    }
+
 }
