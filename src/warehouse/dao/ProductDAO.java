@@ -4,7 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
+import warehouse.bean.ECalcUnit;
+import warehouse.bean.ECategory;
 import warehouse.entity.Product;
 import warehouse.utils.JDBC;
 import warehouse.utils.SQLBuilder;
@@ -16,42 +19,39 @@ public class ProductDAO extends BaseDAO<Product, String> {
     @Override
     public void insert(Product entity) {
         try {
-            String sql = SQLBuilder.buildSQLInsert("Product", "ID", "Name", "Currency", "Price", "InputPrice", "Description", "NameSuppliers");
+            String sql = SQLBuilder.buildSQLInsert("Product", "Name", "CalcUnit", "Description", "IdSupplier", "Category");
             logger.info(sql);
             JDBC.update(sql,
-                    entity.getId(),
                     entity.getName(),
-                    entity.getCurrency(),
-                    entity.getPrice(),
-                    entity.getInputPrice(),
+                    entity.getCalcUnit(),
                     entity.getDescription(),
-                    entity.getNameSuppliers());
+                    entity.getIdSupplier(),
+                    entity.getCategory());
             logger.info("Insert success");
         } catch (Exception e) {
-            logger.severe("Cant insert missing information:" + e.getMessage());
+            throw new RuntimeException("Cant insert missing information:" + e.getMessage());
         }
     }
 
     @Override
     public void update(Product entity) {
-        String sql = SQLBuilder.buildSQLUpdate("Product", "Name", "Currency", "Price", "InputPrice", "Description", "NameSuppliers", "ID");
+        String sql = SQLBuilder.buildSQLUpdate("Product", "Name", "CalcUnit", "Description", "IdSupplier", "Category", "IDProduct");
         logger.info(sql);
         try {
             if (entity.getId().isEmpty() || entity.getId().isBlank()) {
                 throw new IllegalArgumentException("ID missing cant update");
             } else {
                 JDBC.update(sql,
-                        entity.getName(),
-                        entity.getCurrency(),
-                        entity.getPrice(),
-                        entity.getInputPrice(),
-                        entity.getDescription(),
-                        entity.getNameSuppliers(),
-                        entity.getId());
+                    entity.getName(),
+                    entity.getCalcUnit(),
+                    entity.getDescription(),
+                    entity.getIdSupplier(),
+                    entity.getCategory(),
+                    entity.getId());
                 logger.info("Update success");
             }
         } catch (Exception e) {
-            logger.severe("Error when update:" + e.getMessage());
+            throw new RuntimeException("Cant update missing information:" + e.getMessage());
         }
 
     }
@@ -74,14 +74,16 @@ public class ProductDAO extends BaseDAO<Product, String> {
 
     @Override
     public Product selectById(String id) {
-        String sql = "SELECT * FROM Product WHERE ID=?";
+        String sql = SQLBuilder.buildSQLSelect("Product", "ID");
+        logger.info(sql);
         List<Product> list = selectBySql(sql, id);
-        return list.isEmpty() ? list.getFirst() : null;
+        return list.isEmpty() ? null : list.getFirst();
     }
 
     @Override
     public List<Product> selectAll() {
-        String sql = "SELECT * FROM Product";
+        String sql = SQLBuilder.buildSQLSelectALL("Product");
+        logger.info(sql);
         return selectBySql(sql);
     }
 
@@ -94,13 +96,12 @@ public class ProductDAO extends BaseDAO<Product, String> {
                 rs = JDBC.query(sql, args);
                 while (rs.next()) {
                     Product entity = new Product();
-                    entity.setId(rs.getString("MaHH"));
-                    entity.setName(rs.getString("TenHH"));
-                    entity.setCurrency(rs.getString("DVT"));
-                    entity.setPrice(rs.getDouble("DonGia"));
-                    entity.setInputPrice(rs.getDouble("GiaNhap"));
-                    entity.setDescription(rs.getString("MoTa"));
-                    entity.setNameSuppliers(rs.getString("NameSuppliers"));
+                    entity.setId(rs.getString("ID"));
+                    entity.setName(rs.getString("Name"));
+                    entity.setCalcUnit(ECalcUnit.valueOf(rs.getString("CalcUnit")));
+                    entity.setDescription(rs.getString("Description"));
+                    entity.setIdSupplier(UUID.fromString(rs.getString("IDSupplier")));
+                    entity.setCategory(ECategory.valueOf(rs.getString("Category")));
                     list.add(entity);
                 }
             } finally {

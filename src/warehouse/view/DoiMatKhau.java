@@ -1,12 +1,12 @@
 package warehouse.view;
 
-import warehouse.dao.AccountDao;
+import warehouse.dao.AccountDAO;
 import warehouse.entity.Account;
 import javax.swing.JOptionPane;
 
 public class DoiMatKhau extends javax.swing.JFrame {
 
-    AccountDao tkDAO = new AccountDao();
+    AccountDAO tkDAO = new AccountDAO();
 
     public DoiMatKhau() {
         initComponents();

@@ -1,13 +1,13 @@
 package warehouse.utils;
 
-import warehouse.dao.CustomerDAO;
-import warehouse.entity.Customer;
+import warehouse.dao.AccountDAO;
+import warehouse.entity.Account;
 
 
 public class Auth {
-    CustomerDAO customerDAO = new CustomerDAO();
+   AccountDAO accountDAO = new AccountDAO();
     
-    public static Customer user = null;
+    public static Account user = null;
     
     public static void clear(){
         Auth.user = null;
@@ -21,9 +21,9 @@ public class Auth {
         return true;
     }
     
-    public Customer getInformation(String username){
+    public Account getInformation(String username){
         if (isManager() == true) {
-            Customer infoCustomer = customerDAO.selectById(username);
+            Account infoCustomer = (Account) accountDAO.selectById(username);
             return infoCustomer;
         } 
             return null; 
