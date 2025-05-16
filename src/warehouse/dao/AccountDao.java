@@ -6,51 +6,55 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import warehouse.bean.ERole;
 import warehouse.entity.Account;
 import warehouse.utils.JDBC;
+import warehouse.utils.SQLBuilder;
 
-public class AccountDao extends BaseDAO<Account, String>{
-    private static final Logger logger = Logger.getLogger(AccountDao.class.getName());
+public class AccountDAO extends BaseDAO<Account, String>{
+    private static final Logger logger = Logger.getLogger(AccountDAO.class.getName());
     
     @Override
     public void insert(Account entity) {
-        throw new UnsupportedOperationException("Not supported yet."); 
-    }
-
-    @Override
-    public void update(Account entity) {
         try {
-            String sql = "UPDATE Account SET Password=? WHERE Username=?";
-            JDBC.update(sql,entity.getPassword(),entity.getUsername());
+            String sql = SQLBuilder.buildSQLInsert("Account","Username","Password" ,"Role");
+            logger.info(sql);
+            JDBC.update(sql,entity.getUsername(),entity.getPassword().hashCode(),entity.getRole());
         } catch (Exception e) {
             throw new NullPointerException("Update fail:" + e.getMessage());
         }
     }
 
     @Override
-    public void delete(String id) {
-       try {
-            String sql = "DELETE Account WHERE Username=?";
-            JDBC.update(sql,id);
+    public void update(Account entity) {
+        try {
+            String sql = SQLBuilder.buildSQLUpdate("Account","Password" ,"Role" ,"Username");
+            logger.info(sql);
+            JDBC.update(sql,entity.getPassword(),entity.getRole(),entity.getUsername());
         } catch (Exception e) {
-            throw new NullPointerException("Delete fail:" + e.getMessage());
+            throw new NullPointerException("Update fail:" + e.getMessage());
         }
     }
 
     @Override
-    public Account selectById(String id) {
+    public void delete(String username) {
+      throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
+    @Override
+    public Account selectById(String username) {
          try {
-            String sql = "SELECT * FROM Account WHERE Username=?";
-            List<Account> list = this.selectBySql(sql, id);
-            return list.isEmpty() ? list.get(0) : null;
+            String sql = SQLBuilder.buildSQLSelect("Account", "Username");
+            List<Account> list = this.selectBySql(sql, username);
+            return list.isEmpty() ? null : list.getFirst();
         } catch (Exception e) {
-            throw new NullPointerException("Cant find account with username:" + id);
+            throw new RuntimeException("Cant find account with username:" + username);
         }
     }
 
     @Override
     public List<Account> selectAll() {
-        String sql = "SELECT * FROM Account";
+        String sql = SQLBuilder.buildSQLSelectALL("Account");
         return selectBySql(sql);
     }
 
@@ -65,6 +69,7 @@ public class AccountDao extends BaseDAO<Account, String>{
                     Account entity=new Account();
                     entity.setUsername(rs.getString("username"));
                     entity.setPassword(rs.getString("password"));
+                    entity.setRole(ERole.valueOf(rs.getString("role")));
                     list.add(entity);
                 }
             } 
@@ -81,7 +86,7 @@ public class AccountDao extends BaseDAO<Account, String>{
         return list;
     }
     
-    public boolean checkLogin(String username, String password) {
+    public boolean login(String username, String password) {
         if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             logger.info("Missing username or password");
             return false;

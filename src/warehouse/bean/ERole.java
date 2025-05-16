@@ -2,6 +2,6 @@
 package warehouse.bean;
 
 public enum ERole {
-    ADMIN,
+    MANAGER,
     STAFF
 }

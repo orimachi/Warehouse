@@ -5,7 +5,6 @@ import warehouse.bean.ECalcUnit;
 import warehouse.bean.ECategory;
 
 public class Product {
-
     private String id;
     private String name;
     private ECalcUnit calcUnit;

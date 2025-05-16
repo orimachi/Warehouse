@@ -26,4 +26,8 @@ public class SQLBuilder {
     public static String buildSQLSelect(String table, String idColumn) {
         return String.format("SELECT * FROM %s WHERE %s=?", table, idColumn);
     }
+    
+    public static String buildSQLSelectALL(String table) {
+        return String.format("SELECT * FROM %s", table);
+    }
 }

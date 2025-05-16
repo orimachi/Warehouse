@@ -1,6 +1,6 @@
 package warehouse.view;
 
-import warehouse.dao.AccountDao;
+import warehouse.dao.AccountDAO;
 import warehouse.entity.Account;
 import warehouse.utils.MessageBox;
 import javax.swing.JOptionPane;
@@ -15,7 +15,7 @@ public class LoginJDialog extends javax.swing.JDialog {
         setTitle("LOGIN");
     }
     
-    AccountDao tkDao = new AccountDao();
+    AccountDAO tkDao = new AccountDAO();
     
     void signin(){
         String tenDN = txtTK.getText();

@@ -8,6 +8,6 @@ package warehouse.dao;
  *
  * @author ADMIN
  */
-public class InventoryDAO {
+public class StockInDAO {
     
 }
