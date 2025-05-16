@@ -1,4 +1,4 @@
-package com.QLK.view;
+package warehouse.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

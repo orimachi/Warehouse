@@ -1,5 +1,5 @@
 
-package com.QLK.view;
+package warehouse.view;
 
 import javax.swing.*;
 
