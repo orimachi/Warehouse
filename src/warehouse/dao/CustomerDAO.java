@@ -1,7 +1,7 @@
 package warehouse.dao;
 
-import com.whmanagement.entity.Customer;
 import java.util.List;
+import warehouse.entity.Customer;
 
 public class CustomerDAO extends BaseDAO<Customer, String>{
 

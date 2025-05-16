@@ -2,20 +2,22 @@ package warehouse.entity;
 
 import java.util.UUID;
 
-public class Suppliers {
+public class Warehouse {
     private UUID id;
     private String name;
     private String address;
     private String phoneNumber;
+    private UUID idStock;
 
-    public Suppliers() {
+    public Warehouse() {
     }
 
-    public Suppliers(UUID id, String name, String address, String phoneNumber) {
+    public Warehouse(UUID id, String name, String address, String phoneNumber, UUID idStock) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.idStock = idStock;
     }
 
     public UUID getId() {
@@ -48,6 +50,14 @@ public class Suppliers {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public UUID getIdStock() {
+        return idStock;
+    }
+
+    public void setIdStock(UUID idStock) {
+        this.idStock = idStock;
     }
     
     

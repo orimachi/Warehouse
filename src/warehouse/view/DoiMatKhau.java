@@ -3,7 +3,6 @@ package warehouse.view;
 import warehouse.dao.AccountDao;
 import warehouse.entity.Account;
 import javax.swing.JOptionPane;
-import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 public class DoiMatKhau extends javax.swing.JFrame {
 

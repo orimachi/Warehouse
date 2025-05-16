@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import warehouse.entity.Account;
+import warehouse.utils.JDBC;
 
 public class AccountDao extends BaseDAO<Account, String>{
     private static final Logger logger = Logger.getLogger(AccountDao.class.getName());

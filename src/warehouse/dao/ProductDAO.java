@@ -1,13 +1,13 @@
 package warehouse.dao;
 
-import com.whmanagement.entity.Product;
-import com.whmanagement.utils.JDBC;
-import com.whmanagement.utils.SQLBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import warehouse.entity.Product;
+import warehouse.utils.JDBC;
+import warehouse.utils.SQLBuilder;
 
 public class ProductDAO extends BaseDAO<Product, String> {
 
