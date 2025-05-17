@@ -2,32 +2,56 @@ package warehouse.utils;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class SQLBuilder {
-    
+
     public static String buildSQLInsert(String table, String... columns) {
         String colNames = String.join(", ", columns);
-        String values= String.join(", ", Collections.nCopies(columns.length, "?"));
+        String values = String.join(", ", Collections.nCopies(columns.length, "?"));
         return String.format("INSERT INTO %s (%s) VALUES (%s)", table, colNames, values);
     }
-     
+
     public static String buildSQLUpdate(String table, String idColumn, String... columns) {
         String setClause = Arrays.stream(columns)
-                                 .map(col -> col + "=?")
-                                 .collect(Collectors.joining(", "));
+                .map(col -> col + "=?")
+                .collect(Collectors.joining(", "));
         return String.format("UPDATE %s SET %s WHERE %s=?", table, setClause, idColumn);
     }
-    
+
     public static String buildSQLDelete(String table, String idColumn) {
         return String.format("DELETE FROM %s WHERE %s=?", table, idColumn);
-    }
-    
-    public static String buildSQLSelect(String table, String idColumn) {
-        return String.format("SELECT * FROM %s WHERE %s=?", table, idColumn);
     }
     
     public static String buildSQLSelectALL(String table) {
         return String.format("SELECT * FROM %s", table);
     }
+
+    public static String buildSQLSelect(String table, String idColumn) {
+        return String.format("SELECT * FROM %s WHERE %s=?", table, idColumn);
+    }
+
+    public static String buildSQLSelects(String table, List<String> columns,List<String> operators, List<String> keywords) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM " + table + " WHERE ");
+        for (int i = 0; i < columns.size(); i++) {
+            sql.append(String.format("%s %s '%s'", columns.get(i),operators.get(i), keywords.get(i)));
+            if (i < columns.size() - 1) {
+                sql.append(" OR ");
+            }
+        }
+        return sql.toString();
+    }
+
+    public static String buildSQLSelectsWithLike(String table, List<String> columns) {
+        StringBuilder sql = new StringBuilder("SELECT * FROM " + table + " WHERE ");
+        for (int i = 0; i < columns.size(); i++) {
+            sql.append(columns.get(i)).append(" LIKE ?");
+            if (i < columns.size() - 1) {
+                sql.append(" OR ");
+            }
+        }
+        return sql.toString();
+    }
+
 }

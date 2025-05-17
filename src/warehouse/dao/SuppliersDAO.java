@@ -64,6 +64,11 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID>{
         List<Suppliers> list = selectBySql(sql, id);
         return list.isEmpty() ? null : list.getFirst();
     }
+    
+    @Override
+    public Suppliers selectByName(UUID name) {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
 
     @Override
     public List<Suppliers> selectAll() {
@@ -94,6 +99,5 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID>{
             throw new RuntimeException(ex);
         }
         return list;
-    }
-    
+    } 
 }

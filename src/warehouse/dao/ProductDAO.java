@@ -79,6 +79,14 @@ public class ProductDAO extends BaseDAO<Product, String> {
         List<Product> list = selectBySql(sql, id);
         return list.isEmpty() ? null : list.getFirst();
     }
+    
+    @Override
+    public Product selectByName(String name) {
+        String sql = SQLBuilder.buildSQLSelect("Product", "Name");
+        logger.info(sql);
+        List<Product> list = selectBySql(sql, name);
+        return list.isEmpty() ? null : list.getFirst();
+    }
 
     @Override
     public List<Product> selectAll() {
@@ -118,4 +126,5 @@ public class ProductDAO extends BaseDAO<Product, String> {
         logger.info(sql);
         return selectBySql(sql, nameSupplier);
     }
+
 }

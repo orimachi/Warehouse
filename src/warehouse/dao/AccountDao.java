@@ -51,6 +51,11 @@ public class AccountDAO extends BaseDAO<Account, String>{
             throw new RuntimeException("Cant find account with username:" + username);
         }
     }
+    
+    @Override
+    public Account selectByName(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
 
     @Override
     public List<Account> selectAll() {
@@ -96,4 +101,5 @@ public class AccountDAO extends BaseDAO<Account, String>{
             return !list.isEmpty();
         }
     }
+
 }
