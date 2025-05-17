@@ -16,8 +16,9 @@ public class JDBC {
     private static final String CERTIFICATION = "trustServerCertificate=true;";
     
      public static PreparedStatement getStmt(String sql, Object...args) throws SQLException{
-        Connection connection = DriverManager.getConnection(url+database+username+password+ENCRYPT+CERTIFICATION);
-        PreparedStatement pstmt = null;
+        String completeUrl = url+database+username+password+ENCRYPT+CERTIFICATION;
+        Connection connection = DriverManager.getConnection(completeUrl);
+        PreparedStatement pstmt;
         if(sql.trim().startsWith("{")){
             pstmt = connection.prepareCall(sql);
         }
