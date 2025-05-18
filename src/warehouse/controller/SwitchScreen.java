@@ -1,12 +1,5 @@
 package warehouse.controller;
 
-import warehouse.bean.DanhMuc;
-import warehouse.view.DonViQuanLyJPanel;
-import com.QLK.view.QuanLyHangHoaJPanel;
-import com.QLK.view.ThongTinKhachHangJPanel;
-import com.QLK.view.ThongTinNhaCungCapJPanel;
-import com.QLK.view.TraCuuHangHoaJPanel;
-import com.QLK.view.TrangChuJPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -14,13 +7,16 @@ import java.awt.event.MouseListener;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import warehouse.bean.Category;
+import warehouse.view.HomePage;
+import warehouse.view.WarehouseJPanel;
 
-public class Switchscreen {
+public class SwitchScreen {
     private JPanel main;
     private String kindSelected = "";
-    private List<DanhMuc> listItem = null;
+    private List<Category> listItem = null;
 
-    public Switchscreen(JPanel jbnMain) {
+    public SwitchScreen(JPanel jbnMain) {
         this.main = jbnMain;
     }
     
@@ -30,14 +26,14 @@ public class Switchscreen {
        jlbItem.setBackground(new Color(96, 100, 191));
        main.removeAll();
        main.setLayout(new BorderLayout());
-       main.add(new TrangChuJPanel());
+       main.add(new HomePage());
        main.validate();
        main.repaint();
     }
     
-    public void setEvent(List<DanhMuc> listItem) {
+    public void setEvent(List<Category> listItem) {
         this.listItem = listItem;
-        for (DanhMuc item : listItem) {
+        for (Category item : listItem) {
             item.getJlb().addMouseListener(new LabelEvent(item.getKind(), item.getJpn(), item.getJlb()));
         }
     }
@@ -59,23 +55,11 @@ public class Switchscreen {
         @Override
         public void mouseClicked(MouseEvent e) {
             switch (kind) {
-                case "TrangChu":
-                    node = new TrangChuJPanel();
+                case "homepage":
+                    node = new HomePage();
                     break;
-                case "ThongTinNhaCungCap":
-                    node = new ThongTinNhaCungCapJPanel();
-                    break;
-                case "DonViQuanLy":
-                    node = new DonViQuanLyJPanel();
-                    break;
-                case "ThongTinKhachHang":
-                    node = new ThongTinKhachHangJPanel();
-                    break;
-                case "QuanLyHangHoa":
-                    node = new QuanLyHangHoaJPanel();
-                    break;
-                case "TraCuuHangTonKho":
-                    node = new TraCuuHangHoaJPanel();
+                case "warehouse":
+                    node = new WarehouseJPanel();
                     break;
                 default:
                     break;
@@ -116,7 +100,7 @@ public class Switchscreen {
     }
     
         private void setChangeBackground(String kind){
-            for(DanhMuc item : listItem){
+            for(Category item : listItem){
                 if(item.getKind().equalsIgnoreCase(kind)){
                     item.getJpn().setBackground(new Color(96, 100, 191));
                     item.getJlb().setBackground(new Color(96, 100, 191));

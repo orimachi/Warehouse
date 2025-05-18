@@ -48,6 +48,7 @@ public class AccountDAO extends BaseDAO<Account, String>{
             List<Account> list = this.selectBySql(sql, username);
             return list.isEmpty() ? null : list.getFirst();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("Cant find account with username:" + username);
         }
     }
