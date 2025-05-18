@@ -24,6 +24,9 @@ public class WarehouseJPanel extends javax.swing.JPanel {
        model.setRowCount(0);   
        try {
             List<Warehouse> list = dao.selectAll();
+            if(list.isEmpty()){
+                MessageBox.alert(this, "Data is empty");
+            }
             for (Warehouse wh : list) {
                 Object[] row = {
                     wh.getId(),
@@ -36,6 +39,7 @@ public class WarehouseJPanel extends javax.swing.JPanel {
        
         } catch (Exception e) {
             MessageBox.alert(this, "Error query data");
+            e.printStackTrace();
         }
     }
     

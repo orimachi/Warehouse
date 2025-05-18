@@ -30,7 +30,7 @@ public class AccountDAO extends BaseDAO<Account, String>{
         try {
             String sql = SQLBuilder.buildSQLUpdate("Account","Password" ,"Role" ,"Username");
             logger.info(sql);
-            JDBC.update(sql,entity.getPassword().hashCode(),entity.getRole(),entity.getUsername());
+            JDBC.update(sql,entity.getPassword().hashCode(),entity.getRole().toString(),entity.getUsername());
         } catch (Exception e) {
             throw new NullPointerException("Update fail:" + e.getMessage());
         }

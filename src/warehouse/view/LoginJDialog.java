@@ -4,6 +4,7 @@ import warehouse.dao.AccountDAO;
 import warehouse.entity.Account;
 import warehouse.utils.MessageBox;
 import javax.swing.JOptionPane;
+import warehouse.utils.Auth;
 
 
 public class LoginJDialog extends javax.swing.JDialog {
@@ -17,13 +18,23 @@ public class LoginJDialog extends javax.swing.JDialog {
     
     AccountDAO dao = new AccountDAO();
     
+    
     void signin() {
         String username = txtUsername.getText();
         String password = new String(txtPassword.getPassword());
         Account account;
+        
+        if (username.isEmpty() || password.isEmpty()) {
+            MessageBox.alert(this, "Username and password are required");
+            return;
+        }
 
         try {
             account = dao.selectById(username);
+            if (account == null || !password.equals(account.getPassword())) {
+                MessageBox.alert(this, "Incorrect username or password");
+                return;
+            }
         } catch (RuntimeException e) {
             MessageBox.alert(this, "Incorrect username or password");
             return;
@@ -33,8 +44,10 @@ public class LoginJDialog extends javax.swing.JDialog {
             MessageBox.alert(this, "Incorrect username or password");
             return;
         }
-
+        
+        Auth.user = account;
         MessageBox.information(this, "Đăng nhập thành công!");
+        
         this.dispose();
     }
 

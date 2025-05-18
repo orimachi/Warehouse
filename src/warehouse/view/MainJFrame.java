@@ -5,16 +5,12 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import warehouse.bean.Category;
 import warehouse.controller.SwitchScreen;
+import warehouse.utils.Auth;
 
-/**
- *
- * @author Manh Thanh
- */
+
 public class MainJFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainJFrame
-     */
+    
     public MainJFrame() {
         initComponents();
         setTitle("Warehouse Management System");
@@ -23,20 +19,19 @@ public class MainJFrame extends javax.swing.JFrame {
         SwitchScreen controller = new  SwitchScreen(jpnView);
         controller.setView(jpnTrangChu, jbTrangChu);
         
-        List<Category> listDanhMuc = new ArrayList<>();
-        listDanhMuc.add(new Category("homepage", jpnTrangChu, jbTrangChu));
-        listDanhMuc.add(new Category("warehouse", jpnDVQL, jbDVQL));
+        List<Category> list = new ArrayList<>();
+        list.add(new Category("homepage", jpnTrangChu, jbTrangChu));
+        list.add(new Category("warehouse", jpnDVQL, jbDVQL));
               
-        controller.setEvent(listDanhMuc);
-             
-        new LoginJDialog(this, true).setVisible(true);
-        new LoadingJDialog(this, true).setVisible(true);
+        controller.setEvent(list);
+        
+        
     }
     
     public void thoat()
     {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE );
-        int kq=JOptionPane.showConfirmDialog(this, "Bạn có muốn thoát ?","",JOptionPane.YES_NO_OPTION);
+        int kq=JOptionPane.showConfirmDialog(this, "Are you sure want to quit ?","",JOptionPane.YES_NO_OPTION);
         if(kq==0)
         {
             System.exit(0);
