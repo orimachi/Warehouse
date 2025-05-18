@@ -1,20 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package warehouse;
 
-/**
- *
- * @author ADMIN
- */
-public class Warehouse {
+import warehouse.view.MainJFrame;
 
-    /**
-     * @param args the command line arguments
-     */
+public class Warehouse {
     public static void main(String[] args) {
-        // TODO code application logic here
+            new MainJFrame().setVisible(true);
     }
     
 }

@@ -28,7 +28,7 @@ public class AccountDAO extends BaseDAO<Account, String>{
     @Override
     public void update(Account entity) {
         try {
-            String sql = SQLBuilder.buildSQLUpdate("Account","Password" ,"Role" ,"Username");
+            String sql = SQLBuilder.buildSQLUpdate("Account","Username","Password" ,"Role");
             logger.info(sql);
             JDBC.update(sql,entity.getPassword().hashCode(),entity.getRole(),entity.getUsername());
         } catch (Exception e) {
@@ -48,7 +48,6 @@ public class AccountDAO extends BaseDAO<Account, String>{
             List<Account> list = this.selectBySql(sql, username);
             return list.isEmpty() ? null : list.getFirst();
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RuntimeException("Cant find account with username:" + username);
         }
     }
@@ -86,7 +85,6 @@ public class AccountDAO extends BaseDAO<Account, String>{
             }
         } 
         catch (SQLException ex) {
-            ex.printStackTrace();
             throw new RuntimeException(ex);
         }
         return list;
@@ -94,14 +92,23 @@ public class AccountDAO extends BaseDAO<Account, String>{
     
     public boolean login(String username, String password) {
         String loginPassword = String.valueOf(password.hashCode());
-        if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
+        if (username == null || username.trim().isEmpty() || password.isEmpty() || password.trim().isEmpty()) {
             logger.info("Missing username or password");
             return false;
         } else {
             String sql = "SELECT * FROM Account WHERE Username=? AND Password=?";
-            List<Account> list = this.selectBySql(sql, username, password);
+            List<Account> list = this.selectBySql(sql, username, loginPassword);
             return !list.isEmpty();
         }
     }
 
+    public void updatePassword(Account entity){
+           try {
+            String sql = SQLBuilder.buildSQLUpdate("Account","Username","Password");
+            logger.info(sql);
+            JDBC.update(sql,entity.getUsername(),entity.getPassword().hashCode());
+        } catch (Exception e) {
+            throw new NullPointerException("Update password fail:" + e.getMessage());
+        }
+    }
 }

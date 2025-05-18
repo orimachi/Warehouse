@@ -42,33 +42,36 @@ public class SQLBuilder {
             case EPositions.END:
                 likePattern = "%" + keyword;
                 break;
-            default: 
+            default:
                 likePattern = "%" + keyword + "%";
                 break;
         }
-        return String.format("SELECT * FROM %s WHERE %s LIKE '%s'", table, idColumn, likePattern);
+        return String.format("SELECT * FROM %s WHERE %s LIKE ?", table, idColumn, likePattern);
     }
 
-    public static String buildSQLSelects(String table, List<String> columns, List<String> operators, List<String> keywords) {
+    public static String buildSQLSelectsLikeAnd(String table, List<String> columns, List<String> operators, List<String> keywords) {
         StringBuilder sql = new StringBuilder("SELECT * FROM " + table + " WHERE ");
         for (int i = 0; i < columns.size(); i++) {
+            if (isNumeric(keywords.get(i))) {
+                sql.append(String.format("%s %s %s", columns.get(i), operators.get(i), keywords.get(i)));
+            }
             sql.append(String.format("%s %s '%s'", columns.get(i), operators.get(i), keywords.get(i)));
             if (i < columns.size() - 1) {
-                sql.append(" OR ");
+                sql.append(" AND ");
             }
         }
         return sql.toString();
     }
 
-    public static String buildSQLSelectsWithLike(String table, List<String> columns) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM " + table + " WHERE ");
-        for (int i = 0; i < columns.size(); i++) {
-            sql.append(columns.get(i)).append(" LIKE ?");
-            if (i < columns.size() - 1) {
-                sql.append(" OR ");
-            }
+    private static boolean isNumeric(String str) {
+        if (str == null) {
+            return false;
         }
-        return sql.toString();
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
-
 }

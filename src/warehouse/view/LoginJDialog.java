@@ -3,7 +3,6 @@ package warehouse.view;
 import warehouse.dao.AccountDAO;
 import warehouse.entity.Account;
 import warehouse.utils.MessageBox;
-import javax.swing.JOptionPane;
 
 
 public class LoginJDialog extends javax.swing.JDialog {
@@ -19,6 +18,7 @@ public class LoginJDialog extends javax.swing.JDialog {
     
     void signin() {
         String username = txtUsername.getText();
+         // when add new user add hashCode()
         String password = new String(txtPassword.getPassword());
         Account account;
 
@@ -28,7 +28,6 @@ public class LoginJDialog extends javax.swing.JDialog {
             MessageBox.alert(this, "Incorrect username or password");
             return;
         }
-
         if (!password.equals(account.getPassword())) {
             MessageBox.alert(this, "Incorrect username or password");
             return;
