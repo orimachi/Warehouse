@@ -1,5 +1,5 @@
 package warehouse.bean;
 
-public enum ETypeSQL {
+public enum EPositions {
     START, END, CONTAINS
 }

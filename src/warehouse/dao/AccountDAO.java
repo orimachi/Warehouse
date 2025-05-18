@@ -93,6 +93,7 @@ public class AccountDAO extends BaseDAO<Account, String>{
     }
     
     public boolean login(String username, String password) {
+        String loginPassword = String.valueOf(password.hashCode());
         if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             logger.info("Missing username or password");
             return false;
