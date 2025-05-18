@@ -30,7 +30,7 @@ public class AccountDAO extends BaseDAO<Account, String>{
         try {
             String sql = SQLBuilder.buildSQLUpdate("Account","Password" ,"Role" ,"Username");
             logger.info(sql);
-            JDBC.update(sql,entity.getPassword(),entity.getRole(),entity.getUsername());
+            JDBC.update(sql,entity.getPassword().hashCode(),entity.getRole(),entity.getUsername());
         } catch (Exception e) {
             throw new NullPointerException("Update fail:" + e.getMessage());
         }
@@ -92,6 +92,7 @@ public class AccountDAO extends BaseDAO<Account, String>{
     }
     
     public boolean login(String username, String password) {
+        String loginPassword = String.valueOf(password.hashCode());
         if (username == null || username.trim().isEmpty() || password == null || password.trim().isEmpty()) {
             logger.info("Missing username or password");
             return false;

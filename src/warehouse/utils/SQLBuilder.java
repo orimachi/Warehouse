@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import warehouse.bean.EPositions;
 
 public class SQLBuilder {
 
@@ -23,7 +24,7 @@ public class SQLBuilder {
     public static String buildSQLDelete(String table, String idColumn) {
         return String.format("DELETE FROM %s WHERE %s=?", table, idColumn);
     }
-    
+
     public static String buildSQLSelectALL(String table) {
         return String.format("SELECT * FROM %s", table);
     }
@@ -32,10 +33,26 @@ public class SQLBuilder {
         return String.format("SELECT * FROM %s WHERE %s=?", table, idColumn);
     }
 
-    public static String buildSQLSelects(String table, List<String> columns,List<String> operators, List<String> keywords) {
+    public static String buildSQLSelectLike(String table, String idColumn, String keyword, EPositions positions) {
+        String likePattern;
+        switch (positions) {
+            case EPositions.START:
+                likePattern = keyword + "%";
+                break;
+            case EPositions.END:
+                likePattern = "%" + keyword;
+                break;
+            default: 
+                likePattern = "%" + keyword + "%";
+                break;
+        }
+        return String.format("SELECT * FROM %s WHERE %s LIKE '%s'", table, idColumn, likePattern);
+    }
+
+    public static String buildSQLSelects(String table, List<String> columns, List<String> operators, List<String> keywords) {
         StringBuilder sql = new StringBuilder("SELECT * FROM " + table + " WHERE ");
         for (int i = 0; i < columns.size(); i++) {
-            sql.append(String.format("%s %s '%s'", columns.get(i),operators.get(i), keywords.get(i)));
+            sql.append(String.format("%s %s '%s'", columns.get(i), operators.get(i), keywords.get(i)));
             if (i < columns.size() - 1) {
                 sql.append(" OR ");
             }

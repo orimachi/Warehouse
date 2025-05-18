@@ -66,7 +66,7 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID>{
     }
     
     @Override
-    public Suppliers selectByName(UUID name) {
+    public Suppliers selectByName(String name) {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
