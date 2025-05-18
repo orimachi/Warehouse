@@ -43,7 +43,7 @@ public class LoadingJDialog extends javax.swing.JDialog {
         progressBar.setForeground(new java.awt.Color(30, 175, 227));
         progressBar.setStringPainted(true);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/QLK/icon/gif.gif"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/warehouse/icon/gif.gif"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

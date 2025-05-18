@@ -3,7 +3,8 @@ package warehouse.view;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import warehouse.controller.Switchscreen;
+import warehouse.bean.Category;
+import warehouse.controller.SwitchScreen;
 
 /**
  *
@@ -16,23 +17,19 @@ public class MainJFrame extends javax.swing.JFrame {
      */
     public MainJFrame() {
         initComponents();
-        setTitle("QUẢN LÝ KHO HÀNG");
+        setTitle("Warehouse Management System");
         setLocationRelativeTo(null);
         
-        Switchscreen controller = new  Switchscreen(jpnView);
+        SwitchScreen controller = new  SwitchScreen(jpnView);
         controller.setView(jpnTrangChu, jbTrangChu);
         
-        List<DanhMuc> listDanhMuc = new ArrayList<>();
-        listDanhMuc.add(new DanhMuc("TrangChu", jpnTrangChu, jbTrangChu));
-        listDanhMuc.add(new DanhMuc("ThongTinNhaCungCap", jpnTTNCC, jbTTNCC));
-        listDanhMuc.add(new DanhMuc("DonViQuanLy", jpnDVQL, jbDVQL));
-        listDanhMuc.add(new DanhMuc("ThongTinKhachHang", jpnTTKH, jbTTKH));
-        listDanhMuc.add(new DanhMuc("QuanLyHangHoa", jpnQLHH, jbQLHH));
-        listDanhMuc.add(new DanhMuc("TraCuuHangTonKho", jpnTCHH, jbTCHH));
+        List<Category> listDanhMuc = new ArrayList<>();
+        listDanhMuc.add(new Category("homepage", jpnTrangChu, jbTrangChu));
+        listDanhMuc.add(new Category("warehouse", jpnDVQL, jbDVQL));
               
         controller.setEvent(listDanhMuc);
              
-        new DangNhapJDialog(this, true).setVisible(true);
+        new LoginJDialog(this, true).setVisible(true);
         new LoadingJDialog(this, true).setVisible(true);
     }
     
@@ -275,8 +272,8 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/QLK/icon/logo.png"))); // NOI18N
-        jLabel2.setText("KTB TEAM");
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/warehouse/icon/logo.png"))); // NOI18N
+        jLabel2.setText("KC Group");
 
         javax.swing.GroupLayout jbnMenuLayout = new javax.swing.GroupLayout(jbnMenu);
         jbnMenu.setLayout(jbnMenuLayout);
@@ -311,7 +308,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jpnQLHH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jpnTCHH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
@@ -349,12 +346,9 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(jpnView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
-        jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
-
-        mnHeThong.setForeground(new java.awt.Color(0, 0, 0));
         mnHeThong.setText("Hệ thống");
 
-        mnDoiMatKhau.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/QLK/icon/Shield.png"))); // NOI18N
+        mnDoiMatKhau.setIcon(new javax.swing.ImageIcon(getClass().getResource("/warehouse/icon/Shield.png"))); // NOI18N
         mnDoiMatKhau.setText("Đổi mật khẩu");
         mnDoiMatKhau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -364,7 +358,7 @@ public class MainJFrame extends javax.swing.JFrame {
         mnHeThong.add(mnDoiMatKhau);
 
         mnThoat.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
-        mnThoat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/QLK/icon/Log out.png"))); // NOI18N
+        mnThoat.setIcon(new javax.swing.ImageIcon(getClass().getResource("/warehouse/icon/Log out.png"))); // NOI18N
         mnThoat.setText("Thoát");
         mnThoat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -376,11 +370,10 @@ public class MainJFrame extends javax.swing.JFrame {
         jMenuBar1.add(mnHeThong);
 
         mnTroGiup.setBackground(new java.awt.Color(0, 0, 0));
-        mnTroGiup.setForeground(new java.awt.Color(0, 0, 0));
         mnTroGiup.setText("Trợ giúp");
 
         mnHuongDan.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        mnHuongDan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/QLK/icon/Globe.png"))); // NOI18N
+        mnHuongDan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/warehouse/icon/Globe.png"))); // NOI18N
         mnHuongDan.setText("Hướng dẫn sử dụng");
         mnHuongDan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -389,7 +382,7 @@ public class MainJFrame extends javax.swing.JFrame {
         });
         mnTroGiup.add(mnHuongDan);
 
-        mnGioiThieu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/QLK/icon/Brick house.png"))); // NOI18N
+        mnGioiThieu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/warehouse/icon/Brick house.png"))); // NOI18N
         mnGioiThieu.setText("Giới thiệu sản phẩm");
         mnGioiThieu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -433,7 +426,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mnThoatActionPerformed
 
     private void mnDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDoiMatKhauActionPerformed
-        new DoiMatKhau().setVisible(true);
+        new ChangePassword().setVisible(true);
        
     }//GEN-LAST:event_mnDoiMatKhauActionPerformed
 

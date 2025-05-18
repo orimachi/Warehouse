@@ -30,7 +30,7 @@ public class AccountDAO extends BaseDAO<Account, String>{
         try {
             String sql = SQLBuilder.buildSQLUpdate("Account","Password" ,"Role" ,"Username");
             logger.info(sql);
-            JDBC.update(sql,entity.getPassword(),entity.getRole(),entity.getUsername());
+            JDBC.update(sql,entity.getPassword().hashCode(),entity.getRole(),entity.getUsername());
         } catch (Exception e) {
             throw new NullPointerException("Update fail:" + e.getMessage());
         }
@@ -48,6 +48,7 @@ public class AccountDAO extends BaseDAO<Account, String>{
             List<Account> list = this.selectBySql(sql, username);
             return list.isEmpty() ? null : list.getFirst();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException("Cant find account with username:" + username);
         }
     }

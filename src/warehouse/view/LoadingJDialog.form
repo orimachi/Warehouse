@@ -55,7 +55,7 @@
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/QLK/icon/gif.gif"/>
+          <Image iconType="3" name="/warehouse/icon/gif.gif"/>
         </Property>
       </Properties>
     </Component>

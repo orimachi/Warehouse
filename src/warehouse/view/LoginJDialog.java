@@ -15,23 +15,29 @@ public class LoginJDialog extends javax.swing.JDialog {
         setTitle("LOGIN");
     }
     
-    AccountDAO tkDao = new AccountDAO();
+    AccountDAO dao = new AccountDAO();
     
-    void signin(){
-        String tenDN = txtTK.getText();
-        String matKhau = new String(txtMK.getPassword());
-        Account taiKhoan = tkDao.selectById(tenDN);
-        if(taiKhoan == null){
-            MessageBox.alert(this, "Sai tên đăng nhập hoặc mật khẩu!");
+    void signin() {
+        String username = txtUsername.getText();
+        String password = new String(txtPassword.getPassword());
+        Account account;
+
+        try {
+            account = dao.selectById(username);
+        } catch (RuntimeException e) {
+            MessageBox.alert(this, "Incorrect username or password");
+            return;
         }
-        else if(!matKhau.equals(taiKhoan.getPassword())){
-            JOptionPane.showMessageDialog(this, "Sai tên đăng nhập hoặc mật khẩu!", "Cảnh báo", JOptionPane.ERROR_MESSAGE);
+
+        if (!password.equals(account.getPassword())) {
+            MessageBox.alert(this, "Incorrect username or password");
+            return;
         }
-        else{
-            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!");
-            this.dispose();
-        }       
+
+        MessageBox.information(this, "Đăng nhập thành công!");
+        this.dispose();
     }
+
     
      /**
      * @param args the command line arguments
@@ -59,11 +65,11 @@ public class LoginJDialog extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        txtTK = new javax.swing.JTextField();
+        txtUsername = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        txtMK = new javax.swing.JPasswordField();
+        txtPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -72,14 +78,14 @@ public class LoginJDialog extends javax.swing.JDialog {
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Tên đăng nhập:");
+        jLabel2.setText("Username:");
 
-        txtTK.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        txtUsername.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
 
         jLabel3.setBackground(new java.awt.Color(255, 255, 255));
         jLabel3.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Mật khẩu:");
+        jLabel3.setText("Password");
 
         btnLogin.setBackground(new java.awt.Color(76, 175, 80));
         btnLogin.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -91,7 +97,7 @@ public class LoginJDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/QLK/icon/AnhLogin.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/warehouse/icon/AnhLogin.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -102,11 +108,11 @@ public class LoginJDialog extends javax.swing.JDialog {
                 .addGap(80, 80, 80)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtTK, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
-                    .addComponent(txtMK))
-                .addContainerGap(70, Short.MAX_VALUE))
+                    .addComponent(txtPassword))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,14 +120,14 @@ public class LoginJDialog extends javax.swing.JDialog {
                 .addGap(12, 12, 12)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtTK, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtMK, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -152,7 +158,7 @@ public class LoginJDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField txtMK;
-    private javax.swing.JTextField txtTK;
+    private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtUsername;
     // End of variables declaration//GEN-END:variables
 }
