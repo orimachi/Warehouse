@@ -9,7 +9,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import warehouse.bean.Category;
 import warehouse.view.HomePage;
-import warehouse.view.WarehouseJPanel;
 
 public class SwitchScreen {
     private JPanel main;
@@ -59,7 +58,6 @@ public class SwitchScreen {
                     node = new HomePage();
                     break;
                 case "warehouse":
-                    node = new WarehouseJPanel();
                     break;
                 default:
                     break;
