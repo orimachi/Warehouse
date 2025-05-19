@@ -177,10 +177,10 @@ public class WarehouseJPanel extends javax.swing.JPanel {
         jToolBar1.setBorderPainted(false);
         jToolBar1.setEnabled(false);
 
+        btnAdd.setBackground(new java.awt.Color(0, 204, 51));
         btnAdd.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/warehouse/icon/Add.png"))); // NOI18N
-        btnAdd.setText("Thêm");
-        btnAdd.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnAdd.setText("Add");
+        btnAdd.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 2, 1, 2));
         btnAdd.setFocusable(false);
         btnAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAdd.setMaximumSize(new java.awt.Dimension(50, 52));
@@ -294,7 +294,7 @@ public class WarehouseJPanel extends javax.swing.JPanel {
 
         txtId.setEditable(false);
         txtId.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        txtId.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        txtId.setBorder(null);
         txtId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtIdActionPerformed(evt);

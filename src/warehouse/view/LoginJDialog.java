@@ -14,6 +14,8 @@ public class LoginJDialog extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("LOGIN");
+        // enter to login
+        getRootPane().setDefaultButton(btnLogin);
     }
     
     AccountDAO dao = new AccountDAO();
@@ -109,6 +111,11 @@ public class LoginJDialog extends javax.swing.JDialog {
                 btnLoginActionPerformed(evt);
             }
         });
+        btnLogin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnLoginKeyPressed(evt);
+            }
+        });
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/warehouse/icon/AnhLogin.png"))); // NOI18N
 
@@ -163,6 +170,10 @@ public class LoginJDialog extends javax.swing.JDialog {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         this.signin();
     }//GEN-LAST:event_btnLoginActionPerformed
+
+    private void btnLoginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnLoginKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLoginKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
