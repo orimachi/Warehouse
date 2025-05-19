@@ -6,12 +6,12 @@ import warehouse.bean.ECalcUnit;
 
 public class StockIn {
     private UUID id;
-    private Date addDate = new Date();
     private int quantity;
     private ECalcUnit calcUnit;
     private UUID idSupplier;
     private UUID idWarehouse;
     private UUID idAccount;
+    private Date addDate = new Date();
 
     public StockIn() {
     }

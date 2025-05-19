@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class JDBC {
     private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     private static String url="jdbc:sqlserver://localhost:1433;";
-    private static String database ="databaseName=warehouse;";
+    private static String database ="databaseName=Warehouse;";
     private static String username="user=sa;";
     private static String password = "password=123456;";
     private static final String ENCRYPT = "encrypt=true;";

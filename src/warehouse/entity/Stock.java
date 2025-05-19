@@ -9,19 +9,19 @@ public class Stock {
     private UUID idProduct;
     private int quantity;
     private ECalcUnit calcUnit;
-    private UUID idWareHouse;
+    private UUID idWarehouse;
     private Date lastUpdate = new Date();
     private UUID idAccount;
 
     public Stock() {
     }
     
-    public Stock(UUID id, UUID idProduct, int quantity, ECalcUnit calcUnit, UUID idWareHouse, UUID idAccount) {
+    public Stock(UUID id, UUID idProduct, int quantity, ECalcUnit calcUnit, UUID idWarehouse, UUID idAccount) {
         this.id = id;
         this.idProduct = idProduct;
         this.quantity = quantity;
         this.calcUnit = calcUnit;
-        this.idWareHouse = idWareHouse;
+        this.idWarehouse = idWarehouse;
         this.idAccount = idAccount;
     }
 
@@ -58,11 +58,11 @@ public class Stock {
     }
 
     public UUID getIdWareHouse() {
-        return idWareHouse;
+        return idWarehouse;
     }
 
     public void setIdWareHouse(UUID idWareHouse) {
-        this.idWareHouse = idWareHouse;
+        this.idWarehouse = idWareHouse;
     }
 
     public Date getLastUpdate() {

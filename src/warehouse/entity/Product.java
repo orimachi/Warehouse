@@ -15,7 +15,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String id, String name, int quantity, ECalcUnit calcUnit, String description, UUID idSupplier, ECategory category) {
+    public Product(String id, String name, ECalcUnit calcUnit, String description, UUID idSupplier, ECategory category) {
         this.id = id;
         this.name = name;
         this.calcUnit = calcUnit;

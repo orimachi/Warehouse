@@ -23,6 +23,7 @@ public class LoginJDialog extends javax.swing.JDialog {
     
     void signin() {
         String username = txtUsername.getText();
+         // when add new user add hashCode()
         String password = new String(txtPassword.getPassword());
         Account account;
         
@@ -41,7 +42,6 @@ public class LoginJDialog extends javax.swing.JDialog {
             MessageBox.alert(this, "Incorrect username or password");
             return;
         }
-
         if (!password.equals(account.getPassword())) {
             MessageBox.alert(this, "Incorrect username or password");
             return;
