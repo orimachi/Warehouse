@@ -2,25 +2,22 @@ package warehouse.entity;
 
 import java.util.Date;
 import java.util.UUID;
-import warehouse.bean.ECalcUnit;
 
 public class StockOut {
     private UUID id;
     private Date addDate = new Date();
     private int quantity;
-    private ECalcUnit calcUnit;
-    private UUID idSupplier;
+    private UUID idProduct;
     private UUID idWarehouse;
     private UUID idAccount;
 
     public StockOut() {
     }
 
-    public StockOut(UUID id, int quantity, ECalcUnit calcUnit, UUID idSupplier, UUID idWarehouse, UUID idAccount) {
+    public StockOut(UUID id, int quantity, UUID idProduct, UUID idWarehouse, UUID idAccount) {
         this.id = id;
         this.quantity = quantity;
-        this.calcUnit = calcUnit;
-        this.idSupplier = idSupplier;
+        this.idProduct = idProduct;
         this.idWarehouse = idWarehouse;
         this.idAccount = idAccount;
     }
@@ -49,20 +46,12 @@ public class StockOut {
         this.quantity = quantity;
     }
 
-    public ECalcUnit getCalcUnit() {
-        return calcUnit;
+    public UUID getIdProduct() {
+        return idProduct;
     }
 
-    public void setCalcUnit(ECalcUnit calcUnit) {
-        this.calcUnit = calcUnit;
-    }
-
-    public UUID getIdSupplier() {
-        return idSupplier;
-    }
-
-    public void setIdSupplier(UUID idSupplier) {
-        this.idSupplier = idSupplier;
+    public void setIdProduct(UUID idProduct) {
+        this.idProduct = idProduct;
     }
 
     public UUID getIdWarehouse() {

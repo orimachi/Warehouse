@@ -1,4 +1,4 @@
-package warehouse.component;
+package warehouse.component.textfield;
 
 import java.awt.Color;
 import java.awt.FontMetrics;

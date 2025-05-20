@@ -16,21 +16,19 @@ public class ChangePassword extends javax.swing.JFrame {
    
 
     private void changePassword() {
-        String currentPass = new String(txtCurrentPassword1.getPassword());
-        String newPass = new String(txtNewPassword1.getPassword());
+        // need hashCode and compare
+        String currentPass = new String(txtCurrentPassword.getPassword());
+        String newPass = new String(txtNewPassword.getPassword());
         String confirmPass = new String(txtConfirmNewPassword.getPassword());
-        
-        AccountDAO dao = new AccountDAO();
+        Account account = Auth.user;
         
         if (!Auth.isLogin()){
             MessageBox.alert(this, "You are not logged in!");
             return;
         }
         
-        Account account = Auth.user;
         if(!account.getPassword().equals(currentPass)) {
             MessageBox.alert(this, "Current password is incorrect!");
-            return;
         }
         
         if(!newPass.equals(confirmPass)){
@@ -40,7 +38,7 @@ public class ChangePassword extends javax.swing.JFrame {
         account.setPassword(newPass);
         
         new AccountDAO().update(account);
-        MessageBox.information(this, "Password changed successfully");
+        MessageBox.infomation(this, "Password changed successfully");
     }
     
     private void cancel() {
@@ -57,9 +55,9 @@ public class ChangePassword extends javax.swing.JFrame {
         btnConfirm = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        txtConfirmNewPassword = new warehouse.component.PasswordField();
-        txtCurrentPassword1 = new warehouse.component.PasswordField();
-        txtNewPassword1 = new warehouse.component.PasswordField();
+        txtConfirmNewPassword = new warehouse.component.textfield.PasswordField();
+        txtCurrentPassword = new warehouse.component.textfield.PasswordField();
+        txtNewPassword = new warehouse.component.textfield.PasswordField();
 
         jTextField1.setText("jTextField1");
 
@@ -99,13 +97,13 @@ public class ChangePassword extends javax.swing.JFrame {
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         txtConfirmNewPassword.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txtConfirmNewPassword.setLabelText("New Password");
+        txtConfirmNewPassword.setLabelText("Confirm new password");
 
-        txtCurrentPassword1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txtCurrentPassword1.setLabelText("Password");
+        txtCurrentPassword.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtCurrentPassword.setLabelText("Current Password");
 
-        txtNewPassword1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txtNewPassword1.setLabelText("New Password");
+        txtNewPassword.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtNewPassword.setLabelText("New password");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -127,8 +125,8 @@ public class ChangePassword extends javax.swing.JFrame {
                                 .addGap(91, 91, 91)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtConfirmNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNewPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCurrentPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(txtNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCurrentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(136, 136, 136)
                                 .addComponent(jLabel1)))
@@ -143,9 +141,9 @@ public class ChangePassword extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtCurrentPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtCurrentPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
-                .addComponent(txtNewPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(txtConfirmNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
@@ -179,8 +177,8 @@ public class ChangePassword extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
-    private warehouse.component.PasswordField txtConfirmNewPassword;
-    private warehouse.component.PasswordField txtCurrentPassword1;
-    private warehouse.component.PasswordField txtNewPassword1;
+    private warehouse.component.textfield.PasswordField txtConfirmNewPassword;
+    private warehouse.component.textfield.PasswordField txtCurrentPassword;
+    private warehouse.component.textfield.PasswordField txtNewPassword;
     // End of variables declaration//GEN-END:variables
 }

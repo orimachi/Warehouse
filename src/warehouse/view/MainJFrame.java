@@ -6,16 +6,12 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import warehouse.bean.Category;
 import warehouse.controller.SwitchScreen;
+import warehouse.utils.MessageBox;
 
-/**
- *
- * @author Manh Thanh
- */
+
 public class MainJFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainJFrame
-     */
+   
     public MainJFrame() {
         initComponents();
         setTitle("Warehouse Management System");
@@ -36,8 +32,8 @@ public class MainJFrame extends javax.swing.JFrame {
 
     public void thoat() {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        int kq = JOptionPane.showConfirmDialog(this, "Bạn có muốn thoát ?", "", JOptionPane.YES_NO_OPTION);
-        if (kq == 0) {
+        boolean choice = MessageBox.confirm(this, "Do you want to exit", null);
+        if (choice == true) {
             System.exit(0);
         }
     }
@@ -388,7 +384,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jpnQLHH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jpnTCHH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
         );
@@ -404,7 +400,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
         jpnViewLayout.setVerticalGroup(
             jpnViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 693, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jpnMainLayout = new javax.swing.GroupLayout(jpnMain);

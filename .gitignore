@@ -1,3 +1,4 @@
+# Ignore NetBeans-specific folders
 nbproject/
 build/
 dist/
@@ -5,19 +6,17 @@ nbbuild/
 nbdist/
 .netbeans/
 
-# Compiled class files
+# Ignore compiled files and outputs
 *.class
-
-# Log files
-*.log
-
-# Generated files
 *.jar
 *.war
 *.ear
+*.log
 
-# Backup files
+# Ignore backups and swap files
 *~
 *.bak
 *.swp
+
+# If using Maven
 /target/
