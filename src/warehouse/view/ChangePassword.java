@@ -16,9 +16,12 @@ public class ChangePassword extends javax.swing.JFrame {
    
 
     private void changePassword() {
-        String currentPass = new String(txtCurrentPassword1.getPassword());
-        String newPass = new String(txtNewPassword1.getPassword());
-        String confirmPass = new String(txtConfirmNewPassword.getPassword());
+        String currentPass = "1"; 
+//                new String(txtCurrentPassword1.getPassword());
+        String newPass = "2";
+//                new String(txtNewPassword1.getPassword());
+        String confirmPass = "3";
+//                new String(txtConfirmNewPassword.getPassword());
         
         AccountDAO dao = new AccountDAO();
         
@@ -57,9 +60,6 @@ public class ChangePassword extends javax.swing.JFrame {
         btnConfirm = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
-        txtConfirmNewPassword = new warehouse.component.PasswordField();
-        txtCurrentPassword1 = new warehouse.component.PasswordField();
-        txtNewPassword1 = new warehouse.component.PasswordField();
 
         jTextField1.setText("jTextField1");
 
@@ -98,15 +98,6 @@ public class ChangePassword extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
-        txtConfirmNewPassword.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txtConfirmNewPassword.setLabelText("New Password");
-
-        txtCurrentPassword1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txtCurrentPassword1.setLabelText("Password");
-
-        txtNewPassword1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        txtNewPassword1.setLabelText("New Password");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -124,15 +115,9 @@ public class ChangePassword extends javax.swing.JFrame {
                                 .addGap(52, 52, 52)
                                 .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(91, 91, 91)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtConfirmNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNewPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtCurrentPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(136, 136, 136)
                                 .addComponent(jLabel1)))
-                        .addGap(0, 97, Short.MAX_VALUE)))
+                        .addGap(0, 111, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -142,13 +127,7 @@ public class ChangePassword extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtCurrentPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(txtNewPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(txtConfirmNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
                     .addComponent(btnConfirm))
@@ -179,8 +158,5 @@ public class ChangePassword extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
-    private warehouse.component.PasswordField txtConfirmNewPassword;
-    private warehouse.component.PasswordField txtCurrentPassword1;
-    private warehouse.component.PasswordField txtNewPassword1;
     // End of variables declaration//GEN-END:variables
 }
