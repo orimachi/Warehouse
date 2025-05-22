@@ -1,6 +1,5 @@
 package warehouse.entity;
 
-import java.util.Date;
 import java.util.UUID;
 import warehouse.bean.ECalcUnit;
 
@@ -10,19 +9,16 @@ public class Stock {
     private int quantity;
     private ECalcUnit calcUnit;
     private UUID idWarehouse;
-    private Date lastUpdate = new Date();
-    private UUID idAccount;
 
     public Stock() {
     }
     
-    public Stock(UUID id, UUID idProduct, int quantity, ECalcUnit calcUnit, UUID idWarehouse, UUID idAccount) {
+    public Stock(UUID id, UUID idProduct, int quantity, ECalcUnit calcUnit, UUID idWarehouse) {
         this.id = id;
         this.idProduct = idProduct;
         this.quantity = quantity;
         this.calcUnit = calcUnit;
         this.idWarehouse = idWarehouse;
-        this.idAccount = idAccount;
     }
 
     public UUID getId() {
@@ -65,21 +61,4 @@ public class Stock {
         this.idWarehouse = idWareHouse;
     }
 
-    public Date getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void setLastUpdate(Date lastUpdate) {
-        this.lastUpdate = lastUpdate;
-    }
-
-    public UUID getIdAccount() {
-        return idAccount;
-    }
-
-    public void setIdAccount(UUID idAccount) {
-        this.idAccount = idAccount;
-    }
-    
-    
 }

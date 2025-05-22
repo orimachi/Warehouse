@@ -25,9 +25,7 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
                     entity.getIdProduct(),
                     entity.getQuantity(),
                     entity.getCalcUnit(),
-                    entity.getIdWareHouse(),
-                    entity.getLastUpdate(),
-                    entity.getIdAccount());
+                    entity.getIdWareHouse());
             logger.info("Insert success");
         } catch (Exception e) {
             throw new RuntimeException("Cant insert missing information:" + e.getMessage());
@@ -44,8 +42,6 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
                     entity.getQuantity(),
                     entity.getCalcUnit(),
                     entity.getIdWareHouse(),
-                    entity.getLastUpdate(),
-                    entity.getIdAccount(),
                     entity.getId());
             logger.info("Update success");
         } catch (Exception e) {
@@ -99,8 +95,6 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
                     entity.setQuantity(Integer.parseInt(rs.getString("Quantity")));
                     entity.setCalcUnit(ECalcUnit.valueOf(rs.getString("CalcUnit")));
                     entity.setIdWareHouse(UUID.fromString(rs.getString("IDWarehouse")));
-                    entity.setLastUpdate(ConvertDate.toDate(rs.getString("LastUpdate"),"YYYY-MM-DD"));
-                    entity.setIdAccount(UUID.fromString(rs.getString("IDAccount")));
                     list.add(entity);
                 }
             } finally {
