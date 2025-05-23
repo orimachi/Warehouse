@@ -13,7 +13,7 @@ import warehouse.entity.Product;
 import warehouse.utils.JDBC;
 import warehouse.utils.SQLBuilder;
 
-public class ProductDAO extends BaseDAO<Product, UUID> implements CustomDAO {
+public class ProductDAO extends BaseDAO<Product, UUID> {
 
     private static final Logger logger = Logger.getLogger(ProductDAO.class.getName());
 
@@ -120,16 +120,14 @@ public class ProductDAO extends BaseDAO<Product, UUID> implements CustomDAO {
         return selectBySql(sql);
     }
 
-    @Override
     public String getNameByUUID(UUID id) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override
     public UUID getUUIDByName(String name) {
         String sql = SQLBuilder.getUUIDByName("Product", "Name");
         logger.info(sql);
-        Object result = JDBC.value(sql, "%" + name + "%");
+        Object result = JDBC.value(sql, name);
         return result == null ? null : UUID.fromString(result.toString());
     }
 }

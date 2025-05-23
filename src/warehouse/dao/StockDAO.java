@@ -10,10 +10,6 @@ import warehouse.bean.ECalcUnit;
 import warehouse.entity.Stock;
 import warehouse.utils.JDBC;
 import warehouse.utils.SQLBuilder;
-import java.sql.PreparedStatement;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 
 public class StockDAO extends BaseDAO<Stock, UUID>{
 
@@ -27,7 +23,6 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
             JDBC.update(sql,
                     entity.getIdProduct(),
                     entity.getQuantity(),
-                    entity.getCalcUnit(),
                     entity.getIdWareHouse()
             );
             logger.info("Insert success");
@@ -44,7 +39,6 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
             JDBC.update(sql,
                     entity.getIdProduct(),
                     entity.getQuantity(),
-                    entity.getCalcUnit(),
                     entity.getIdWareHouse(),
                     entity.getId());
             logger.info("Update success");
@@ -97,7 +91,6 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
                     entity.setId(UUID.fromString(rs.getString("ID")));
                     entity.setIdProduct(UUID.fromString(rs.getString("IDProduct")));
                     entity.setQuantity(Integer.parseInt(rs.getString("Quantity")));
-                    entity.setCalcUnit(ECalcUnit.valueOf(rs.getString("CalcUnit")));
                     entity.setIdWareHouse(UUID.fromString(rs.getString("IDWarehouse")));
                     list.add(entity);
                 }
@@ -136,7 +129,6 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
                 stock.setIdProduct(UUID.fromString(rs.getString("idProduct")));
                 stock.setIdWareHouse(UUID.fromString(rs.getString("idWareHouse")));
                 stock.setQuantity(rs.getInt("quantity"));
-                stock.setCalcUnit(ECalcUnit.valueOf(rs.getString("calcUnit")));
                 list.add(stock);
             }
             rs.getStatement().getConnection().close();
@@ -165,7 +157,6 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
                 entity.setId(UUID.fromString(rs.getString("ID")));
                 entity.setIdProduct(UUID.fromString(rs.getString("IDProduct")));
                 entity.setQuantity(rs.getInt("Quantity"));
-                entity.setCalcUnit(ECalcUnit.valueOf(rs.getString("CalcUnit")));
                 entity.setIdWareHouse(UUID.fromString(rs.getString("IDWarehouse")));
                 list.add(entity);
             }

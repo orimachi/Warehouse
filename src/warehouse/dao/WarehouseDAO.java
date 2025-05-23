@@ -122,9 +122,9 @@ public class WarehouseDAO extends BaseDAO<Warehouse, UUID> {
     }
 
     public UUID getUUIDByName(String keyword){
-        String sql = SQLBuilder.getUUIDByName("Warhouse", "Name");
+        String sql = SQLBuilder.getUUIDByName("Warehouse", "Name");
         logger.info(sql);
-        Object result = JDBC.value(sql, "%" + keyword + "%");
+        Object result = JDBC.value(sql, keyword);
         return result == null ? null : UUID.fromString(result.toString());
     }
     

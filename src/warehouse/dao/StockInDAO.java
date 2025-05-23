@@ -6,28 +6,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
-import warehouse.bean.ECalcUnit;
+import warehouse.bean.EStatus;
 import warehouse.entity.StockIn;
-import warehouse.utils.ConvertDate;
 import warehouse.utils.JDBC;
 import warehouse.utils.SQLBuilder;
 
 public class StockInDAO extends BaseDAO<StockIn, UUID>{
 
-      private static final Logger logger = Logger.getLogger(StockInDAO.class.getName());
+    private static final Logger logger = Logger.getLogger(StockInDAO.class.getName());
     
     @Override
     public void insert(StockIn entity) {
          try {
-            String sql = SQLBuilder.buildSQLInsert("Stock", "Quantity", "CalcUnit", "IDSupplier","IDWareHouse","IDAccount","updatedDate");
+            String sql = SQLBuilder.buildSQLInsert("StockIn", "IDProduct", "Quantity", "IDSupplier","IDWareHouse","Username","UpdatedDate", "Status");
             logger.info(sql);
             JDBC.update(sql,
+                    entity.getIdProduct(),
                     entity.getQuantity(),
-                    entity.getCalcUnit(),
                     entity.getIdSupplier(),
-//                    entity.getIdWarehouse(),
-                    entity.getIdAccount(),
-                    entity.getUpdatedDate()
+                    entity.getIdWarehouse(),
+                    entity.getUsername(),
+                    entity.getUpdatedDate(),
+                    entity.getStatus().name()
             );
             logger.info("Insert success");
         } catch (Exception e) {
@@ -38,16 +38,17 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
     @Override
     public void update(StockIn entity) {
          try {
-            String sql = SQLBuilder.buildSQLUpdate("Stock", "Quantity", "CalcUnit", "IDSupplier","IDWareHouse","IDAccount","AddDate","ID");
+            String sql = SQLBuilder.buildSQLUpdate("StockIn", "ID", "IDProduct" ,"Quantity","IDSupplier","IDWareHouse","Username","UpdatedDate", "Status");
             logger.info(sql);
             JDBC.update(sql,
+                    entity.getIdProduct(),
                     entity.getQuantity(),
-                    entity.getCalcUnit(),
                     entity.getIdSupplier(),
-//                    entity.getIdWarehouse(),
-                    entity.getIdAccount(),
+                    entity.getIdWarehouse(),
+                    entity.getUsername(),
                     entity.getUpdatedDate(),
-                    entity.getId()
+                    entity.getStatus().name(),
+                    entity.getId().toString()
             );
             logger.info("Update success");
         } catch (Exception e) {
@@ -59,13 +60,7 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
     public void delete(UUID id) {
          try {
             String sql = SQLBuilder.buildSQLDelete("StockIn", "ID");
-            StockIn entity = selectById(id);
-            if (entity == null) {
-                logger.severe("StockIn doesnt not exist cant delete product with id" + id);
-            } else {
-                JDBC.update(sql, id);
-                logger.info("Delete success with product with product id:" + id);
-            }
+            JDBC.update(sql, id);
         } catch (Exception e) {
             throw new NullPointerException("Delete fail:" + e.getMessage());
         }
@@ -73,7 +68,14 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
 
     @Override
     public StockIn selectById(UUID id) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        try {
+            String sql = SQLBuilder.buildSQLSelect("StockIn", "Id");
+            List<StockIn> result = selectBySql(sql, id);
+            return result.isEmpty() ? null : result.get(0);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error check output");
+        }
     }
 
     @Override
@@ -87,6 +89,13 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
         return selectBySql(sql);
     }
 
+    public List<StockIn> selectALLByStatusProcessing(EStatus status){
+        String sql = SQLBuilder.buildSQLSelect("StockIn", "Status");
+        logger.info(sql);
+        List<StockIn> list = selectBySql(sql,status.name());
+        return list == null || list.isEmpty() ? new ArrayList<>() : list;
+    }
+    
     @Override
     protected List<StockIn> selectBySql(String sql, Object... args) {
         List<StockIn> list = new ArrayList<>();
@@ -97,12 +106,13 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
                 while (rs.next()) {
                     StockIn entity = new StockIn();
                     entity.setId(UUID.fromString(rs.getString("ID")));
+                    entity.setIdSupplier(UUID.fromString(rs.getString("IDSupplier")));
+                    entity.setIdWarehouse(UUID.fromString(rs.getString("IDWarehouse")));
                     entity.setQuantity(Integer.parseInt(rs.getString("Quantity")));
-                    entity.setIdSupplier(UUID.fromString(rs.getString("IDProduct")));
-                    entity.setCalcUnit(ECalcUnit.valueOf(rs.getString("CalcUnit")));
-//                    entity.setIdWarehouse(UUID.fromString(rs.getString("IDWarehouse")));
-                    entity.setIdAccount(rs.getString("IDAccount"));
-                    entity.setUpdatedDate(ConvertDate.toDate(rs.getString("LastUpdate"),"YYYY-MM-DD"));
+                    entity.setIdProduct(UUID.fromString(rs.getString("IDProduct")));
+                    entity.setStatus(EStatus.valueOf(rs.getString("Status")));
+                    entity.setUsername(rs.getString("Username"));
+                    entity.setUpdatedDate(rs.getDate("UpdatedDate"));
                     list.add(entity);
                 }
             } finally {
@@ -113,6 +123,4 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
         }
         return list;
     }
-
-   
 }

@@ -55,7 +55,7 @@ public class SQLBuilder {
                 likePattern = "%" + keyword + "%";
                 break;
         }
-        return String.format("SELECT * FROM %s WHERE %s LIKE ?", table, idColumn, likePattern);
+        return String.format("SELECT * FROM %s WHERE %s LIKE '%s'", table, idColumn, likePattern);
     }
 
     public static String buildSQLSelectsLikeAnd(String table, List<String> columns, List<String> operators, List<String> keywords) {

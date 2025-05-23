@@ -74,7 +74,7 @@ public class Product {
     
     @Override
     public String toString() {
-        return this.getName(); // hoặc getWarehouseName()
+        return this.getName();
     }
 
 }

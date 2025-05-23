@@ -58,7 +58,6 @@ public class StockJFrame extends javax.swing.JFrame {
                     stock.getId(),
                     productName,
                     stock.getQuantity(),
-                    stock.getCalcUnit().toString(),
                     warehouseName
             });
         }
@@ -151,11 +150,11 @@ public class StockJFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Name", "Quantity", "Calc. Unit", "Warehouse"
+                "ID", "Name", "Quantity", "Warehouse"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -167,8 +166,6 @@ public class StockJFrame extends javax.swing.JFrame {
             tblStock.getColumnModel().getColumn(0).setResizable(false);
             tblStock.getColumnModel().getColumn(2).setResizable(false);
             tblStock.getColumnModel().getColumn(2).setPreferredWidth(20);
-            tblStock.getColumnModel().getColumn(3).setResizable(false);
-            tblStock.getColumnModel().getColumn(3).setPreferredWidth(30);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
