@@ -15,7 +15,7 @@ public class MainJFrame extends javax.swing.JFrame {
    
     public MainJFrame() {
         initComponents();
-        loadUsernameAndRole();
+//        loadUsernameAndRole();
         setTitle("Warehouse Management System");
         setLocationRelativeTo(null);
 

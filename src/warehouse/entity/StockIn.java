@@ -3,26 +3,31 @@ package warehouse.entity;
 import java.util.Date;
 import java.util.UUID;
 import warehouse.bean.ECalcUnit;
+import warehouse.bean.EStatus;
 
 public class StockIn {
     private UUID id;
+    private UUID idProduct;
     private int quantity;
     private ECalcUnit calcUnit;
     private UUID idSupplier;
-    private UUID idWarehouse;
+    private UUID idStock;
     private UUID idAccount;
     private Date updatedDate = new Date();
+    private EStatus status;
 
     public StockIn() {
     }
 
-    public StockIn(UUID id, int quantity, ECalcUnit calcUnit, UUID idSupplier, UUID idWarehouse, UUID idAccount) {
+    public StockIn(UUID id, UUID idProduct, int quantity, ECalcUnit calcUnit, UUID idSupplier, UUID idStock, UUID idAccount, EStatus status) {
         this.id = id;
+        this.idProduct = idProduct;
         this.quantity = quantity;
         this.calcUnit = calcUnit;
         this.idSupplier = idSupplier;
-        this.idWarehouse = idWarehouse;
+        this.idStock = idStock;
         this.idAccount = idAccount;
+        this.status = status;
     }
 
     public UUID getId() {
@@ -33,12 +38,12 @@ public class StockIn {
         this.id = id;
     }
 
-    public Date getAddDate() {
-        return updatedDate;
+    public UUID getIdProduct() {
+        return idProduct;
     }
 
-    public void setAddDate(Date addDate) {
-        this.updatedDate = addDate;
+    public void setIdProduct(UUID idProduct) {
+        this.idProduct = idProduct;
     }
 
     public int getQuantity() {
@@ -65,12 +70,12 @@ public class StockIn {
         this.idSupplier = idSupplier;
     }
 
-    public UUID getIdWarehouse() {
-        return idWarehouse;
+    public UUID getIdStock() {
+        return idStock;
     }
 
-    public void setIdWarehouse(UUID idWarehouse) {
-        this.idWarehouse = idWarehouse;
+    public void setIdStock(UUID idStock) {
+        this.idStock = idStock;
     }
 
     public UUID getIdAccount() {
@@ -80,6 +85,23 @@ public class StockIn {
     public void setIdAccount(UUID idAccount) {
         this.idAccount = idAccount;
     }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
+    }
+
+    public EStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EStatus status) {
+        this.status = status;
+    }
     
+   
     
 }
