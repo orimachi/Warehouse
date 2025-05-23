@@ -19,7 +19,7 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
     @Override
     public void insert(StockIn entity) {
          try {
-            String sql = SQLBuilder.buildSQLInsert("Stock", "Quantity", "CalcUnit", "IDSupplier","IDWareHouse","IDAccount","AddDate");
+            String sql = SQLBuilder.buildSQLInsert("Stock", "Quantity", "CalcUnit", "IDSupplier","IDWareHouse","IDAccount","updatedDate");
             logger.info(sql);
             JDBC.update(sql,
                     entity.getQuantity(),
@@ -27,7 +27,7 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
                     entity.getIdSupplier(),
 //                    entity.getIdWarehouse(),
                     entity.getIdAccount(),
-                    entity.getAddDate()
+                    entity.getUpdatedDate()
             );
             logger.info("Insert success");
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
                     entity.getIdSupplier(),
 //                    entity.getIdWarehouse(),
                     entity.getIdAccount(),
-                    entity.getAddDate(),
+                    entity.getUpdatedDate(),
                     entity.getId()
             );
             logger.info("Update success");
@@ -101,8 +101,8 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
                     entity.setIdSupplier(UUID.fromString(rs.getString("IDProduct")));
                     entity.setCalcUnit(ECalcUnit.valueOf(rs.getString("CalcUnit")));
 //                    entity.setIdWarehouse(UUID.fromString(rs.getString("IDWarehouse")));
-                    entity.setIdAccount(UUID.fromString(rs.getString("IDAccount")));
-                    entity.setAddDate(ConvertDate.toDate(rs.getString("LastUpdate"),"YYYY-MM-DD"));
+                    entity.setIdAccount(rs.getString("IDAccount"));
+                    entity.setUpdatedDate(ConvertDate.toDate(rs.getString("LastUpdate"),"YYYY-MM-DD"));
                     list.add(entity);
                 }
             } finally {
@@ -114,8 +114,5 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
         return list;
     }
 
-    @Override
-    public UUID getUUIDByName(String table, String keyWord) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+   
 }

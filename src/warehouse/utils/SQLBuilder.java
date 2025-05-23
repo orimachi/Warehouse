@@ -84,10 +84,6 @@ public class SQLBuilder {
         }
     }
     
-    public static String getNameByUUID(String table, String idColumn) {
-      return String.format("SELECT Name FROM %s WHERE %s=?", table, idColumn);
-    }
-    
     public static String buildSQLSelectJoinLike(String table, String joinClause, String likeColumn) {
         return String.format(
             "SELECT * FROM %s %s WHERE %s LIKE ?",

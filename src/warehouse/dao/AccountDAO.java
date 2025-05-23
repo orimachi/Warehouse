@@ -115,8 +115,5 @@ public class AccountDAO extends BaseDAO<Account, String> {
         }
     }
 
-    @Override
-    public UUID getUUIDByName(String table, String keyWord) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+
 }
