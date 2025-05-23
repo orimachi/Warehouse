@@ -1,23 +1,20 @@
 package warehouse.entity;
 
 import java.util.UUID;
-import warehouse.bean.ECalcUnit;
 
 public class Stock {
     private UUID id;
     private UUID idProduct;
     private int quantity;
-    private ECalcUnit calcUnit;
     private UUID idWarehouse;
 
     public Stock() {
     }
     
-    public Stock(UUID id, UUID idProduct, int quantity, ECalcUnit calcUnit, UUID idWarehouse) {
+    public Stock(UUID id, UUID idProduct, int quantity,  UUID idWarehouse) {
         this.id = id;
         this.idProduct = idProduct;
         this.quantity = quantity;
-        this.calcUnit = calcUnit;
         this.idWarehouse = idWarehouse;
     }
 
@@ -43,14 +40,6 @@ public class Stock {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public ECalcUnit getCalcUnit() {
-        return calcUnit;
-    }
-
-    public void setCalcUnit(ECalcUnit calcUnit) {
-        this.calcUnit = calcUnit;
     }
 
     public UUID getIdWareHouse() {

@@ -2,31 +2,28 @@ package warehouse.entity;
 
 import java.util.Date;
 import java.util.UUID;
-import warehouse.bean.ECalcUnit;
 import warehouse.bean.EStatus;
 
 public class StockIn {
     private UUID id;
     private UUID idProduct;
     private int quantity;
-    private ECalcUnit calcUnit;
     private UUID idSupplier;
-    private UUID idStock;
-    private String idAccount;
+    private UUID idWareHouse;
+    private String username;
     private Date updatedDate = new Date();
     private EStatus status;
 
     public StockIn() {
     }
 
-    public StockIn(UUID id, UUID idProduct, int quantity, ECalcUnit calcUnit, UUID idSupplier, UUID idStock, String idAccount, EStatus status) {
+    public StockIn(UUID id, UUID idProduct, int quantity, UUID idSupplier, UUID idWareHouse, String username, EStatus status) {
         this.id = id;
         this.idProduct = idProduct;
         this.quantity = quantity;
-        this.calcUnit = calcUnit;
         this.idSupplier = idSupplier;
-        this.idStock = idStock;
-        this.idAccount = idAccount;
+        this.idWareHouse = idWareHouse;
+        this.username = username;
         this.status = status;
     }
 
@@ -54,14 +51,6 @@ public class StockIn {
         this.quantity = quantity;
     }
 
-    public ECalcUnit getCalcUnit() {
-        return calcUnit;
-    }
-
-    public void setCalcUnit(ECalcUnit calcUnit) {
-        this.calcUnit = calcUnit;
-    }
-
     public UUID getIdSupplier() {
         return idSupplier;
     }
@@ -70,20 +59,20 @@ public class StockIn {
         this.idSupplier = idSupplier;
     }
 
-    public UUID getIdStock() {
-        return idStock;
+    public UUID getIdWarehouse() {
+        return idWareHouse;
     }
 
-    public void setIdStock(UUID idStock) {
-        this.idStock = idStock;
+    public void setIdWarehouse(UUID idWareHouse) {
+        this.idWareHouse = idWareHouse;
     }
 
-    public String getIdAccount() {
-        return idAccount;
+    public String getUsername() {
+        return username;
     }
 
-    public void setIdAccount(String idAccount) {
-        this.idAccount = idAccount;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Date getUpdatedDate() {
@@ -101,7 +90,4 @@ public class StockIn {
     public void setStatus(EStatus status) {
         this.status = status;
     }
-    
-   
-    
 }

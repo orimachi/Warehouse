@@ -8,37 +8,29 @@ public class StockOut {
     private UUID id;
     private int quantity;
     private UUID idProduct;
-    private UUID idStock;
-    private String idAccount;
-    private Date addDate = new Date();
+    private String username;
+    private Date updatedDate = new Date();
     private EStatus status;
 
     public StockOut() {
     }
 
-    public StockOut(UUID id, int quantity, UUID idProduct, UUID idStock, String idAccount, EStatus status) {
+    public StockOut(UUID id, int quantity, UUID idProduct, String username, EStatus status) {
         this.id = id;
         this.quantity = quantity;
         this.idProduct = idProduct;
-        this.idStock = idStock;
-        this.idAccount = idAccount;
+        this.username = username;
         this.status = status;
     }
 
+    
+    
     public UUID getId() {
         return id;
     }
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public Date getAddDate() {
-        return addDate;
-    }
-
-    public void setAddDate(Date addDate) {
-        this.addDate = addDate;
     }
 
     public int getQuantity() {
@@ -57,20 +49,20 @@ public class StockOut {
         this.idProduct = idProduct;
     }
 
-    public UUID getIdStock() {
-        return idStock;
+    public String getUsername() {
+        return username;
     }
 
-    public void setIdStock(UUID idStock) {
-        this.idStock = idStock;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getIdAccount() {
-        return idAccount;
+    public Date getUpdatedDate() {
+        return updatedDate;
     }
 
-    public void setIdAccount(String idAccount) {
-        this.idAccount = idAccount;
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
 
     public EStatus getStatus() {

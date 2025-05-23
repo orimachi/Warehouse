@@ -19,7 +19,7 @@ public class AccountDAO extends BaseDAO<Account, String> {
         try {
             String sql = SQLBuilder.buildSQLInsert("Account", "Username", "Password", "Role");
             logger.info(sql);
-            JDBC.update(sql, entity.getUsername(), entity.getPassword().hashCode(), entity.getRole());
+            JDBC.update(sql, entity.getUsername(), entity.getPassword(), entity.getRole().name());
         } catch (Exception e) {
             throw new NullPointerException("Update fail:" + e.getMessage());
         }
@@ -31,8 +31,8 @@ public class AccountDAO extends BaseDAO<Account, String> {
             String sql = SQLBuilder.buildSQLUpdate("Account", "Username", "Password", "Role");
             logger.info(sql);
             JDBC.update(sql,
-                    entity.getPassword().hashCode(),
-                    entity.getRole(),
+                    entity.getPassword(),
+                    entity.getRole().name(),
                     entity.getUsername()
             );
         } catch (Exception e) {
@@ -112,5 +112,12 @@ public class AccountDAO extends BaseDAO<Account, String> {
         } catch (Exception e) {
             throw new NullPointerException("Update password fail:" + e.getMessage());
         }
+    }
+    
+    public List<Account> selectALLByName(String keyword){
+        String sql = SQLBuilder.getEntityByName("Product", "Name");
+        logger.info(sql);
+        List<Account> list = selectBySql(sql, "%" + keyword + "%");
+        return list.isEmpty() ? null : list;
     }
 }

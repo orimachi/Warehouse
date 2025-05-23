@@ -71,5 +71,5 @@ public class Product {
     public void setCategory(ECategory category) {
         this.category = category;
     }
-
+    
 }

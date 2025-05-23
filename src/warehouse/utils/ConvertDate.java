@@ -17,7 +17,7 @@ public class ConvertDate {
         }
     }
 
-    public static String toString(ConvertDate date, String pattern) {
+    public static String toString(Date date, String pattern) {
         formater.applyPattern(pattern);
         return formater.format(date);
     }

@@ -41,6 +41,10 @@ public class SQLBuilder {
       return String.format("SELECT Name FROM %s WHERE %s=?", table, idColumn);
     }
     
+     public static String getEntityByName(String table, String idColumn) {
+      return String.format("SELECT * FROM %s WHERE %s LIKE ?", table, idColumn);
+    }
+    
     public static String buildSQLSelectLike(String table, String idColumn, String keyword, EPositions positions) {
         String likePattern;
         switch (positions) {
@@ -54,7 +58,7 @@ public class SQLBuilder {
                 likePattern = "%" + keyword + "%";
                 break;
         }
-        return String.format("SELECT * FROM %s WHERE %s LIKE ?", table, idColumn, likePattern);
+       return String.format("SELECT * FROM %s WHERE %s LIKE '%s'", table, idColumn, likePattern);
     }
 
     public static String buildSQLSelectsLikeAnd(String table, List<String> columns, List<String> operators, List<String> keywords) {

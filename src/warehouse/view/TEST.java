@@ -7,6 +7,7 @@ package warehouse.view;
 import warehouse.component.notification.MessageDialog;
 import warehouse.component.notification.Notification;
 import warehouse.component.pagination.PaginationItemRenderStyle1;
+import warehouse.entity.Product;
 import warehouse.utils.MessageBox;
 
 /**
@@ -122,7 +123,8 @@ public class TEST extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        MessageBox.warning(this, "something");
+        Product p = new Product();
+        System.out.println(p);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

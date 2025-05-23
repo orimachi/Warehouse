@@ -8,7 +8,6 @@ import java.util.UUID;
 import java.util.logging.Logger;
 import warehouse.bean.ECalcUnit;
 import warehouse.entity.Stock;
-import warehouse.utils.ConvertDate;
 import warehouse.utils.JDBC;
 import warehouse.utils.SQLBuilder;
 
