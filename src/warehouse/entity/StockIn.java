@@ -12,14 +12,14 @@ public class StockIn {
     private ECalcUnit calcUnit;
     private UUID idSupplier;
     private UUID idStock;
-    private UUID idAccount;
+    private String idAccount;
     private Date updatedDate = new Date();
     private EStatus status;
 
     public StockIn() {
     }
 
-    public StockIn(UUID id, UUID idProduct, int quantity, ECalcUnit calcUnit, UUID idSupplier, UUID idStock, UUID idAccount, EStatus status) {
+    public StockIn(UUID id, UUID idProduct, int quantity, ECalcUnit calcUnit, UUID idSupplier, UUID idStock, String idAccount, EStatus status) {
         this.id = id;
         this.idProduct = idProduct;
         this.quantity = quantity;
@@ -78,11 +78,11 @@ public class StockIn {
         this.idStock = idStock;
     }
 
-    public UUID getIdAccount() {
+    public String getIdAccount() {
         return idAccount;
     }
 
-    public void setIdAccount(UUID idAccount) {
+    public void setIdAccount(String idAccount) {
         this.idAccount = idAccount;
     }
 
