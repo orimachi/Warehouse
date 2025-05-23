@@ -71,11 +71,20 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID>{
     }
 
     @Override
+    public UUID getUUIDByName(String table , String keyWord) {
+        String sql = SQLBuilder.getUUIDByName(table, keyWord);
+        logger.info(sql);
+        Object result = JDBC.value(sql,"%" + keyWord + "%");
+        return result == null ? null : UUID.fromString(result.toString());
+    }
+    
+    @Override
     public List<Suppliers> selectAll() {
         String sql = SQLBuilder.buildSQLSelectALL("Suppliers");
         logger.info(sql);
         return selectBySql(sql);
     }
+    
 
     @Override
     protected List<Suppliers> selectBySql(String sql, Object... args) {
@@ -100,4 +109,6 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID>{
         }
         return list;
     } 
+
+
 }

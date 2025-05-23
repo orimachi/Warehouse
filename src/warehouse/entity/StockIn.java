@@ -11,7 +11,7 @@ public class StockIn {
     private UUID idSupplier;
     private UUID idWarehouse;
     private UUID idAccount;
-    private Date addDate = new Date();
+    private Date updatedDate = new Date();
 
     public StockIn() {
     }
@@ -34,11 +34,11 @@ public class StockIn {
     }
 
     public Date getAddDate() {
-        return addDate;
+        return updatedDate;
     }
 
     public void setAddDate(Date addDate) {
-        this.addDate = addDate;
+        this.updatedDate = addDate;
     }
 
     public int getQuantity() {

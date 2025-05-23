@@ -9,12 +9,12 @@ public class StockOut {
     private int quantity;
     private UUID idProduct;
     private UUID idWarehouse;
-    private UUID idAccount;
+    private String idAccount;
 
     public StockOut() {
     }
 
-    public StockOut(UUID id, int quantity, UUID idProduct, UUID idWarehouse, UUID idAccount) {
+    public StockOut(UUID id, int quantity, UUID idProduct, UUID idWarehouse, String idAccount) {
         this.id = id;
         this.quantity = quantity;
         this.idProduct = idProduct;
@@ -62,11 +62,11 @@ public class StockOut {
         this.idWarehouse = idWarehouse;
     }
 
-    public UUID getIdAccount() {
+    public String getIdAccount() {
         return idAccount;
     }
 
-    public void setIdAccount(UUID idAccount) {
+    public void setIdAccount(String idAccount) {
         this.idAccount = idAccount;
     }
     

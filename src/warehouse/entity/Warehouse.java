@@ -49,5 +49,10 @@ public class Warehouse {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+    
+    @Override
+    public String toString() {
+        return name;
+    }
 
 }

@@ -5,7 +5,7 @@ import warehouse.bean.ECalcUnit;
 import warehouse.bean.ECategory;
 
 public class Product {
-    private String id;
+    private UUID id;
     private String name;
     private ECalcUnit calcUnit;
     private String description;
@@ -15,7 +15,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(String id, String name, ECalcUnit calcUnit, String description, UUID idSupplier, ECategory category) {
+    public Product(UUID id, String name, ECalcUnit calcUnit, String description, UUID idSupplier, ECategory category) {
         this.id = id;
         this.name = name;
         this.calcUnit = calcUnit;
@@ -24,11 +24,11 @@ public class Product {
         this.category = category;
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -70,6 +70,11 @@ public class Product {
 
     public void setCategory(ECategory category) {
         this.category = category;
+    }
+    
+    @Override
+    public String toString() {
+        return this.getName(); // hoặc getWarehouseName()
     }
 
 }

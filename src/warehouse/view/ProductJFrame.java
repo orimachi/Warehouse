@@ -1,11 +1,21 @@
 package warehouse.view;
 
+import java.util.List;
+import warehouse.bean.ECalcUnit;
+import warehouse.bean.ECategory;
+import warehouse.dao.ProductDAO;
+import warehouse.dao.SuppliersDAO;
+import warehouse.entity.Product;
+import warehouse.entity.Suppliers;
+import warehouse.utils.MessageBox;
 
-public class Product extends javax.swing.JFrame {
+public class ProductJFrame extends javax.swing.JFrame {
 
-    
-    public Product() {
+    public ProductJFrame() {
         initComponents();
+        loadDataCBBCalcUnit();
+        loadDataCBBSupplier();
+        loadDataCBBCategory();
     }
 
     @SuppressWarnings("unchecked")
@@ -16,14 +26,14 @@ public class Product extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtDescription = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        combobox1 = new warehouse.component.Combobox();
-        combobox2 = new warehouse.component.Combobox();
-        combobox3 = new warehouse.component.Combobox();
-        textField1 = new warehouse.component.textfield.TextField();
+        cbbCategory = new warehouse.component.Combobox();
+        cbbCalcUnit = new warehouse.component.Combobox();
+        cbbSuppliers = new warehouse.component.Combobox();
+        txtName = new warehouse.component.textfield.TextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jTextField2 = new javax.swing.JTextField();
@@ -43,9 +53,9 @@ public class Product extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel2.setText("Caculation Unit");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtDescription.setColumns(20);
+        txtDescription.setRows(5);
+        jScrollPane1.setViewportView(txtDescription);
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel3.setText("Description");
@@ -56,8 +66,8 @@ public class Product extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel5.setText("Category");
 
-        textField1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        textField1.setLabelText("");
+        txtName.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtName.setLabelText("");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -68,20 +78,20 @@ public class Product extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
-                    .addComponent(textField1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE))
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(combobox3, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbbSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(1, 1, 1)
                                 .addComponent(jLabel2))
                             .addComponent(jLabel4)
-                            .addComponent(combobox1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(combobox2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(cbbCalcUnit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -94,10 +104,10 @@ public class Product extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(textField1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(5, 5, 5)
-                        .addComponent(combobox2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)))
+                        .addComponent(cbbCalcUnit, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
@@ -105,11 +115,11 @@ public class Product extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(combobox3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbbSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(combobox1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cbbCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
@@ -214,6 +224,55 @@ public class Product extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    SuppliersDAO suppliersDAO = new SuppliersDAO();
+    ProductDAO productDAO = new ProductDAO();
+    
+    
+    private void loadDataCBBCalcUnit() {
+        cbbCalcUnit.removeAllItems();
+        for (ECalcUnit calcUnit : ECalcUnit.values()) {
+            cbbCalcUnit.addItem(calcUnit.toString());
+        }
+    }
+
+    private void loadDataCBBCategory() {
+        cbbCategory.removeAllItems();
+        for (ECategory category : ECategory.values()) {
+            cbbCalcUnit.addItem(category.toString());
+        }
+    }
+
+    private void loadDataCBBSupplier() {
+        List<Suppliers> list = suppliersDAO.selectAll();
+        cbbSuppliers.removeAllItems();
+        for (Suppliers dataCbb : list) {
+            cbbSuppliers.addItem(dataCbb.getName());
+        }
+    }
+
+    private Product getInformationForm(){
+        Product product = new Product();
+        product.setName(txtName.getText());
+        product.setDescription(txtDescription.getText());
+        product.setCalcUnit(ECalcUnit.valueOf(cbbCalcUnit.getSelectedItem().toString()));
+        product.setIdSupplier(suppliersDAO.getUUIDByName("Suppliers", cbbSuppliers.getSelectedItem().toString()));
+        product.setCategory(ECategory.valueOf(cbbCategory.getSelectedItem().toString()));
+        return product;
+    }
+    
+    private void insertProduct(){
+        Product product = getInformationForm();
+        try {
+            productDAO.insert(product);
+            MessageBox.success(this, "Insert product success");
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            MessageBox.error(this, e.getMessage());
+        }
+        
+    }
+    
+
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -243,27 +302,28 @@ public class Product extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Product.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProductJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Product.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProductJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Product.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProductJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Product.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProductJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Product().setVisible(true);
+                new ProductJFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private warehouse.component.Combobox combobox1;
-    private warehouse.component.Combobox combobox2;
-    private warehouse.component.Combobox combobox3;
+    private warehouse.component.Combobox cbbCalcUnit;
+    private warehouse.component.Combobox cbbCategory;
+    private warehouse.component.Combobox cbbSuppliers;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -277,8 +337,8 @@ public class Product extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField2;
-    private warehouse.component.textfield.TextField textField1;
+    private javax.swing.JTextArea txtDescription;
+    private warehouse.component.textfield.TextField txtName;
     // End of variables declaration//GEN-END:variables
 }

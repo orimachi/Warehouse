@@ -38,7 +38,7 @@ public class ProductDAO extends BaseDAO<Product, String> {
         String sql = SQLBuilder.buildSQLUpdate("Product", "Name", "CalcUnit", "Description", "IdSupplier", "Category", "IDProduct");
         logger.info(sql);
         try {
-            if (entity.getId().isEmpty() || entity.getId().isBlank()) {
+            if (entity.getId().toString().isEmpty() || entity.getId().toString().isBlank()) {
                 throw new IllegalArgumentException("ID missing cant update");
             } else {
                 JDBC.update(sql,
@@ -104,7 +104,7 @@ public class ProductDAO extends BaseDAO<Product, String> {
                 rs = JDBC.query(sql, args);
                 while (rs.next()) {
                     Product entity = new Product();
-                    entity.setId(rs.getString("ID"));
+                    entity.setId(UUID.fromString(rs.getString("ID")));
                     entity.setName(rs.getString("Name"));
                     entity.setCalcUnit(ECalcUnit.valueOf(rs.getString("CalcUnit")));
                     entity.setDescription(rs.getString("Description"));
@@ -125,6 +125,11 @@ public class ProductDAO extends BaseDAO<Product, String> {
         String sql = SQLBuilder.buildSQLSelect("Product", "NameSuppliers");
         logger.info(sql);
         return selectBySql(sql, nameSupplier);
+    }
+
+    @Override
+    public UUID getUUIDByName(String table, String keyWord) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

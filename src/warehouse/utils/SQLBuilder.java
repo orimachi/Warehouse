@@ -3,6 +3,7 @@ package warehouse.utils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import warehouse.bean.EPositions;
 
@@ -33,6 +34,10 @@ public class SQLBuilder {
         return String.format("SELECT * FROM %s WHERE %s=?", table, idColumn);
     }
 
+    public static String getUUIDByName(String table, String idColumn) {
+      return String.format("SELECT Id FROM %s WHERE %s=?", table, idColumn);
+    }
+    
     public static String buildSQLSelectLike(String table, String idColumn, String keyword, EPositions positions) {
         String likePattern;
         switch (positions) {
@@ -74,4 +79,18 @@ public class SQLBuilder {
             return false;
         }
     }
+    
+    public static String getNameByUUID(String table, String idColumn) {
+      return String.format("SELECT Name FROM %s WHERE %s=?", table, idColumn);
+    }
+    
+    public static String buildSQLSelectJoinLike(String table, String joinClause, String likeColumn) {
+        return String.format(
+            "SELECT * FROM %s %s WHERE %s LIKE ?",
+            table,
+            joinClause != null ? joinClause : "",
+            likeColumn
+        );
+    }
+
 }

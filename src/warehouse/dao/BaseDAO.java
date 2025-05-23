@@ -1,6 +1,7 @@
 package warehouse.dao;
 
 import java.util.List;
+import java.util.UUID;
 
 abstract public class BaseDAO<Entity, Key> {
     abstract public void insert(Entity entity);

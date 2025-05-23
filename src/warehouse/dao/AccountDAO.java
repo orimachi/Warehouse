@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 import warehouse.bean.ERole;
 import warehouse.entity.Account;
@@ -110,5 +111,10 @@ public class AccountDAO extends BaseDAO<Account, String>{
         } catch (Exception e) {
             throw new NullPointerException("Update password fail:" + e.getMessage());
         }
+    }
+
+    @Override
+    public UUID getUUIDByName(String table, String keyWord) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
