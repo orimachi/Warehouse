@@ -1,12 +1,13 @@
 package warehouse.component.notification;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.Window;
 import java.awt.image.BufferedImage;
 import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
@@ -15,7 +16,7 @@ public class Notification extends javax.swing.JComponent {
 
     private JDialog dialog;
     private Animator animator;
-    private final Window fram;
+    private final Component fram;
     private boolean showing;
     private Thread thread;
     private int animate = 10;
@@ -24,7 +25,7 @@ public class Notification extends javax.swing.JComponent {
     private Type type;
     private Location location;
 
-    public Notification(Window fram, Type type, Location location, String message) {
+    public Notification(Component fram, Type type, Location location, String message) {
         this.fram = fram;
         this.type = type;
         this.location = location;
@@ -35,7 +36,7 @@ public class Notification extends javax.swing.JComponent {
 
     private void init(String message) {
         setBackground(Color.WHITE);
-        dialog = new JDialog(fram);
+        dialog = new JDialog(SwingUtilities.getWindowAncestor(fram));
         dialog.setUndecorated(true);
         dialog.setFocusableWindowState(false);
         dialog.setBackground(new Color(0, 0, 0, 0));
@@ -49,6 +50,7 @@ public class Notification extends javax.swing.JComponent {
             lbMessage.setText("Info");
         } else if (type == Type.ERROR) {
             lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/warehouse/icon/error.png")));
+            lbMessage.setText("Error");
         } else {
             lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/warehouse/icon/warning.png")));
             lbMessage.setText("Warning");

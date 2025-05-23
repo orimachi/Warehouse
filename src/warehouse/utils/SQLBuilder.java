@@ -38,6 +38,10 @@ public class SQLBuilder {
       return String.format("SELECT Id FROM %s WHERE %s=?", table, idColumn);
     }
     
+    public static String getNameByUUID(String table, String idColumn) {
+      return String.format("SELECT Name FROM %s WHERE %s=?", table, idColumn);
+    }
+    
     public static String buildSQLSelectLike(String table, String idColumn, String keyword, EPositions positions) {
         String likePattern;
         switch (positions) {

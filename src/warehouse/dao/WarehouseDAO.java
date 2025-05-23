@@ -121,12 +121,11 @@ public class WarehouseDAO extends BaseDAO<Warehouse, UUID> {
         return list;
     }
 
-   
     public UUID getUUIDByName(String keyword){
-        String sql = SQLBuilder.getUUIDByName("Warehouse", "Name");
+        String sql = SQLBuilder.getUUIDByName("Warhouse", "Name");
         logger.info(sql);
         Object result = JDBC.value(sql, "%" + keyword + "%");
         return result == null ? null : UUID.fromString(result.toString());
     }
-
+    
 }

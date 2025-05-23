@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import warehouse.bean.Category;
 import warehouse.controller.SwitchScreen;
+import warehouse.utils.Auth;
 import warehouse.utils.MessageBox;
 
 
@@ -14,6 +15,7 @@ public class MainJFrame extends javax.swing.JFrame {
    
     public MainJFrame() {
         initComponents();
+//        loadUsernameAndRole();
         setTitle("Warehouse Management System");
         setLocationRelativeTo(null);
 
@@ -23,24 +25,30 @@ public class MainJFrame extends javax.swing.JFrame {
         List<Category> listDanhMuc = new ArrayList<>();
         listDanhMuc.add(new Category("homepage", jpnTrangChu, jbTrangChu));
         listDanhMuc.add(new Category("warehouse", jpnDVQL, jbDVQL));
-
+        listDanhMuc.add(new Category("product",jpnProduct, jbProduct));
+        listDanhMuc.add(new Category("supplier",jpnTTNCC, jbTTNCC));
+        
         controller.setEvent(listDanhMuc);
 
         new LoginJDialog(this, true).setVisible(true);
         new LoadingJDialog(this, true).setVisible(true);
     }
 
-    public void thoat() {
+    private void loadUsernameAndRole(){
+        lbUsername.setText(Auth.user.getUsername());
+        lbRole.setText(String.valueOf(Auth.user.getRole()));
+    }
+    
+    public void exit() {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         boolean choice = MessageBox.confirm(this, "Do you want to exit", null);
         if (choice == true) {
+            Auth.clear();
             System.exit(0);
         }
     }
 
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -65,15 +73,15 @@ public class MainJFrame extends javax.swing.JFrame {
         jbDVQL = new javax.swing.JLabel();
         jpnTTKH = new javax.swing.JPanel();
         jbTTKH = new javax.swing.JLabel();
-        jpnQLHH = new javax.swing.JPanel();
-        jbQLHH = new javax.swing.JLabel();
+        jpnProduct = new javax.swing.JPanel();
+        jbProduct = new javax.swing.JLabel();
         jpnTCHH = new javax.swing.JPanel();
         jbTCHH = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jToolBar1 = new javax.swing.JToolBar();
-        jLabel3 = new javax.swing.JLabel();
+        lbUsername = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        jLabel4 = new javax.swing.JLabel();
+        lbRole = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jpnView = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -249,36 +257,36 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jpnQLHH.setBackground(new java.awt.Color(51, 51, 51));
-        jpnQLHH.setMaximumSize(new java.awt.Dimension(288, 38));
-        jpnQLHH.addMouseListener(new java.awt.event.MouseAdapter() {
+        jpnProduct.setBackground(new java.awt.Color(51, 51, 51));
+        jpnProduct.setMaximumSize(new java.awt.Dimension(288, 38));
+        jpnProduct.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jpnQLHHMouseEntered(evt);
+                jpnProductMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                jpnQLHHMouseExited(evt);
+                jpnProductMouseExited(evt);
             }
         });
 
-        jbQLHH.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jbQLHH.setForeground(new java.awt.Color(255, 255, 255));
-        jbQLHH.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jbQLHH.setText("QUẢN LÝ HÀNG HÓA");
+        jbProduct.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jbProduct.setForeground(new java.awt.Color(255, 255, 255));
+        jbProduct.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jbProduct.setText("QUẢN LÝ HÀNG HÓA");
 
-        javax.swing.GroupLayout jpnQLHHLayout = new javax.swing.GroupLayout(jpnQLHH);
-        jpnQLHH.setLayout(jpnQLHHLayout);
-        jpnQLHHLayout.setHorizontalGroup(
-            jpnQLHHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpnQLHHLayout.createSequentialGroup()
+        javax.swing.GroupLayout jpnProductLayout = new javax.swing.GroupLayout(jpnProduct);
+        jpnProduct.setLayout(jpnProductLayout);
+        jpnProductLayout.setHorizontalGroup(
+            jpnProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpnProductLayout.createSequentialGroup()
                 .addGap(59, 59, 59)
-                .addComponent(jbQLHH, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jbProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jpnQLHHLayout.setVerticalGroup(
-            jpnQLHHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpnQLHHLayout.createSequentialGroup()
+        jpnProductLayout.setVerticalGroup(
+            jpnProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpnProductLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jbQLHH, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
+                .addComponent(jbProduct, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -323,16 +331,16 @@ public class MainJFrame extends javax.swing.JFrame {
         jToolBar1.setBackground(new java.awt.Color(51, 51, 51));
         jToolBar1.setRollover(true);
 
-        jLabel3.setFont(new java.awt.Font("Cambria", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Username");
-        jToolBar1.add(jLabel3);
+        lbUsername.setFont(new java.awt.Font("Cambria", 1, 18)); // NOI18N
+        lbUsername.setForeground(new java.awt.Color(255, 255, 255));
+        lbUsername.setText("Username");
+        jToolBar1.add(lbUsername);
         jToolBar1.add(jSeparator1);
 
-        jLabel4.setFont(new java.awt.Font("Cambria", 1, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Role");
-        jToolBar1.add(jLabel4);
+        lbRole.setFont(new java.awt.Font("Cambria", 1, 18)); // NOI18N
+        lbRole.setForeground(new java.awt.Color(255, 255, 255));
+        lbRole.setText("Role");
+        jToolBar1.add(lbRole);
 
         jSeparator2.setForeground(new java.awt.Color(255, 255, 255));
 
@@ -347,7 +355,7 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addGroup(jbnMenuLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jbnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jpnQLHH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jpnProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jpnTrangChu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jpnTTNCC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jpnDVQL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -381,7 +389,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jpnTTKH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jpnQLHH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jpnProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jpnTCHH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -490,7 +498,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mnHuongDanActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        thoat();
+        exit();
     }//GEN-LAST:event_formWindowClosing
 
     private void mnGioiThieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnGioiThieuActionPerformed
@@ -498,7 +506,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_mnGioiThieuActionPerformed
 
     private void mnThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnThoatActionPerformed
-        thoat();
+        exit();
     }//GEN-LAST:event_mnThoatActionPerformed
 
     private void mnDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDoiMatKhauActionPerformed
@@ -538,13 +546,13 @@ public class MainJFrame extends javax.swing.JFrame {
         jpnTTKH.setBackground(new Color(51, 51, 51));
     }//GEN-LAST:event_jpnTTKHMouseExited
 
-    private void jpnQLHHMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnQLHHMouseEntered
-        jpnQLHH.setBackground(new Color(0, 153, 51));
-    }//GEN-LAST:event_jpnQLHHMouseEntered
+    private void jpnProductMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnProductMouseEntered
+        jpnProduct.setBackground(new Color(0, 153, 51));
+    }//GEN-LAST:event_jpnProductMouseEntered
 
-    private void jpnQLHHMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnQLHHMouseExited
-        jpnQLHH.setBackground(new Color(51, 51, 51));
-    }//GEN-LAST:event_jpnQLHHMouseExited
+    private void jpnProductMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnProductMouseExited
+        jpnProduct.setBackground(new Color(51, 51, 51));
+    }//GEN-LAST:event_jpnProductMouseExited
 
     private void jpnTCHHMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnTCHHMouseEntered
         jpnTCHH.setBackground(new Color(0, 153, 51));
@@ -558,15 +566,13 @@ public class MainJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel jbDVQL;
-    private javax.swing.JLabel jbQLHH;
+    private javax.swing.JLabel jbProduct;
     private javax.swing.JLabel jbTCHH;
     private javax.swing.JLabel jbTTKH;
     private javax.swing.JLabel jbTTNCC;
@@ -574,12 +580,14 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jbnMenu;
     private javax.swing.JPanel jpnDVQL;
     private javax.swing.JPanel jpnMain;
-    private javax.swing.JPanel jpnQLHH;
+    private javax.swing.JPanel jpnProduct;
     private javax.swing.JPanel jpnTCHH;
     private javax.swing.JPanel jpnTTKH;
     private javax.swing.JPanel jpnTTNCC;
     private javax.swing.JPanel jpnTrangChu;
     private javax.swing.JPanel jpnView;
+    private javax.swing.JLabel lbRole;
+    private javax.swing.JLabel lbUsername;
     private javax.swing.JMenuItem mnDoiMatKhau;
     private javax.swing.JMenuItem mnGioiThieu;
     private javax.swing.JMenu mnHeThong;

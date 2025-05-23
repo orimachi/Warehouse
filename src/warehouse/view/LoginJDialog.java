@@ -14,25 +14,24 @@ public class LoginJDialog extends javax.swing.JDialog {
         setTitle("LOGIN");
     }
 
-    AccountDAO dao = new AccountDAO();
+    AccountDAO accountDAO = new AccountDAO();
 
     void signin() {
         String username = txtUsername.getText();
         // when add new user add hashCode()
         String password = new String(txtPassword.getPassword());
-        Account account;
 
         if (username.isEmpty() || password.isEmpty()) {
-            MessageBox.alert(this, "Please enter username and password");
+            MessageBox.warning(this, "Please enter username and password");
             return;
         }
 
         try {
-            account = dao.selectById(username);
+            Account account = accountDAO.selectById(username);
             if (account == null) {
-                MessageBox.alert(this, "Incorrect username ");
+                MessageBox.warning(this, "Incorrect username ");
             } else if (!password.equals(account.getPassword())) {
-                MessageBox.alert(this, "Incorrect password");
+                MessageBox.warning(this, "Incorrect password");
             } else {
                 Auth.user = account;
                 MessageBox.infomation(this, "Login Successfully!");

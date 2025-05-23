@@ -25,7 +25,7 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
                     entity.getQuantity(),
                     entity.getCalcUnit(),
                     entity.getIdSupplier(),
-                    entity.getIdWarehouse(),
+//                    entity.getIdWarehouse(),
                     entity.getIdAccount(),
                     entity.getAddDate()
             );
@@ -44,7 +44,7 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
                     entity.getQuantity(),
                     entity.getCalcUnit(),
                     entity.getIdSupplier(),
-                    entity.getIdWarehouse(),
+//                    entity.getIdWarehouse(),
                     entity.getIdAccount(),
                     entity.getAddDate(),
                     entity.getId()
@@ -100,7 +100,7 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
                     entity.setQuantity(Integer.parseInt(rs.getString("Quantity")));
                     entity.setIdSupplier(UUID.fromString(rs.getString("IDProduct")));
                     entity.setCalcUnit(ECalcUnit.valueOf(rs.getString("CalcUnit")));
-                    entity.setIdWarehouse(UUID.fromString(rs.getString("IDWarehouse")));
+//                    entity.setIdWarehouse(UUID.fromString(rs.getString("IDWarehouse")));
                     entity.setIdAccount(UUID.fromString(rs.getString("IDAccount")));
                     entity.setAddDate(ConvertDate.toDate(rs.getString("LastUpdate"),"YYYY-MM-DD"));
                     list.add(entity);

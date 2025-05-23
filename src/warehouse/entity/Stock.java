@@ -60,6 +60,5 @@ public class Stock {
     public void setIdWareHouse(UUID idWareHouse) {
         this.idWarehouse = idWareHouse;
     }
-    
-    
+
 }

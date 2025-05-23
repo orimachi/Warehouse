@@ -10,7 +10,7 @@ import warehouse.entity.Suppliers;
 import warehouse.utils.JDBC;
 import warehouse.utils.SQLBuilder;
 
-public class SuppliersDAO extends BaseDAO<Suppliers, UUID>{
+public class SuppliersDAO extends BaseDAO<Suppliers, UUID> {
   
     private static final Logger logger = Logger.getLogger(SuppliersDAO.class.getName());
     
@@ -70,13 +70,6 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID>{
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
-    @Override
-    public UUID getUUIDByName(String table , String keyWord) {
-        String sql = SQLBuilder.getUUIDByName(table, keyWord);
-        logger.info(sql);
-        Object result = JDBC.value(sql,"%" + keyWord + "%");
-        return result == null ? null : UUID.fromString(result.toString());
-    }
     
     @Override
     public List<Suppliers> selectAll() {
@@ -95,7 +88,7 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID>{
                 rs = JDBC.query(sql, args);
                 while (rs.next()) {
                     Suppliers entity = new Suppliers();
-                    entity.setId(UUID.fromString("ID"));
+                    entity.setId(UUID.fromString(rs.getString("ID")));
                     entity.setName(rs.getString("Name"));
                     entity.setPhoneNumber(rs.getString("PhoneNumber"));
                     entity.setAddress(rs.getString("Address"));
@@ -109,6 +102,18 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID>{
         }
         return list;
     } 
-
-
+    
+    public UUID getUUIDByName(String keyWord) {
+        String sql = SQLBuilder.getUUIDByName("Suppliers", "Name");
+        logger.info(sql);
+        Object result = JDBC.value(sql,keyWord);
+        return result == null ? null : UUID.fromString(result.toString());
+    }
+    
+    public String getNameByUUID(UUID id) {
+        String sql = SQLBuilder.getNameByUUID("Suppliers", "ID");
+        logger.info(sql);
+        Object result = JDBC.value(sql,id);
+        return result == null ? null : result.toString();
+    }
 }

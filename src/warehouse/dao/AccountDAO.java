@@ -1,6 +1,5 @@
 package warehouse.dao;
 
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,15 +11,16 @@ import warehouse.entity.Account;
 import warehouse.utils.JDBC;
 import warehouse.utils.SQLBuilder;
 
-public class AccountDAO extends BaseDAO<Account, String>{
+public class AccountDAO extends BaseDAO<Account, String> {
+
     private static final Logger logger = Logger.getLogger(AccountDAO.class.getName());
-    
+
     @Override
     public void insert(Account entity) {
         try {
-            String sql = SQLBuilder.buildSQLInsert("Account","Username","Password" ,"Role");
+            String sql = SQLBuilder.buildSQLInsert("Account", "Username", "Password", "Role");
             logger.info(sql);
-            JDBC.update(sql,entity.getUsername(),entity.getPassword().hashCode(),entity.getRole());
+            JDBC.update(sql, entity.getUsername(), entity.getPassword().hashCode(), entity.getRole());
         } catch (Exception e) {
             throw new NullPointerException("Update fail:" + e.getMessage());
         }
@@ -29,33 +29,37 @@ public class AccountDAO extends BaseDAO<Account, String>{
     @Override
     public void update(Account entity) {
         try {
-            String sql = SQLBuilder.buildSQLUpdate("Account","Username","Password" ,"Role");
+            String sql = SQLBuilder.buildSQLUpdate("Account", "Username", "Password", "Role");
             logger.info(sql);
-            JDBC.update(sql,entity.getPassword().hashCode(),entity.getRole(),entity.getUsername());
+            JDBC.update(sql,
+                    entity.getPassword().hashCode(),
+                    entity.getRole(),
+                    entity.getUsername()
+            );
         } catch (Exception e) {
-            throw new NullPointerException("Update fail:" + e.getMessage());
+            throw new RuntimeException("Update fail:" + e.getMessage());
         }
     }
 
     @Override
     public void delete(String username) {
-      throw new UnsupportedOperationException("Not supported yet."); 
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public Account selectById(String username) {
-         try {
+        try {
             String sql = SQLBuilder.buildSQLSelect("Account", "Username");
-            List<Account> list = this.selectBySql(sql, username);
-            return list.isEmpty() ? null : list.getFirst();
+            List<Account> list = selectBySql(sql, username);
+            return list.isEmpty() ? null : list.get(0);
         } catch (Exception e) {
             throw new RuntimeException("Cant find account with username:" + username);
         }
     }
-    
+
     @Override
     public Account selectByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -71,26 +75,24 @@ public class AccountDAO extends BaseDAO<Account, String>{
             ResultSet rs = null;
             try {
                 rs = JDBC.query(sql, args);
-                while(rs.next()){
-                    Account entity=new Account();
+                while (rs.next()) {
+                    Account entity = new Account();
                     entity.setUsername(rs.getString("username"));
                     entity.setPassword(rs.getString("password"));
                     entity.setRole(ERole.valueOf(rs.getString("role")));
                     list.add(entity);
                 }
-            } 
-            finally{
-                if(rs != null) {
+            } finally {
+                if (rs != null) {
                     rs.getStatement().getConnection().close();
                 }
             }
-        } 
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
         return list;
     }
-    
+
     public boolean login(String username, String password) {
         String loginPassword = String.valueOf(password.hashCode());
         if (username == null || username.trim().isEmpty() || password.isEmpty() || password.trim().isEmpty()) {
@@ -103,11 +105,11 @@ public class AccountDAO extends BaseDAO<Account, String>{
         }
     }
 
-    public void updatePassword(Account entity){
-           try {
-            String sql = SQLBuilder.buildSQLUpdate("Account","Username","Password");
+    public void updatePassword(Account entity) {
+        try {
+            String sql = SQLBuilder.buildSQLUpdate("Account", "Username", "Password");
             logger.info(sql);
-            JDBC.update(sql,entity.getUsername(),entity.getPassword().hashCode());
+            JDBC.update(sql, entity.getUsername(), entity.getPassword().hashCode());
         } catch (Exception e) {
             throw new NullPointerException("Update password fail:" + e.getMessage());
         }

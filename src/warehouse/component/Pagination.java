@@ -140,4 +140,36 @@ public class Pagination extends JPanel {
         }
         return new Page(current, prev, next, items, max);
     }
+
+    public static int getTotalPage(List<?> list, int pageSize) {
+        if (list == null || list.isEmpty() || pageSize <= 0) {
+            return 0;
+        }
+        return (int) Math.ceil((double) list.size() / pageSize);
+    }
+
+    public static int getCurrentPage(List<?> list, int pageSize) {
+        int totalPages = getTotalPage(list, pageSize);
+        return totalPages > 0 ? 1 : 0;
+    }
+
+    public static <T> List<T> getPage(List<T> data, int currentPage, int pageSize) {
+        if (pageSize < 1 || currentPage < 1) {
+            return List.of();
+        }
+
+        int totalItems = data.size();
+        int fromIndex = (currentPage - 1) * pageSize;
+        if (fromIndex >= totalItems) {
+            return List.of();
+        }
+
+        int toIndex = Math.min(fromIndex + pageSize, totalItems);
+        return data.subList(fromIndex, toIndex);
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
 }
