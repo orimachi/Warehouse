@@ -91,6 +91,13 @@ public class StockOutDAO extends BaseDAO<StockOut, UUID>{
         return selectBySql(sql);
     }
 
+    public List<StockOut> selectALLByStatusProcessing(EStatus status){
+        String sql = SQLBuilder.buildSQLSelect("StockOut", "Status");
+        logger.info(sql);
+        List<StockOut> list = selectBySql(sql,status.name());
+        return list == null || list.isEmpty() ? new ArrayList<>() : list;
+    }
+    
     public List<StockOut> selectByWarehouse(UUID warehouseUUID) {
         String sql = SQLBuilder.buildSQLSelect("StockOut", "idWarehouse");
         logger.info(sql);

@@ -11,9 +11,9 @@ import warehouse.utils.JDBC;
 import warehouse.utils.SQLBuilder;
 
 public class SuppliersDAO extends BaseDAO<Suppliers, UUID> {
-  
+
     private static final Logger logger = Logger.getLogger(SuppliersDAO.class.getName());
-    
+
     @Override
     public void insert(Suppliers entity) {
         try {
@@ -31,8 +31,8 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID> {
 
     @Override
     public void update(Suppliers entity) {
-         try {
-            String sql = SQLBuilder.buildSQLUpdate("Suppliers", "ID","Name" ,"Address", "PhoneNumber");
+        try {
+            String sql = SQLBuilder.buildSQLUpdate("Suppliers", "ID", "Name", "Address", "PhoneNumber");
             logger.info(sql);
             JDBC.update(sql,
                     entity.getName(),
@@ -47,7 +47,7 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID> {
 
     @Override
     public void delete(UUID id) {
-       try {
+        try {
             String sql = SQLBuilder.buildSQLDelete("Suppliers", "IDSuppliers");
             logger.info(sql);
             JDBC.update(sql, id);
@@ -64,20 +64,18 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID> {
         List<Suppliers> list = selectBySql(sql, id);
         return list.isEmpty() ? null : list.getFirst();
     }
-    
+
     @Override
     public Suppliers selectByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    
     @Override
     public List<Suppliers> selectAll() {
         String sql = SQLBuilder.buildSQLSelectALL("Suppliers");
         logger.info(sql);
         return selectBySql(sql);
     }
-    
 
     @Override
     protected List<Suppliers> selectBySql(String sql, Object... args) {
@@ -101,20 +99,27 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID> {
             throw new RuntimeException(ex);
         }
         return list;
-    } 
-    
+    }
+
     public UUID getUUIDByName(String keyWord) {
         String sql = SQLBuilder.getUUIDByName("Suppliers", "Name");
         logger.info(sql);
-        Object result = JDBC.value(sql,keyWord);
+        Object result = JDBC.value(sql, keyWord);
         logger.info(result.toString());
         return result == null ? null : UUID.fromString(result.toString());
     }
-    
+
     public String getNameByUUID(UUID id) {
         String sql = SQLBuilder.getNameByUUID("Suppliers", "ID");
         logger.info(sql);
-        Object result = JDBC.value(sql,id);
+        Object result = JDBC.value(sql, id);
         return result == null ? null : result.toString();
+    }
+
+    public List<Suppliers> selectByNameKeyWord(String name) {
+        String sql = SQLBuilder.getEntityByName("Suppliers", "Name");
+        logger.info(sql);
+        List<Suppliers> list = selectBySql(sql, "%" + name + "%");
+        return list.isEmpty() ? null : list;
     }
 }

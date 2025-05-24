@@ -33,14 +33,6 @@ public class StockOut {
         this.id = id;
     }
 
-    public Date getAddDate() {
-        return addDate;
-    }
-
-    public void setAddDate(Date addDate) {
-        this.addDate = addDate;
-    }
-
     public int getQuantity() {
         return quantity;
     }
