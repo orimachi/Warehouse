@@ -70,18 +70,18 @@ public class SwitchScreen {
                 case "product":
                     node = new ProductJPanel();
                     break;
-                case "warehouse":
-                    node = new WarehouseJPanel();
-                    break;
-                case "stock":
-                    node = new StockJPanel();
-                    break;
-                case "stockin":
-                    node = new StockInJPanel();
-                    break;
-                case "stockout":
-                    node = new StockOutJPanel();
-                    break;
+//                case "warehouse":
+//                    node = new WarehouseJPanel();
+//                    break;
+//                case "stock":
+//                    node = new StockJPanel();
+//                    break;
+//                case "stockin":
+//                    node = new StockInJPanel();
+//                    break;
+//                case "stockout":
+//                    node = new StockOutJPanel();
+//                    break;
                 case "account":
                     node = new AccountJPanel();
                     break;

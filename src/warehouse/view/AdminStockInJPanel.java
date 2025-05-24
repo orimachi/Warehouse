@@ -22,7 +22,7 @@ public class AdminStockInJPanel extends javax.swing.JPanel {
         initComponents();
         loadDataTblAdminStockIn();
         loadPagination();
-
+        loadDataCBBStatus();
     }
 
     StockInDAO stockInDAO = new StockInDAO();
@@ -31,11 +31,31 @@ public class AdminStockInJPanel extends javax.swing.JPanel {
     WarehouseDAO warehouseDAO = new WarehouseDAO();
     int pageSize = 5;
 
+    private void controlButtonByStatus(EStatus status) {
+        if (status.equals(EStatus.ACCEPT) || status.equals(EStatus.CANCEL)) {
+            btnConfirm.setEnabled(false);
+            btnCancel.setEnabled(false);
+        } else {
+            btnConfirm.setEnabled(true);
+            btnCancel.setEnabled(true);
+        }
+    }
+
     private void loadDataTblAdminStockIn() {
         DefaultTableModel model = (DefaultTableModel) tblAdminStockIn.getModel();
         model.setRowCount(0);
 
-        List<StockIn> list = stockInDAO.selectALLByStatusProcessing(EStatus.PROCESSING);
+        Object selected = cbbStatus.getSelectedItem();
+        List<StockIn> list;
+
+        if (selected == null || selected.toString().startsWith("--")) {
+            list = stockInDAO.selectALLByStatusProcessing(EStatus.PROCESSING);
+            controlButtonByStatus(EStatus.PROCESSING);
+        } else {
+            list = stockInDAO.selectALLByStatusProcessing(EStatus.valueOf(selected.toString()));
+            controlButtonByStatus(EStatus.valueOf(selected.toString()));
+        }
+
         int currentPage = paginationAdminStockIn.getPage().getCurrent();
 
         List<StockIn> pageList = Pagination.getPage(list, currentPage, pageSize);
@@ -70,6 +90,14 @@ public class AdminStockInJPanel extends javax.swing.JPanel {
                 loadDataTblAdminStockIn();
             }
         });
+    }
+
+    private void loadDataCBBStatus() {
+        cbbStatus.removeAllItems();
+        for (EStatus status : EStatus.values()) {
+            cbbStatus.addItem(status.toString());
+        }
+        cbbStatus.setSelectedIndex(0);
     }
 
     private StockIn getInformationForm() {
@@ -111,7 +139,7 @@ public class AdminStockInJPanel extends javax.swing.JPanel {
         try {
             if (validateForm() == true) {
                 StockIn stock = getInformationForm();
-                stock.setStatus(EStatus.ACCECPT);
+                stock.setStatus(EStatus.ACCEPT);
                 stockInDAO.update(stock);
                 MessageBox.success(this, "Confirm success");
                 loadDataTblAdminStockIn();
@@ -179,6 +207,7 @@ public class AdminStockInJPanel extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         btnConfirm = new warehouse.component.button.Button();
         btnCancel = new warehouse.component.button.Button();
+        cbbStatus = new warehouse.component.Combobox();
 
         tblAdminStockIn.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         tblAdminStockIn.setModel(new javax.swing.table.DefaultTableModel(
@@ -377,6 +406,20 @@ public class AdminStockInJPanel extends javax.swing.JPanel {
             }
         });
 
+        cbbStatus.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cbbStatus.setLabeText("");
+        cbbStatus.setLightWeightPopupEnabled(false);
+        cbbStatus.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbbStatusItemStateChanged(evt);
+            }
+        });
+        cbbStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbStatusActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -395,7 +438,8 @@ public class AdminStockInJPanel extends javax.swing.JPanel {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 808, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 808, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -403,16 +447,18 @@ public class AdminStockInJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(cbbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(paginationAdminStockIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -446,10 +492,19 @@ public class AdminStockInJPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tblAdminStockInMouseClicked
 
+    private void cbbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbbStatusActionPerformed
+
+    private void cbbStatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbStatusItemStateChanged
+        this.loadDataTblAdminStockIn();
+    }//GEN-LAST:event_cbbStatusItemStateChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private warehouse.component.button.Button btnCancel;
     private warehouse.component.button.Button btnConfirm;
+    private warehouse.component.Combobox cbbStatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

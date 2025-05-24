@@ -10,6 +10,7 @@ import warehouse.component.pagination.EventPagination;
 import warehouse.component.pagination.PaginationItemRenderStyle1;
 import warehouse.dao.ProductDAO;
 import warehouse.dao.StockOutDAO;
+import warehouse.dao.WarehouseDAO;
 import warehouse.entity.StockOut;
 import warehouse.utils.ConvertDate;
 import warehouse.utils.MessageBox;
@@ -18,29 +19,51 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
 
     public AdminStockOutJPanel() {
         initComponents();
-        initComponents();
         loadDataTblAdminStockOut();
         loadPagination();
+        loadDataCBBStatus();
     }
     StockOutDAO stockOutDAO = new StockOutDAO();
     ProductDAO productDAO = new ProductDAO();
+    WarehouseDAO warehouseDAO = new WarehouseDAO();
     int pageSize = 5;
+
+    private void controlButtonByStatus(EStatus status) {
+        if (status.equals(EStatus.ACCEPT) || status.equals(EStatus.CANCEL)) {
+            btnConfirm.setEnabled(false);
+            btnCancel.setEnabled(false);
+        } else {
+            btnConfirm.setEnabled(true);
+            btnCancel.setEnabled(true);
+        }
+    }
 
     private void loadDataTblAdminStockOut() {
         DefaultTableModel model = (DefaultTableModel) tblAdminStockOut.getModel();
         model.setRowCount(0);
 
-        List<StockOut> list = stockOutDAO.selectALLByStatusProcessing(EStatus.PROCESSING);
+        Object selected = cbbStatus.getSelectedItem();
+        List<StockOut> list;
+
+        if (selected == null || selected.toString().startsWith("--")) {
+            list = stockOutDAO.selectALLByStatusProcessing(EStatus.PROCESSING);
+            controlButtonByStatus(EStatus.PROCESSING);
+        } else {
+            list = stockOutDAO.selectALLByStatusProcessing(EStatus.valueOf(selected.toString()));
+            controlButtonByStatus(EStatus.valueOf(selected.toString()));
+        }
+
         int currentPage = paginationAdminStockOut.getPage().getCurrent();
 
         List<StockOut> pageList = Pagination.getPage(list, currentPage, pageSize);
-
         for (StockOut stock : pageList) {
             String nameProduct = productDAO.getNameByUUID(stock.getIdProduct());
+            String nameWarehouse = warehouseDAO.getNameByUUID(stock.getIdWarehouse());
             model.addRow(new Object[]{
                 stock.getId(),
                 nameProduct,
                 stock.getQuantity(),
+                nameWarehouse,
                 stock.getUsername(),
                 ConvertDate.toString(stock.getUpdatedDate(), "dd-MM-yyyy"),
                 stock.getStatus()
@@ -63,6 +86,14 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
         });
     }
 
+    private void loadDataCBBStatus() {
+        cbbStatus.removeAllItems();
+        for (EStatus status : EStatus.values()) {
+            cbbStatus.addItem(status.toString());
+        }
+        cbbStatus.setSelectedIndex(0);
+    }
+
     private StockOut getInformationForm() {
         StockOut stock = new StockOut();
         stock.setId(UUID.fromString(txtIDStockOut.getText()));
@@ -71,6 +102,7 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
         stock.setUsername(txtUsername.getText());
         stock.setUpdatedDate(ConvertDate.toDate(txtUpdateDate.getText(), "dd-MM-yyyy"));
         stock.setStatus(EStatus.valueOf(txtStatus.getText()));
+        stock.setIdWarehouse(warehouseDAO.getUUIDByName(txtWarehouse.getText()));
         return stock;
     }
 
@@ -81,6 +113,7 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
         txtUsername.setText("");
         txtUpdateDate.setText("");
         txtStatus.setText("");
+        txtWarehouse.setText("");
     }
 
     private void setInformationForm(StockOut stock) {
@@ -90,13 +123,14 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
         txtUsername.setText(stock.getUsername());
         txtUpdateDate.setText(ConvertDate.toString(stock.getUpdatedDate(), "dd-MM-yyyy"));
         txtStatus.setText(stock.getStatus().name());
+        txtWarehouse.setText(warehouseDAO.getNameByUUID(stock.getIdWarehouse()));
     }
 
     private void confirmStockOut() {
         try {
             if (validateForm() == true) {
                 StockOut stock = getInformationForm();
-                stock.setStatus(EStatus.ACCECPT);
+                stock.setStatus(EStatus.ACCEPT);
                 stockOutDAO.update(stock);
                 MessageBox.success(this, "Confirm success");
                 loadDataTblAdminStockOut();
@@ -160,6 +194,9 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
         jLabel7 = new javax.swing.JLabel();
         txtUsername = new warehouse.component.textfield.TextField();
         jLabel8 = new javax.swing.JLabel();
+        txtWarehouse = new warehouse.component.textfield.TextField();
+        jLabel9 = new javax.swing.JLabel();
+        cbbStatus = new warehouse.component.Combobox();
 
         btnConfirm.setBackground(new java.awt.Color(0, 0, 0));
         btnConfirm.setForeground(new java.awt.Color(255, 255, 255));
@@ -200,17 +237,17 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
         tblAdminStockOut.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         tblAdminStockOut.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Product", "Quantity", "Username", "Updated Date", "Status"
+                "ID", "Product", "Quantity", "IDWarehouse", "Username", "Updated Date", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -270,6 +307,13 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
         jLabel8.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jLabel8.setText("Status");
 
+        txtWarehouse.setEditable(false);
+        txtWarehouse.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txtWarehouse.setLabelText("");
+
+        jLabel9.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel9.setText("Status");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -277,29 +321,34 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel1)
-                        .addComponent(jLabel6)
-                        .addComponent(txtIDStockOut, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
-                        .addComponent(txtQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtUpdateDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel7))
-                .addGap(49, 49, 49)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
+                        .addComponent(jLabel9)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtWarehouse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel6)
+                            .addComponent(txtIDStockOut, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+                            .addComponent(txtQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtUpdateDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel7))
+                        .addGap(49, 49, 49)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtStatus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
-                            .addComponent(txtIDProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel5))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                                    .addComponent(txtStatus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
+                                    .addComponent(txtIDProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel5))
+                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addContainerGap())))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -328,8 +377,26 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtUpdateDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtWarehouse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
+
+        cbbStatus.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cbbStatus.setLabeText("");
+        cbbStatus.setLightWeightPopupEnabled(false);
+        cbbStatus.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbbStatusItemStateChanged(evt);
+            }
+        });
+        cbbStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbStatusActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -338,22 +405,21 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(349, 349, 349)
+                        .addComponent(paginationAdminStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(349, 349, 349)
-                                .addComponent(paginationAdminStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(39, 39, 39)
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(31, 31, 31)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 17, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 808, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                            .addComponent(cbbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 808, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(33, 33, 33)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(btnConfirm, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -365,7 +431,9 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(cbbStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(paginationAdminStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -403,16 +471,26 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tblAdminStockOutMouseClicked
 
+    private void cbbStatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbStatusItemStateChanged
+        this.loadDataTblAdminStockOut();
+    }//GEN-LAST:event_cbbStatusItemStateChanged
+
+    private void cbbStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbbStatusActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private warehouse.component.button.Button btnCancel;
     private warehouse.component.button.Button btnConfirm;
+    private warehouse.component.Combobox cbbStatus;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
     private warehouse.component.Pagination paginationAdminStockOut;
@@ -423,5 +501,6 @@ public class AdminStockOutJPanel extends javax.swing.JPanel {
     private warehouse.component.textfield.TextField txtStatus;
     private warehouse.component.textfield.TextField txtUpdateDate;
     private warehouse.component.textfield.TextField txtUsername;
+    private warehouse.component.textfield.TextField txtWarehouse;
     // End of variables declaration//GEN-END:variables
 }

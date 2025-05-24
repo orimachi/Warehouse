@@ -9,10 +9,8 @@ import warehouse.controller.SwitchScreen;
 import warehouse.utils.Auth;
 import warehouse.utils.MessageBox;
 
-
 public class MainJFrame extends javax.swing.JFrame {
 
-   
     public MainJFrame() {
         initComponents();
 //        loadUsernameAndRole();
@@ -25,27 +23,28 @@ public class MainJFrame extends javax.swing.JFrame {
         List<Category> listDanhMuc = new ArrayList<>();
         listDanhMuc.add(new Category("homepage", jpnTrangChu, jbTrangChu));
         listDanhMuc.add(new Category("warehouse", jpnWarehouse, jbWarehouse));
-        listDanhMuc.add(new Category("product",jpnProduct, jbProduct));
-        listDanhMuc.add(new Category("supplier",jpnSuppliers, jbSuppliers));
-        listDanhMuc.add(new Category("stock",jpnStock, jbStock));
-        listDanhMuc.add(new Category("stockin",jpnStockIn, jbStockIn));
-        listDanhMuc.add(new Category("stockout",jpnStockOut, jbStockOut));
-        listDanhMuc.add(new Category("account",jpnManagerAccount, jbManagerAccount));
-        listDanhMuc.add(new Category("managerStockIn",jpnManagerStockIn, jbManagerStockIn));
-        listDanhMuc.add(new Category("managerStockOut",jpnManagerStockOut, jbManagerStockOut));
-        listDanhMuc.add(new Category("statistics",jpnStatistics, jbStatistics));
+        listDanhMuc.add(new Category("product", jpnProduct, jbProduct));
+        listDanhMuc.add(new Category("supplier", jpnSuppliers, jbSuppliers));
+        listDanhMuc.add(new Category("stock", jpnStock, jbStock));
+        listDanhMuc.add(new Category("stockin", jpnStockIn, jbStockIn));
+        listDanhMuc.add(new Category("stockout", jpnStockOut, jbStockOut));
+//        if (Auth.isManager() == true) {
+            listDanhMuc.add(new Category("account", jpnManagerAccount, jbManagerAccount));
+            listDanhMuc.add(new Category("managerStockIn", jpnManagerStockIn, jbManagerStockIn));
+            listDanhMuc.add(new Category("managerStockOut", jpnManagerStockOut, jbManagerStockOut));
+            listDanhMuc.add(new Category("statistics", jpnStatistics, jbStatistics));
+//        }
 
         controller.setEvent(listDanhMuc);
 
-        new LoginJDialog(this, true).setVisible(true);
-        new LoadingJDialog(this, true).setVisible(true);
+//        new LoadingJDialog(this, true).setVisible(true);
     }
 
-    private void loadUsernameAndRole(){
-        lbUsername.setText(Auth.user.getUsername());
-        lbRole.setText(String.valueOf(Auth.user.getRole()));
+    private void loadUsernameAndRole() {
+        jbUsername.setText(Auth.user.getUsername());
+        jbRole.setText(String.valueOf(Auth.user.getRole()));
     }
-    
+
     public void exit() {
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         boolean choice = MessageBox.confirm(this, "Do you want to exit", null);
@@ -55,7 +54,6 @@ public class MainJFrame extends javax.swing.JFrame {
         }
     }
 
-    
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -85,10 +83,6 @@ public class MainJFrame extends javax.swing.JFrame {
         jpnStockOut = new javax.swing.JPanel();
         jbStockOut = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jToolBar1 = new javax.swing.JToolBar();
-        lbUsername = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JToolBar.Separator();
-        lbRole = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jpnProduct = new javax.swing.JPanel();
         jbProduct = new javax.swing.JLabel();
@@ -100,6 +94,8 @@ public class MainJFrame extends javax.swing.JFrame {
         jbManagerStockOut = new javax.swing.JLabel();
         jpnStatistics = new javax.swing.JPanel();
         jbStatistics = new javax.swing.JLabel();
+        jbRole = new javax.swing.JLabel();
+        jbUsername = new javax.swing.JLabel();
         jpnView = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mnHeThong = new javax.swing.JMenu();
@@ -333,10 +329,9 @@ public class MainJFrame extends javax.swing.JFrame {
         jpnStockOut.setLayout(jpnStockOutLayout);
         jpnStockOutLayout.setHorizontalGroup(
             jpnStockOutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnStockOutLayout.createSequentialGroup()
+            .addGroup(jpnStockOutLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jbStockOut, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jbStockOut, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))
         );
         jpnStockOutLayout.setVerticalGroup(
             jpnStockOutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -351,20 +346,6 @@ public class MainJFrame extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/warehouse/icon/logo.png"))); // NOI18N
         jLabel2.setText("KC Group");
-
-        jToolBar1.setBackground(new java.awt.Color(51, 51, 51));
-        jToolBar1.setRollover(true);
-
-        lbUsername.setFont(new java.awt.Font("Cambria", 1, 18)); // NOI18N
-        lbUsername.setForeground(new java.awt.Color(255, 255, 255));
-        lbUsername.setText("Username");
-        jToolBar1.add(lbUsername);
-        jToolBar1.add(jSeparator1);
-
-        lbRole.setFont(new java.awt.Font("Cambria", 1, 18)); // NOI18N
-        lbRole.setForeground(new java.awt.Color(255, 255, 255));
-        lbRole.setText("Role");
-        jToolBar1.add(lbRole);
 
         jSeparator2.setForeground(new java.awt.Color(255, 255, 255));
 
@@ -532,49 +513,59 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jbRole.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jbRole.setForeground(new java.awt.Color(255, 255, 255));
+        jbRole.setText("jLabel3");
+
+        jbUsername.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jbUsername.setForeground(new java.awt.Color(255, 255, 255));
+        jbUsername.setText("jLabel3");
+
         javax.swing.GroupLayout jbnMenuLayout = new javax.swing.GroupLayout(jbnMenu);
         jbnMenu.setLayout(jbnMenuLayout);
         jbnMenuLayout.setHorizontalGroup(
             jbnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jbnMenuLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbUsername)
+                .addGap(60, 60, 60)
+                .addComponent(jbRole)
+                .addGap(100, 100, 100))
+            .addGroup(jbnMenuLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jbnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jbnMenuLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jbnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jpnStockIn, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                            .addComponent(jpnTrangChu, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                            .addComponent(jpnSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                            .addComponent(jpnWarehouse, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                            .addComponent(jpnStock, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                            .addComponent(jpnStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jbnMenuLayout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jbnMenuLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jbnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jbnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jpnTrangChu, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                                .addComponent(jpnSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                                .addComponent(jpnWarehouse, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                                .addComponent(jpnStock, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                                .addComponent(jpnStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jbnMenuLayout.createSequentialGroup()
+                                .addGap(19, 19, 19)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jbnMenuLayout.createSequentialGroup()
+                        .addGroup(jbnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jpnStockIn, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jpnProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jpnManagerAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jbnMenuLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jpnStatistics, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE))
-                    .addComponent(jpnManagerStockIn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jpnManagerStockOut, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
-                    .addGroup(jbnMenuLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                            .addComponent(jpnManagerAccount, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jpnStatistics, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                            .addComponent(jpnManagerStockIn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jpnManagerStockOut, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE))
+                        .addContainerGap())))
         );
         jbnMenuLayout.setVerticalGroup(
             jbnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jbnMenuLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addGroup(jbnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbRole)
+                    .addComponent(jbUsername))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25)
@@ -599,7 +590,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jpnManagerStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jpnStatistics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31))
         );
@@ -817,19 +808,19 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JLabel jbManagerAccount;
     private javax.swing.JLabel jbManagerStockIn;
     private javax.swing.JLabel jbManagerStockOut;
     private javax.swing.JLabel jbProduct;
+    private javax.swing.JLabel jbRole;
     private javax.swing.JLabel jbStatistics;
     private javax.swing.JLabel jbStock;
     private javax.swing.JLabel jbStockIn;
     private javax.swing.JLabel jbStockOut;
     private javax.swing.JLabel jbSuppliers;
     private javax.swing.JLabel jbTrangChu;
+    private javax.swing.JLabel jbUsername;
     private javax.swing.JLabel jbWarehouse;
     private javax.swing.JPanel jbnMenu;
     private javax.swing.JPanel jpnMain;
@@ -845,8 +836,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jpnTrangChu;
     private javax.swing.JPanel jpnView;
     private javax.swing.JPanel jpnWarehouse;
-    private javax.swing.JLabel lbRole;
-    private javax.swing.JLabel lbUsername;
     private javax.swing.JMenuItem mnDoiMatKhau;
     private javax.swing.JMenuItem mnGioiThieu;
     private javax.swing.JMenu mnHeThong;

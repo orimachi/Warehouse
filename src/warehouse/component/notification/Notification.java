@@ -2,9 +2,12 @@ package warehouse.component.notification;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.Window;
 import java.awt.image.BufferedImage;
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
@@ -93,37 +96,65 @@ public class Notification extends javax.swing.JComponent {
                     dialog.setOpacity(0f);
                     int margin = 10;
                     int y = 0;
-                    if (location == Location.TOP_CENTER) {
-                        x = fram.getX() + ((fram.getWidth() - dialog.getWidth()) / 2);
-                        y = fram.getY();
-                        top_to_bot = true;
-                    } else if (location == Location.TOP_RIGHT) {
-                        x = fram.getX() + fram.getWidth() - dialog.getWidth() - margin;
-                        y = fram.getY();
-                        top_to_bot = true;
-                    } else if (location == Location.TOP_LEFT) {
-                        x = fram.getX() + margin;
-                        y = fram.getY();
-                        top_to_bot = true;
-                    } else if (location == Location.BOTTOM_CENTER) {
-                        x = fram.getX() + ((fram.getWidth() - dialog.getWidth()) / 2);
-                        y = fram.getY() + fram.getHeight() - dialog.getHeight();
-                        top_to_bot = false;
-                    } else if (location == Location.BOTTOM_RIGHT) {
-                        x = fram.getX() + fram.getWidth() - dialog.getWidth() - margin;
-                        y = fram.getY() + fram.getHeight() - dialog.getHeight();
-                        top_to_bot = false;
-                    } else if (location == Location.BOTTOM_LEFT) {
-                        x = fram.getX() + margin;
-                        y = fram.getY() + fram.getHeight() - dialog.getHeight();
-                        top_to_bot = false;
-                    } else {
-                        x = fram.getX() + ((fram.getWidth() - dialog.getWidth()) / 2);
-                        y = fram.getY() + ((fram.getHeight() - dialog.getHeight()) / 2);
-                        top_to_bot = true;
+                    int maxWidth = fram.getWidth() - 2 * margin;
+                    int preferredWidth = getPreferredSize().width;
+                    int preferredHeight = getPreferredSize().height;
+
+                    if (preferredWidth > maxWidth) {
+                        setPreferredSize(new Dimension(maxWidth, preferredHeight));
                     }
-                    top = y;
-                    dialog.setLocation(x, y);
+
+                    dialog.pack();
+                    Window window = SwingUtilities.getWindowAncestor(fram);
+                    Point screenPoint = fram.getLocationOnScreen();
+                    int frameWidth = fram.getWidth();
+                    int frameHeight = fram.getHeight();
+                    int dialogWidth = dialog.getWidth();
+                    int dialogHeight = dialog.getHeight();
+
+                    switch (location) {
+                        case TOP_CENTER:
+                            x = screenPoint.x + (frameWidth - dialogWidth) / 2;
+                            top = screenPoint.y;
+                            top_to_bot = true;
+                            break;
+                        case TOP_RIGHT:
+                            x = screenPoint.x + frameWidth - dialogWidth - margin;
+                            top = screenPoint.y;
+                            top_to_bot = true;
+                            break;
+                        case TOP_LEFT:
+                            x = screenPoint.x + margin;
+                            top = screenPoint.y;
+                            top_to_bot = true;
+                            break;
+                        case BOTTOM_CENTER:
+                            x = screenPoint.x + (frameWidth - dialogWidth) / 2;
+                            top = screenPoint.y + frameHeight - dialogHeight;
+                            top_to_bot = false;
+                            break;
+                        case BOTTOM_RIGHT:
+                            x = screenPoint.x + frameWidth - dialogWidth - margin;
+                            top = screenPoint.y + frameHeight - dialogHeight;
+                            top_to_bot = false;
+                            break;
+                        case BOTTOM_LEFT:
+                            x = screenPoint.x + margin;
+                            top = screenPoint.y + frameHeight - dialogHeight;
+                            top_to_bot = false;
+                            break;
+                        default:
+                            x = screenPoint.x + (frameWidth - dialogWidth) / 2;
+                            top = screenPoint.y + (frameHeight - dialogHeight) / 2;
+                            top_to_bot = true;
+                            break;
+                    }
+                    
+                    if (x < 0) {
+                        x = margin;
+                    }
+
+                    dialog.setLocation(x, top);
                     dialog.setVisible(true);
                 }
             }
@@ -192,7 +223,7 @@ public class Notification extends javax.swing.JComponent {
         } else if (type == Type.INFO) {
             g2.setColor(new Color(28, 139, 206));
         } else if (type == Type.ERROR) {
-            g2.setColor(new Color(231,76,60));
+            g2.setColor(new Color(231, 76, 60));
         } else {
             g2.setColor(new Color(241, 196, 15));
         }
@@ -252,7 +283,7 @@ public class Notification extends javax.swing.JComponent {
                 .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbMessage)
                     .addComponent(lbMessageText))
-                .addContainerGap(197, Short.MAX_VALUE))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
         panelLayout.setVerticalGroup(
             panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,7 +335,7 @@ public class Notification extends javax.swing.JComponent {
     }//GEN-LAST:event_cmdCloseActionPerformed
 
     public static enum Type {
-        SUCCESS, INFO, WARNING,ERROR
+        SUCCESS, INFO, WARNING, ERROR
     }
 
     public static enum Location {

@@ -49,6 +49,7 @@ public class AccountDAO extends BaseDAO<Account, String> {
     public Account selectById(String username) {
         try {
             String sql = SQLBuilder.buildSQLSelect("Account", "Username");
+            logger.info(sql);
             List<Account> list = selectBySql(sql, username);
             return list.isEmpty() ? null : list.get(0);
         } catch (Exception e) {

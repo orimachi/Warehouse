@@ -32,7 +32,7 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID> {
     @Override
     public void update(Suppliers entity) {
          try {
-            String sql = SQLBuilder.buildSQLUpdate("Suppliers", "Name", "Address", "PhoneNumber", "IDSuppliers");
+            String sql = SQLBuilder.buildSQLUpdate("Suppliers", "ID","Name" ,"Address", "PhoneNumber");
             logger.info(sql);
             JDBC.update(sql,
                     entity.getName(),
@@ -41,7 +41,7 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID> {
                     entity.getId());
             logger.info("Update success");
         } catch (Exception e) {
-            throw new RuntimeException("Cant insert missing information:" + e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -107,6 +107,7 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID> {
         String sql = SQLBuilder.getUUIDByName("Suppliers", "Name");
         logger.info(sql);
         Object result = JDBC.value(sql,keyWord);
+        logger.info(result.toString());
         return result == null ? null : UUID.fromString(result.toString());
     }
     

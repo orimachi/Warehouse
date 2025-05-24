@@ -22,7 +22,7 @@ public class ProductJPanel extends javax.swing.JPanel {
 
     public ProductJPanel() {
         initComponents();
-        controlButton();
+//        controlButton();
         loadDataCBBCalcUnit();
         loadDataCBBSupplier();
         loadDataCBBCategory();
@@ -479,6 +479,11 @@ public class ProductJPanel extends javax.swing.JPanel {
         });
         tblProducts.setRequestFocusEnabled(false);
         tblProducts.setRowHeight(30);
+        tblProducts.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProductsMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblProducts);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -576,6 +581,12 @@ public class ProductJPanel extends javax.swing.JPanel {
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         this.resetButton();
     }//GEN-LAST:event_btnResetActionPerformed
+
+    private void tblProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductsMouseClicked
+       if(evt.getClickCount() == 2){
+           this.selectProduct();
+       }
+    }//GEN-LAST:event_tblProductsMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

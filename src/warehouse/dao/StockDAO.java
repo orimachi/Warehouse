@@ -92,7 +92,6 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
                     entity.setId(UUID.fromString(rs.getString("ID")));
                     entity.setIdProduct(UUID.fromString(rs.getString("IDProduct")));
                     entity.setQuantity(Integer.parseInt(rs.getString("Quantity")));
-                    entity.setCalcUnit(ECalcUnit.valueOf(rs.getString("CalcUnit")));
                     entity.setIdWareHouse(UUID.fromString(rs.getString("IDWarehouse")));
                     list.add(entity);
                 }

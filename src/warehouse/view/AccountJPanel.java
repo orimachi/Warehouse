@@ -266,7 +266,7 @@ public class AccountJPanel extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -275,6 +275,11 @@ public class AccountJPanel extends javax.swing.JPanel {
         });
         tblAccounts.setRequestFocusEnabled(false);
         tblAccounts.setRowHeight(30);
+        tblAccounts.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblAccountsMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblAccounts);
         if (tblAccounts.getColumnModel().getColumnCount() > 0) {
             tblAccounts.getColumnModel().getColumn(3).setResizable(false);
@@ -465,6 +470,12 @@ public class AccountJPanel extends javax.swing.JPanel {
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         this.updateAccount();
     }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void tblAccountsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAccountsMouseClicked
+        if (evt.getClickCount() == 2) {
+            selectAccount();
+        }
+    }//GEN-LAST:event_tblAccountsMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -9,22 +9,22 @@ public class StockOut {
     private int quantity;
     private UUID idProduct;
     private String username;
+    private UUID idWarehouse;
     private Date updatedDate = new Date();
     private EStatus status;
 
     public StockOut() {
     }
 
-    public StockOut(UUID id, int quantity, UUID idProduct, String username, EStatus status) {
+    public StockOut(UUID id, int quantity, UUID idProduct, String username, UUID idWarehouse, EStatus status) {
         this.id = id;
         this.quantity = quantity;
         this.idProduct = idProduct;
         this.username = username;
+        this.idWarehouse = idWarehouse;
         this.status = status;
     }
 
-    
-    
     public UUID getId() {
         return id;
     }
@@ -57,6 +57,14 @@ public class StockOut {
         this.username = username;
     }
 
+    public UUID getIdWarehouse() {
+        return idWarehouse;
+    }
+
+    public void setIdWarehouse(UUID idWarehouse) {
+        this.idWarehouse = idWarehouse;
+    }
+
     public Date getUpdatedDate() {
         return updatedDate;
     }
@@ -72,4 +80,6 @@ public class StockOut {
     public void setStatus(EStatus status) {
         this.status = status;
     }
+
+   
 }

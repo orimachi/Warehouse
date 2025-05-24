@@ -18,28 +18,34 @@ public class LoginJDialog extends javax.swing.JDialog {
 
     void signin() {
         String username = txtUsername.getText();
-        // when add new user add hashCode()
+         // when add new user add hashCode()
         String password = new String(txtPassword.getPassword());
-
+        Account account;
+        
         if (username.isEmpty() || password.isEmpty()) {
-            MessageBox.warning(this, "Please enter username and password");
+            MessageBox.warning(this, "Username and password are required");
             return;
         }
 
         try {
-            Account account = accountDAO.selectById(username);
-            if (account == null) {
-                MessageBox.warning(this, "Incorrect username ");
-            } else if (!password.equals(account.getPassword())) {
-                MessageBox.warning(this, "Incorrect password");
-            } else {
-                Auth.user = account;
-                MessageBox.infomation(this, "Login Successfully!");
-                this.dispose();
+            account = accountDAO.selectById(username);
+            if (account == null || !password.equals(account.getPassword())) {
+                MessageBox.warning(this, "Incorrect username or password");
+                return;
             }
         } catch (RuntimeException e) {
-            MessageBox.error(this, "System error" + e.getMessage());
+            MessageBox.warning(this, "Incorrect username or password");
+            return;
         }
+        if (!password.equals(account.getPassword())) {
+            MessageBox.warning(this, "Incorrect username or password");
+            return;
+        }
+        
+        Auth.user = account;
+        MessageBox.success(this, "Đăng nhập thành công!");
+        
+        this.dispose();
     }
 
     public static void main(String args[]) {

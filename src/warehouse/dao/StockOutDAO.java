@@ -33,13 +33,14 @@ public class StockOutDAO extends BaseDAO<StockOut, UUID>{
     @Override
     public void update(StockOut entity) {
        try {
-            String sql = SQLBuilder.buildSQLUpdate("StockOut", "ID", "IDProduct" ,"Quantity", "Username","UpdatedDate", "Status");
+            String sql = SQLBuilder.buildSQLUpdate("StockOut", "ID", "IDProduct" ,"Quantity", "Username","UpdatedDate","IDWarehouse", "Status");
             logger.info(sql);
             JDBC.update(sql,
                     entity.getIdProduct(),
                     entity.getQuantity(),
                     entity.getUsername(),
                     entity.getUpdatedDate(),
+                    entity.getIdWarehouse().toString(),
                     entity.getStatus().name(),
                     entity.getId().toString()
             );
@@ -105,6 +106,7 @@ public class StockOutDAO extends BaseDAO<StockOut, UUID>{
                     entity.setUsername(rs.getString("Username"));
                     entity.setStatus(EStatus.valueOf(rs.getString("Status")));
                     entity.setUpdatedDate(rs.getDate("UpdatedDate"));
+                    entity.setIdWarehouse(UUID.fromString(rs.getString("IDWarehouse")));
                     list.add(entity);
                 }
             } finally {
