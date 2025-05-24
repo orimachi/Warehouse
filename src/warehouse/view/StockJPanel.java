@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package warehouse.view;
 
 import java.awt.event.ItemEvent;
@@ -21,7 +24,7 @@ import warehouse.utils.Auth;
 import warehouse.utils.MessageBox;
 
 
-public class StockJFrame extends javax.swing.JFrame {
+public class StockJPanel extends javax.swing.JPanel {
 
     WarehouseDAO warehouseDAO = new WarehouseDAO();
     StockDAO stockDAO = new StockDAO();
@@ -29,7 +32,7 @@ public class StockJFrame extends javax.swing.JFrame {
     int pageSize = 10;
     Account user = Auth.user;
     
-    public StockJFrame() {
+    public StockJPanel() {
         initComponents();
         this.fillTableStock(null, null);
         
@@ -209,7 +212,6 @@ public class StockJFrame extends javax.swing.JFrame {
         paginationStockOut.setPagegination(current, totalPage);
         paginationStockOut.setPaginationItemRender(new PaginationItemRenderStyle1());
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -240,8 +242,6 @@ public class StockJFrame extends javax.swing.JFrame {
         tblStockOut = new javax.swing.JTable();
         paginationStockOut = new warehouse.component.Pagination();
         cbxStatus = new warehouse.component.Combobox();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(52, 152, 219));
 
@@ -302,11 +302,6 @@ public class StockJFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tblStock);
-        if (tblStock.getColumnModel().getColumnCount() > 0) {
-            tblStock.getColumnModel().getColumn(0).setResizable(false);
-            tblStock.getColumnModel().getColumn(2).setResizable(false);
-            tblStock.getColumnModel().getColumn(2).setPreferredWidth(20);
-        }
 
         txtQuantity.setLabelText("Quantity");
         txtQuantity.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -382,7 +377,7 @@ public class StockJFrame extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(0, 12, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 821, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -439,11 +434,6 @@ public class StockJFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(tblStockOut);
-        if (tblStockOut.getColumnModel().getColumnCount() > 0) {
-            tblStockOut.getColumnModel().getColumn(0).setResizable(false);
-            tblStockOut.getColumnModel().getColumn(3).setResizable(false);
-            tblStockOut.getColumnModel().getColumn(3).setPreferredWidth(20);
-        }
 
         cbxStatus.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         cbxStatus.setLabeText("Status");
@@ -507,7 +497,7 @@ public class StockJFrame extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(0, 12, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 821, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -520,13 +510,13 @@ public class StockJFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Stock Out", jPanel4);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 821, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -534,13 +524,7 @@ public class StockJFrame extends javax.swing.JFrame {
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void cbxWarehouseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxWarehouseActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxWarehouseActionPerformed
 
     private void cbxWarehouseItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxWarehouseItemStateChanged
         // TODO add your handling code here:
@@ -552,34 +536,9 @@ public class StockJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbxWarehouseItemStateChanged
 
-    private void cbxWarehouseStockOutItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxWarehouseStockOutItemStateChanged
+    private void cbxWarehouseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxWarehouseActionPerformed
         // TODO add your handling code here:
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
-            Warehouse selectedWarehouse = (Warehouse) cbxWarehouseStockOut.getSelectedItem();
-            UUID warehouseId = selectedWarehouse != null ? selectedWarehouse.getId() : null;
-            String keyword = txtSearchStockOut.getSearchText();
-            String status = (String) cbxStatus.getSelectedItem();
-            fillTableStockOut(keyword, warehouseId, status);
-        }
-    }//GEN-LAST:event_cbxWarehouseStockOutItemStateChanged
-
-    private void cbxWarehouseStockOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxWarehouseStockOutActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxWarehouseStockOutActionPerformed
-
-    private void cbxStatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxStatusItemStateChanged
-        // TODO add your handling code here:
-        if (evt.getStateChange() == ItemEvent.SELECTED) {
-            String keyword = txtSearchStockOut.getSearchText();
-            UUID warehouseId = ((Warehouse) cbxWarehouseStockOut.getSelectedItem()).getId();
-            String status = (String) cbxStatus.getSelectedItem();
-            fillTableStockOut(keyword, warehouseId, status);
-        }
-    }//GEN-LAST:event_cbxStatusItemStateChanged
-
-    private void cbxStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxStatusActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxStatusActionPerformed
+    }//GEN-LAST:event_cbxWarehouseActionPerformed
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
         // TODO add your handling code here:
@@ -625,7 +584,7 @@ public class StockJFrame extends javax.swing.JFrame {
             stockOut.setQuantity(exportQuantity);
             stockOut.setIdProduct(stockDAO.getProductUUIDByName(productName));
             stockOut.setIdWarehouse(warehouseId);
-//            stockOut.setUsername(user.getUsername());
+            //            stockOut.setUsername(user.getUsername());
             stockOut.setUsername("user1");
             stockOut.setUpdatedDate(new Date());
             stockOut.setStatus(EStatus.PROCESSING);
@@ -638,15 +597,13 @@ public class StockJFrame extends javax.swing.JFrame {
             String status = (String) cbxStatus.getSelectedItem();
             fillTableStockOut(keyword, selectedWarehouseId, status);
 
+            String keywordStock = txtSearch.getSearchText();
+            UUID selectedWarehouseIdStock = ((Warehouse) cbxWarehouse.getSelectedItem()).getId();
+            fillTableStock(keywordStock, selectedWarehouseIdStock);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }//GEN-LAST:event_btnExportActionPerformed
-
-    private void txtQuantityKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQuantityKeyTyped
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_txtQuantityKeyTyped
 
     private void tblStockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblStockMouseClicked
         // TODO add your handling code here:
@@ -656,41 +613,40 @@ public class StockJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblStockMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(StockJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(StockJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(StockJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(StockJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void txtQuantityKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQuantityKeyTyped
+        // TODO add your handling code here:
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new StockJFrame().setVisible(true);
-            }
-        });
-    }
+    }//GEN-LAST:event_txtQuantityKeyTyped
+
+    private void cbxWarehouseStockOutItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxWarehouseStockOutItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            Warehouse selectedWarehouse = (Warehouse) cbxWarehouseStockOut.getSelectedItem();
+            UUID warehouseId = selectedWarehouse != null ? selectedWarehouse.getId() : null;
+            String keyword = txtSearchStockOut.getSearchText();
+            String status = (String) cbxStatus.getSelectedItem();
+            fillTableStockOut(keyword, warehouseId, status);
+        }
+    }//GEN-LAST:event_cbxWarehouseStockOutItemStateChanged
+
+    private void cbxWarehouseStockOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxWarehouseStockOutActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxWarehouseStockOutActionPerformed
+
+    private void cbxStatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxStatusItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            String keyword = txtSearchStockOut.getSearchText();
+            UUID warehouseId = ((Warehouse) cbxWarehouseStockOut.getSelectedItem()).getId();
+            String status = (String) cbxStatus.getSelectedItem();
+            fillTableStockOut(keyword, warehouseId, status);
+        }
+    }//GEN-LAST:event_cbxStatusItemStateChanged
+
+    private void cbxStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxStatusActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private warehouse.component.button.Button btnExport;
