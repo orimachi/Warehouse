@@ -32,14 +32,14 @@ public class WarehouseDAO extends BaseDAO<Warehouse, UUID> {
     @Override
     public void update(Warehouse entity) {
         try {
-            String sql = SQLBuilder.buildSQLUpdate("Warehouse", "Name", "Address", "PhoneNumber", "ID");
+            String sql = SQLBuilder.buildSQLUpdate("Warehouse", "ID","Name", "Address", "PhoneNumber");
             logger.info(sql);
             if (entity != null) {
                 JDBC.update(sql,
                         entity.getName(),
                         entity.getAddress(),
                         entity.getPhoneNumber(),
-                        entity.getId());
+                        entity.getId().toString());
                 logger.info("Update success");
             }
         } catch (Exception e) {
@@ -136,7 +136,7 @@ public class WarehouseDAO extends BaseDAO<Warehouse, UUID> {
     }
 
     public List<Warehouse> selectByNameKeyWord(String name) {
-        String sql = SQLBuilder.getEntityByName("Product", "Name");
+        String sql = SQLBuilder.getEntityByName("Warehouse", "Name");
         logger.info(sql);
         List<Warehouse> list = selectBySql(sql, "%" + name + "%");
         return list.isEmpty() ? null : list;

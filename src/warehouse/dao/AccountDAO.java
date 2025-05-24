@@ -117,7 +117,7 @@ public class AccountDAO extends BaseDAO<Account, String> {
     }
     
     public List<Account> selectALLByName(String keyword){
-        String sql = SQLBuilder.getEntityByName("Product", "Name");
+        String sql = SQLBuilder.getEntityByName("Account", "Username");
         logger.info(sql);
         List<Account> list = selectBySql(sql, "%" + keyword + "%");
         return list.isEmpty() ? null : list;

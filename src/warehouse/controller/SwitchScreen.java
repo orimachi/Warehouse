@@ -14,6 +14,7 @@ import warehouse.view.AdminStockOutJPanel;
 import warehouse.view.ChartJPanel;
 import warehouse.view.HomePage;
 import warehouse.view.ProductJPanel;
+import warehouse.view.StockInJPanel;
 import warehouse.view.StockOutJPanel;
 import warehouse.view.SupplierJPanel;
 import warehouse.view.WarehouseJPanel;
@@ -78,9 +79,9 @@ public class SwitchScreen {
                 case "stock":
                     node = new StockOutJPanel();
                     break;
-//                case "stockin":
-//                    node = new StockInJPanel();
-//                    break;
+                case "stockin":
+                    node = new StockInJPanel();
+                    break;
                 case "stockout":
                     node = new StockOutJPanel();
                     break;

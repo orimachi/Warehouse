@@ -13,7 +13,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     public MainJFrame() {
         initComponents();
-//        loadUsernameAndRole();
+        loadUsernameAndRole();
         setTitle("Warehouse Management System");
         setLocationRelativeTo(null);
 
@@ -28,16 +28,16 @@ public class MainJFrame extends javax.swing.JFrame {
         listDanhMuc.add(new Category("stock", jpnStock, jbStock));
         listDanhMuc.add(new Category("stockin", jpnStockIn, jbStockIn));
         listDanhMuc.add(new Category("stockout", jpnStockOut, jbStockOut));
-//        if (Auth.isManager() == true) {
+        if (Auth.isLogin()&& Auth.isManager() == true) {
             listDanhMuc.add(new Category("account", jpnManagerAccount, jbManagerAccount));
             listDanhMuc.add(new Category("managerStockIn", jpnManagerStockIn, jbManagerStockIn));
             listDanhMuc.add(new Category("managerStockOut", jpnManagerStockOut, jbManagerStockOut));
             listDanhMuc.add(new Category("statistics", jpnStatistics, jbStatistics));
-//        }
+        }
 
         controller.setEvent(listDanhMuc);
-
-//        new LoadingJDialog(this, true).setVisible(true);
+        
+        new LoadingJDialog(this, true).setVisible(true);
     }
 
     private void loadUsernameAndRole() {

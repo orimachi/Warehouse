@@ -18,7 +18,7 @@ public class WarehouseJPanel extends javax.swing.JPanel {
 
     public WarehouseJPanel() {
         initComponents();
-        controlButton();
+//        controlButton();
         loadDataTblWarehouse();
         loadPagination();
 

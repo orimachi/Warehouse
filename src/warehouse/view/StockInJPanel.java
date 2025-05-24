@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package warehouse.view;
 
 import java.util.List;
@@ -168,8 +164,7 @@ public class StockInJPanel extends javax.swing.JPanel {
         stock.setIdSupplier(suppliersDAO.getUUIDByName(String.valueOf(cbxSupplier.getSelectedItem())));
         stock.setQuantity(Integer.parseInt(txtQuantity.getText()));
         stock.setIdWarehouse(warehouseDAO.getUUIDByName(String.valueOf(cbxWarehouse.getSelectedItem())));
-//        stock.setUsername(currentUser.getUsername());
-        stock.setUsername("user1");
+        stock.setUsername(currentUser.getUsername());
         stock.setStatus(EStatus.PROCESSING);
         return stock;
     }

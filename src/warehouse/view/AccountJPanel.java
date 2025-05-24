@@ -152,6 +152,7 @@ public class AccountJPanel extends javax.swing.JPanel {
                 clearInformationForm();
             }
         } catch (RuntimeException e) {
+            e.printStackTrace();
             MessageBox.error(this, "System error check output");
         }
     }

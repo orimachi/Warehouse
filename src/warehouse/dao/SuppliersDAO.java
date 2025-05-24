@@ -48,7 +48,7 @@ public class SuppliersDAO extends BaseDAO<Suppliers, UUID> {
     @Override
     public void delete(UUID id) {
         try {
-            String sql = SQLBuilder.buildSQLDelete("Suppliers", "IDSuppliers");
+            String sql = SQLBuilder.buildSQLDelete("Suppliers", "ID");
             logger.info(sql);
             JDBC.update(sql, id);
             logger.info("Delete success");
