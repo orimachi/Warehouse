@@ -23,8 +23,8 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
             JDBC.update(sql,
                     entity.getIdProduct(),
                     entity.getQuantity(),
-                    entity.getCalcUnit(),
-                    entity.getIdWareHouse());
+                    entity.getIdWareHouse()
+            );
             logger.info("Insert success");
         } catch (Exception e) {
             throw new RuntimeException("Cant insert missing information:" + e.getMessage());
@@ -39,7 +39,6 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
             JDBC.update(sql,
                     entity.getIdProduct(),
                     entity.getQuantity(),
-                    entity.getCalcUnit(),
                     entity.getIdWareHouse(),
                     entity.getId());
             logger.info("Update success");
@@ -66,7 +65,15 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
 
     @Override
     public Stock selectById(UUID id) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        String sql = SQLBuilder.buildSQLSelect("Stock", "ID");
+        logger.info(sql);
+        if (id != null) {
+            List<Stock> list = selectBySql(sql, id);
+            return list.isEmpty() ? null : list.getFirst();
+        } else {
+            logger.info("Missing information:" + id);
+            return null;
+        }
     }
 
     @Override
@@ -104,4 +111,96 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
         return list;
     }
     
+     public String getProductByUUID(UUID id) {
+        String sql = SQLBuilder.getNameByUUID("Product", "ID");
+//        logger.info(sql);
+        Object result = JDBC.value(sql,id);
+        return result == null ? null : result.toString();
+    }
+     
+     public String getWarehouseByUUID(UUID id) {
+        String sql = SQLBuilder.getNameByUUID("Warehouse", "ID");
+//        logger.info(sql);
+        Object result = JDBC.value(sql,id);
+        return result == null ? null : result.toString();
+    }
+     
+    public List<Stock> selectByWarehouse(UUID idWarehouse) {
+        List<Stock> list = new ArrayList<>();
+        String sql = SQLBuilder.buildSQLSelect("Stock", "idWareHouse");
+//        logger.info(sql);
+        try {
+            ResultSet rs = JDBC.query(sql, idWarehouse);
+            while (rs.next()) {
+                Stock stock = new Stock();
+                stock.setId(UUID.fromString(rs.getString("id")));
+                stock.setIdProduct(UUID.fromString(rs.getString("idProduct")));
+                stock.setIdWareHouse(UUID.fromString(rs.getString("idWareHouse")));
+                stock.setQuantity(rs.getInt("quantity"));
+                list.add(stock);
+            }
+            rs.getStatement().getConnection().close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return list;
+    }
+    
+ 
+    public List<Stock> searchStockByProductName(String keyword) {
+        List<Stock> list = new ArrayList<>();
+
+        String joinClause = """
+            JOIN Product p ON s.IDProduct = p.ID
+            JOIN Warehouse w ON s.IDWarehouse = w.ID
+        """;
+
+        String sql = SQLBuilder.buildSQLSelectJoinLike("Stock s", joinClause, "p.Name");
+
+        try {
+            ResultSet rs = JDBC.query(sql, "%" + keyword + "%");
+            while (rs.next()) {
+                Stock entity = new Stock();
+                entity.setId(UUID.fromString(rs.getString("ID")));
+                entity.setIdProduct(UUID.fromString(rs.getString("IDProduct")));
+                entity.setQuantity(rs.getInt("Quantity"));
+                entity.setIdWareHouse(UUID.fromString(rs.getString("IDWarehouse")));
+                list.add(entity);
+            }
+            rs.getStatement().getConnection().close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return list;
+    }
+    
+    public List<Stock> searchStockByProductNameAndWarehouse(String keyword, UUID warehouseId) {
+        String sql = """
+            SELECT s.*
+            FROM Stock s
+            JOIN Product p ON s.IDProduct = p.ID
+            WHERE p.Name LIKE ? AND s.IDWarehouse = ?
+        """;
+        return selectBySql(sql, "%" + keyword + "%", warehouseId);
+    }
+    
+    public UUID getProductUUIDByName(String productName) {
+        try {
+            String sql = SQLBuilder.getUUIDByName("Product", "Name");
+            logger.info(sql);
+            ResultSet rs = JDBC.query(sql, productName);
+            if (rs.next()) {
+                return UUID.fromString(rs.getString("Id"));
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot get product UUID by name: " + e.getMessage());
+        }
+    }
+    
+
+
+
 }

@@ -11,7 +11,7 @@ public class Stock {
     public Stock() {
     }
     
-    public Stock(UUID id, UUID idProduct, int quantity,  UUID idWarehouse) {
+    public Stock(UUID id, UUID idProduct, int quantity, UUID idWarehouse) {
         this.id = id;
         this.idProduct = idProduct;
         this.quantity = quantity;

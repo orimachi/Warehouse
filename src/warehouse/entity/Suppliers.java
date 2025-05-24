@@ -50,5 +50,11 @@ public class Suppliers {
         this.phoneNumber = phoneNumber;
     }
     
+    @Override
+    public String toString() {
+        return this.getName();
+    }
+
+    
     
 }

@@ -18,13 +18,16 @@ public class StockInDAO extends BaseDAO<StockIn, UUID>{
     @Override
     public void insert(StockIn entity) {
          try {
-            String sql = SQLBuilder.buildSQLInsert("Stock", "Quantity", "CalcUnit", "IDSupplier","IDWareHouse","IDAccount","AddDate");
+            String sql = SQLBuilder.buildSQLInsert("StockIn", "IDProduct", "Quantity", "IDSupplier","IDWareHouse","Username","UpdatedDate", "Status");
             logger.info(sql);
             JDBC.update(sql,
+                    entity.getIdProduct(),
                     entity.getQuantity(),
                     entity.getIdSupplier(),
+                    entity.getIdWarehouse(),
                     entity.getUsername(),
-                    entity.getUpdatedDate()
+                    entity.getUpdatedDate(),
+                    entity.getStatus().name()
             );
             logger.info("Insert success");
         } catch (Exception e) {

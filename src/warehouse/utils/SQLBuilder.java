@@ -3,6 +3,7 @@ package warehouse.utils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import warehouse.bean.EPositions;
 
@@ -58,7 +59,7 @@ public class SQLBuilder {
                 likePattern = "%" + keyword + "%";
                 break;
         }
-       return String.format("SELECT * FROM %s WHERE %s LIKE '%s'", table, idColumn, likePattern);
+        return String.format("SELECT * FROM %s WHERE %s LIKE '%s'", table, idColumn, likePattern);
     }
 
     public static String buildSQLSelectsLikeAnd(String table, List<String> columns, List<String> operators, List<String> keywords) {
@@ -86,4 +87,14 @@ public class SQLBuilder {
             return false;
         }
     }
+    
+    public static String buildSQLSelectJoinLike(String table, String joinClause, String likeColumn) {
+        return String.format(
+            "SELECT * FROM %s %s WHERE %s LIKE ?",
+            table,
+            joinClause != null ? joinClause : "",
+            likeColumn
+        );
+    }
+
 }
