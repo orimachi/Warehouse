@@ -171,7 +171,8 @@ public class StockInJFrame extends javax.swing.JFrame {
         stock.setIdSupplier(suppliersDAO.getUUIDByName(String.valueOf(cbxSupplier.getSelectedItem())));
         stock.setQuantity(Integer.parseInt(txtQuantity.getText()));
         stock.setIdWarehouse(warehouseDAO.getUUIDByName(String.valueOf(cbxWarehouse.getSelectedItem())));
-        stock.setUsername(currentUser.getUsername());
+//        stock.setUsername(currentUser.getUsername());
+        stock.setUsername("user1");
         stock.setStatus(EStatus.PROCESSING);
         return stock;
     }
@@ -260,6 +261,11 @@ public class StockInJFrame extends javax.swing.JFrame {
         txtQuantity.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtQuantityActionPerformed(evt);
+            }
+        });
+        txtQuantity.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtQuantityKeyTyped(evt);
             }
         });
 
@@ -461,6 +467,15 @@ public class StockInJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         insert();
     }//GEN-LAST:event_btnCreateActionPerformed
+
+    private void txtQuantityKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQuantityKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        
+        if(!Character.isDigit(c)){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtQuantityKeyTyped
 
     /**
      * @param args the command line arguments

@@ -105,14 +105,14 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
     
      public String getProductByUUID(UUID id) {
         String sql = SQLBuilder.getNameByUUID("Product", "ID");
-        logger.info(sql);
+//        logger.info(sql);
         Object result = JDBC.value(sql,id);
         return result == null ? null : result.toString();
     }
      
      public String getWarehouseByUUID(UUID id) {
         String sql = SQLBuilder.getNameByUUID("Warehouse", "ID");
-        logger.info(sql);
+//        logger.info(sql);
         Object result = JDBC.value(sql,id);
         return result == null ? null : result.toString();
     }
@@ -120,7 +120,7 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
     public List<Stock> selectByWarehouse(UUID idWarehouse) {
         List<Stock> list = new ArrayList<>();
         String sql = SQLBuilder.buildSQLSelect("Stock", "idWareHouse");
-        logger.info(sql);
+//        logger.info(sql);
         try {
             ResultSet rs = JDBC.query(sql, idWarehouse);
             while (rs.next()) {

@@ -8,7 +8,7 @@ public class StockOut {
     private UUID id;
     private int quantity;
     private UUID idProduct;
-    private UUID idStock;
+    private UUID idWarehouse;
     private String username;
     private Date updatedDate = new Date();
     private EStatus status;
@@ -16,11 +16,11 @@ public class StockOut {
     public StockOut() {
     }
 
-    public StockOut(UUID id, int quantity, UUID idProduct, UUID idStock, String username, EStatus status) {
+    public StockOut(UUID id, int quantity, UUID idProduct, UUID idWarehouse, String username, EStatus status) {
         this.id = id;
         this.quantity = quantity;
         this.idProduct = idProduct;
-        this.idStock = idStock;
+        this.idWarehouse = idWarehouse;
         this.username = username;
         this.status = status;
     }
@@ -59,12 +59,12 @@ public class StockOut {
         this.updatedDate = updatedDate;
     }
 
-    public UUID getIdStock() {
-        return idStock;
+    public UUID getIdWarehouse() {
+        return idWarehouse;
     }
 
-    public void setIdStock(UUID idStock) {
-        this.idStock = idStock;
+    public void setIdWarehouse(UUID idStock) {
+        this.idWarehouse = idStock;
     }
 
     public String getUsername() {
