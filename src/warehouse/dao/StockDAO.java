@@ -65,7 +65,15 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
 
     @Override
     public Stock selectById(UUID id) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        String sql = SQLBuilder.buildSQLSelect("Stock", "ID");
+        logger.info(sql);
+        if (id != null) {
+            List<Stock> list = selectBySql(sql, id);
+            return list.isEmpty() ? null : list.getFirst();
+        } else {
+            logger.info("Missing information:" + id);
+            return null;
+        }
     }
 
     @Override
@@ -177,6 +185,21 @@ public class StockDAO extends BaseDAO<Stock, UUID>{
         """;
         return selectBySql(sql, "%" + keyword + "%", warehouseId);
     }
+    
+    public UUID getProductUUIDByName(String productName) {
+        try {
+            String sql = SQLBuilder.getUUIDByName("Product", "Name");
+            logger.info(sql);
+            ResultSet rs = JDBC.query(sql, productName);
+            if (rs.next()) {
+                return UUID.fromString(rs.getString("Id"));
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException("Cannot get product UUID by name: " + e.getMessage());
+        }
+    }
+    
 
 
 

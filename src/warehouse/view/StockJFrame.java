@@ -2,23 +2,32 @@
 package warehouse.view;
 
 import java.awt.event.ItemEvent;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import javax.swing.table.DefaultTableModel;
+import warehouse.bean.EStatus;
 import warehouse.component.Pagination;
 import warehouse.component.pagination.EventPagination;
 import warehouse.component.pagination.PaginationItemRenderStyle1;
 import warehouse.dao.StockDAO;
+import warehouse.dao.StockOutDAO;
 import warehouse.dao.WarehouseDAO;
+import warehouse.entity.Account;
 import warehouse.entity.Stock;
+import warehouse.entity.StockOut;
 import warehouse.entity.Warehouse;
+import warehouse.utils.Auth;
+import warehouse.utils.MessageBox;
 
 
 public class StockJFrame extends javax.swing.JFrame {
 
     WarehouseDAO warehouseDAO = new WarehouseDAO();
     StockDAO stockDAO = new StockDAO();
+    StockOutDAO stockOutDAO = new StockOutDAO();
     int pageSize = 10;
+    Account user = Auth.user;
     
     public StockJFrame() {
         initComponents();
@@ -26,13 +35,25 @@ public class StockJFrame extends javax.swing.JFrame {
         
         loadPaginationStock();
         loadWarehouseCombobox();
+        
+        
         txtSearch.setSearchListener(e -> {
             String keyword = txtSearch.getSearchText();
             UUID selectedWarehouseId = ((Warehouse) cbxWarehouse.getSelectedItem()).getId();
             fillTableStock(keyword, selectedWarehouseId);
         });
 
-
+        // Stock Out Display
+        this.fillTableStockOut(null, null, null);
+        loadPaginationStockOut();
+        loadWarehouseComboboxStockOut();
+        loadStatusCombobox();
+        txtSearchStockOut.setSearchListener(e -> {
+            String keyword = txtSearchStockOut.getSearchText();
+            UUID selectedWarehouseId = ((Warehouse) cbxWarehouseStockOut.getSelectedItem()).getId();
+            String status = (String) cbxStatus.getSelectedItem();
+            fillTableStockOut(keyword, selectedWarehouseId, status);
+        });
         
     }
     
@@ -99,6 +120,95 @@ public class StockJFrame extends javax.swing.JFrame {
         paginationStock.setPagegination(current, totalPage);
         paginationStock.setPaginationItemRender(new PaginationItemRenderStyle1());
     }
+    
+    private void displayStockDetails(int row) {
+        DefaultTableModel model = (DefaultTableModel) tblStock.getModel();
+        UUID stockId = UUID.fromString(model.getValueAt(row, 0).toString());
+        String productName = model.getValueAt(row, 1).toString();
+        int quantity = Integer.parseInt(model.getValueAt(row, 2).toString());
+
+        txtProduct.setText(productName);
+        txtQuantity.setText(String.valueOf(quantity));
+    }
+    
+    
+    // Stock out UIs
+    void fillTableStockOut(String keyword, UUID warehouseUUID, String status) {
+        DefaultTableModel model = (DefaultTableModel) tblStockOut.getModel();
+        model.setRowCount(0);
+        List<StockOut> list;
+        boolean hasKeyword = keyword != null && !keyword.trim().isEmpty();
+        boolean hasWarehouse = warehouseUUID != null;
+        boolean hasStatus = status != null && !status.equals("All statuses");
+
+        int currentPage = paginationStockOut.getPage().getCurrent();
+        if (!hasKeyword && !hasWarehouse && !hasStatus) {
+            list = stockOutDAO.selectAll();
+        } else if (hasKeyword && !hasWarehouse && !hasStatus) {
+            list = stockOutDAO.searchStockOutByProductName(keyword);
+        } else if (!hasKeyword && hasWarehouse && !hasStatus) {
+            list = stockOutDAO.selectByWarehouse(warehouseUUID);
+        } else if (!hasKeyword && !hasWarehouse && hasStatus) {
+            list = stockOutDAO.selectByStatus(status);
+        } else {
+            list = stockOutDAO.searchStockOutByProductNameAndWarehouseAndStatus(keyword, warehouseUUID, status);
+        }
+
+        updatePaginationStockOut(list);
+
+        List<StockOut> pageList = Pagination.getPage(list, currentPage, pageSize);
+        for (StockOut stockOut : pageList) {
+            String productName = stockOutDAO.getProductByUUID(stockOut.getIdProduct());
+            String warehouseName = stockOutDAO.getWarehouseByUUID(stockOut.getIdWarehouse());
+            model.addRow(new Object[]{
+                    productName,
+                    stockOut.getQuantity(),
+                    warehouseName,
+                    stockOut.getUsername(),
+                    stockOut.getUpdatedDate(),
+                    stockOut.getStatus()
+            });
+        }
+        tblStockOut.setModel(model);
+    }
+
+    private void loadWarehouseComboboxStockOut() {
+        cbxWarehouseStockOut.removeAllItems();
+        cbxWarehouseStockOut.addItem(new Warehouse(null, "All warehouses", null, null));
+        for (Warehouse wh : warehouseDAO.selectAll()) {
+            cbxWarehouseStockOut.addItem(wh);
+        }
+    }
+
+    private void loadStatusCombobox() {
+        cbxStatus.removeAllItems();
+        cbxStatus.addItem("All statuses");
+        cbxStatus.addItem("ACCEPT");
+        cbxStatus.addItem("CANCEL");
+        cbxStatus.addItem("PROCESSING");
+    }
+
+    private void loadPaginationStockOut() {
+        List<StockOut> list = stockOutDAO.selectAll();
+        updatePaginationStockOut(list);
+
+        paginationStockOut.addEventPagination(new EventPagination() {
+            @Override
+            public void pageChanged(int page) {
+                String keyword = txtSearchStockOut.getSearchText();
+                UUID warehouseId = ((Warehouse) cbxWarehouseStockOut.getSelectedItem()).getId();
+                String status = (String) cbxStatus.getSelectedItem();
+                fillTableStockOut(keyword, warehouseId, status);
+            }
+        });
+    }
+
+    private void updatePaginationStockOut(List<StockOut> list) {
+        int totalPage = Pagination.getTotalPage(list, pageSize);
+        int current = Pagination.getCurrentPage(list, pageSize);
+        paginationStockOut.setPagegination(current, totalPage);
+        paginationStockOut.setPaginationItemRender(new PaginationItemRenderStyle1());
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -115,13 +225,21 @@ public class StockJFrame extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         cbxWarehouse = new warehouse.component.Combobox();
         txtSearch = new warehouse.component.SearchBar();
-        button1 = new warehouse.component.button.Button();
-        button3 = new warehouse.component.button.Button();
+        btnExport = new warehouse.component.button.Button();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblStock = new javax.swing.JTable();
         paginationStock = new warehouse.component.Pagination();
+        txtQuantity = new warehouse.component.textfield.TextField();
+        txtProduct = new warehouse.component.textfield.TextField();
         jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        cbxWarehouseStockOut = new warehouse.component.Combobox();
+        txtSearchStockOut = new warehouse.component.SearchBar();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblStockOut = new javax.swing.JTable();
         paginationStockOut = new warehouse.component.Pagination();
+        cbxStatus = new warehouse.component.Combobox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -151,15 +269,15 @@ public class StockJFrame extends javax.swing.JFrame {
             }
         });
 
-        button1.setBackground(new java.awt.Color(52, 152, 219));
-        button1.setForeground(new java.awt.Color(255, 255, 255));
-        button1.setText("EXPORT");
-        button1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-
-        button3.setBackground(new java.awt.Color(149, 165, 166));
-        button3.setForeground(new java.awt.Color(255, 255, 255));
-        button3.setText("REFRESH");
-        button3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnExport.setBackground(new java.awt.Color(52, 152, 219));
+        btnExport.setForeground(new java.awt.Color(255, 255, 255));
+        btnExport.setText("EXPORT");
+        btnExport.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
 
         tblStock.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         tblStock.setModel(new javax.swing.table.DefaultTableModel(
@@ -178,12 +296,26 @@ public class StockJFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblStock.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblStockMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblStock);
         if (tblStock.getColumnModel().getColumnCount() > 0) {
             tblStock.getColumnModel().getColumn(0).setResizable(false);
             tblStock.getColumnModel().getColumn(2).setResizable(false);
             tblStock.getColumnModel().getColumn(2).setPreferredWidth(20);
         }
+
+        txtQuantity.setLabelText("Quantity");
+        txtQuantity.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtQuantityKeyTyped(evt);
+            }
+        });
+
+        txtProduct.setLabelText("Product");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -192,20 +324,25 @@ public class StockJFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(22, 22, 22)
+                                        .addComponent(txtProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(cbxWarehouse, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(114, 114, 114)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cbxWarehouse, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(105, 105, 105)
+                                        .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -221,17 +358,19 @@ public class StockJFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(cbxWarehouse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 9, Short.MAX_VALUE))
+                        .addGap(0, 2, Short.MAX_VALUE))
                     .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(button3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnExport, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(paginationStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -256,21 +395,127 @@ public class StockJFrame extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Stock", jPanel3);
 
+        jPanel6.setBackground(new java.awt.Color(52, 152, 219));
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 943, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
+
+        cbxWarehouseStockOut.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cbxWarehouseStockOut.setLabeText("Warehouse");
+        cbxWarehouseStockOut.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxWarehouseStockOutItemStateChanged(evt);
+            }
+        });
+        cbxWarehouseStockOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxWarehouseStockOutActionPerformed(evt);
+            }
+        });
+
+        tblStockOut.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        tblStockOut.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Product", "Quantity", "Warehouse", "Username", "Date", "Status"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tblStockOut);
+        if (tblStockOut.getColumnModel().getColumnCount() > 0) {
+            tblStockOut.getColumnModel().getColumn(0).setResizable(false);
+            tblStockOut.getColumnModel().getColumn(3).setResizable(false);
+            tblStockOut.getColumnModel().getColumn(3).setPreferredWidth(20);
+        }
+
+        cbxStatus.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        cbxStatus.setLabeText("Status");
+        cbxStatus.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbxStatusItemStateChanged(evt);
+            }
+        });
+        cbxStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxStatusActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(txtSearchStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cbxWarehouseStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbxStatus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(paginationStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(243, 243, 243))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cbxWarehouseStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSearchStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(paginationStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7))
+        );
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(260, Short.MAX_VALUE)
-                .addComponent(paginationStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 556, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17))
+                .addGap(0, 12, Short.MAX_VALUE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 821, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap(417, Short.MAX_VALUE)
-                .addComponent(paginationStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+                .addContainerGap()
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Stock Out", jPanel4);
@@ -306,6 +551,110 @@ public class StockJFrame extends javax.swing.JFrame {
             fillTableStock(keyword, warehouseId);
         }
     }//GEN-LAST:event_cbxWarehouseItemStateChanged
+
+    private void cbxWarehouseStockOutItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxWarehouseStockOutItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            Warehouse selectedWarehouse = (Warehouse) cbxWarehouseStockOut.getSelectedItem();
+            UUID warehouseId = selectedWarehouse != null ? selectedWarehouse.getId() : null;
+            String keyword = txtSearchStockOut.getSearchText();
+            String status = (String) cbxStatus.getSelectedItem();
+            fillTableStockOut(keyword, warehouseId, status);
+        }
+    }//GEN-LAST:event_cbxWarehouseStockOutItemStateChanged
+
+    private void cbxWarehouseStockOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxWarehouseStockOutActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxWarehouseStockOutActionPerformed
+
+    private void cbxStatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxStatusItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            String keyword = txtSearchStockOut.getSearchText();
+            UUID warehouseId = ((Warehouse) cbxWarehouseStockOut.getSelectedItem()).getId();
+            String status = (String) cbxStatus.getSelectedItem();
+            fillTableStockOut(keyword, warehouseId, status);
+        }
+    }//GEN-LAST:event_cbxStatusItemStateChanged
+
+    private void cbxStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxStatusActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxStatusActionPerformed
+
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        // TODO add your handling code here:
+        int selectedRow = tblStock.getSelectedRow();
+        if (selectedRow < 0) {
+            MessageBox.warning(this, "Please select a stock record to export");
+            return;
+        }
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) tblStock.getModel();
+            UUID stockId = UUID.fromString(model.getValueAt(selectedRow, 0).toString());
+            String productName = model.getValueAt(selectedRow, 1).toString();
+            int stockQuantity = Integer.parseInt(model.getValueAt(selectedRow, 2).toString());
+            String warehouseName = model.getValueAt(selectedRow, 3).toString();
+
+            String quantityText = txtQuantity.getText().trim();
+            if (quantityText.isEmpty()) {
+                MessageBox.warning(this, "Please enter a quantity");
+                return;
+            }
+
+            int exportQuantity;
+            try {
+                exportQuantity = Integer.parseInt(quantityText);
+            } catch (NumberFormatException e) {
+                MessageBox.warning(this, "Invalid quantity format");
+                return;
+            }
+
+            if (exportQuantity > stockQuantity) {
+                MessageBox.warning(this, "Input quantity exceeds current stock: " + stockQuantity);
+                return;
+            }
+
+            UUID warehouseId = ((Warehouse) cbxWarehouse.getSelectedItem()).getId();
+            if (warehouseId == null) {
+                warehouseId = stockDAO.selectById(stockId).getIdWareHouse();
+            }
+
+            StockOut stockOut = new StockOut();
+            stockOut.setId(UUID.randomUUID());
+            stockOut.setQuantity(exportQuantity);
+            stockOut.setIdProduct(stockDAO.getProductUUIDByName(productName));
+            stockOut.setIdWarehouse(warehouseId);
+//            stockOut.setUsername(user.getUsername());
+            stockOut.setUsername("user1");
+            stockOut.setUpdatedDate(new Date());
+            stockOut.setStatus(EStatus.PROCESSING);
+
+            stockOutDAO.insert(stockOut);
+            MessageBox.success(this, "Stock exported to StockOut successfully");
+
+            String keyword = txtSearchStockOut.getSearchText();
+            UUID selectedWarehouseId = ((Warehouse) cbxWarehouseStockOut.getSelectedItem()).getId();
+            String status = (String) cbxStatus.getSelectedItem();
+            fillTableStockOut(keyword, selectedWarehouseId, status);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_btnExportActionPerformed
+
+    private void txtQuantityKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQuantityKeyTyped
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txtQuantityKeyTyped
+
+    private void tblStockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblStockMouseClicked
+        // TODO add your handling code here:
+        int selectedRow = tblStock.getSelectedRow();
+        if(evt.getClickCount()==2){
+            displayStockDetails(selectedRow);
+        }
+    }//GEN-LAST:event_tblStockMouseClicked
 
     /**
      * @param args the command line arguments
@@ -344,18 +693,26 @@ public class StockJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private warehouse.component.button.Button button1;
-    private warehouse.component.button.Button button3;
+    private warehouse.component.button.Button btnExport;
+    private warehouse.component.Combobox cbxStatus;
     private warehouse.component.Combobox cbxWarehouse;
+    private warehouse.component.Combobox cbxWarehouseStockOut;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private warehouse.component.Pagination paginationStock;
     private warehouse.component.Pagination paginationStockOut;
     private javax.swing.JTable tblStock;
+    private javax.swing.JTable tblStockOut;
+    private warehouse.component.textfield.TextField txtProduct;
+    private warehouse.component.textfield.TextField txtQuantity;
     private warehouse.component.SearchBar txtSearch;
+    private warehouse.component.SearchBar txtSearchStockOut;
     // End of variables declaration//GEN-END:variables
 }

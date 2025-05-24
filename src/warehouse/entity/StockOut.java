@@ -63,8 +63,8 @@ public class StockOut {
         return idWarehouse;
     }
 
-    public void setIdWarehouse(UUID idStock) {
-        this.idWarehouse = idStock;
+    public void setIdWarehouse(UUID idWarehouse) {
+        this.idWarehouse = idWarehouse;
     }
 
     public String getUsername() {
