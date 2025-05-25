@@ -56,7 +56,7 @@ public class AdminStockInJPanel extends javax.swing.JPanel {
             list = stockInDAO.selectALLByStatusProcessing(EStatus.valueOf(selected.toString()));
             controlButtonByStatus(EStatus.valueOf(selected.toString()));
         }
-
+        
         int currentPage = paginationAdminStockIn.getPage().getCurrent();
 
         List<StockIn> pageList = Pagination.getPage(list, currentPage, pageSize);

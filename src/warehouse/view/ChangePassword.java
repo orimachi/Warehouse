@@ -41,20 +41,19 @@ public class ChangePassword extends javax.swing.JFrame {
 
         if (!String.valueOf(account.getPassword()).equals(Hash.hashSHA256(currentPass))) {
             MessageBox.warning(this, "Current password is incorrect!");
+            return;
         }
 
         if (!newPass.equals(confirmPass)) {
             MessageBox.warning(this, "New password is not match");
+            return;
         }
 
         if (validateForm() == true) {
-            if (Auth.isManager()) {
-                account.setRole(ERole.MANAGER);
-            }
-            account.setRole(ERole.STAFF);
+            account.setRole(ERole.valueOf(Auth.user.getRole().name()));
             account.setPassword(Hash.hashSHA256(newPass));
             accountDAO.update(account);
-            MessageBox.infomation(this, "Password changed successfully");
+            this.dispose();
         }
     }
 

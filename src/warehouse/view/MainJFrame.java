@@ -381,14 +381,6 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jpnStatistics.setBackground(new java.awt.Color(51, 51, 51));
         jpnStatistics.setPreferredSize(new java.awt.Dimension(200, 52));
-        jpnStatistics.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jpnStatisticsMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jpnStatisticsMouseExited(evt);
-            }
-        });
 
         jbStatistics.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jbStatistics.setForeground(new java.awt.Color(255, 255, 255));
@@ -606,16 +598,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     private void mnDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnDoiMatKhauActionPerformed
         new ChangePassword().setVisible(true);
-
     }//GEN-LAST:event_mnDoiMatKhauActionPerformed
-
-    private void jpnStatisticsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnStatisticsMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jpnStatisticsMouseEntered
-
-    private void jpnStatisticsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnStatisticsMouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jpnStatisticsMouseExited
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
     }//GEN-LAST:event_formWindowOpened

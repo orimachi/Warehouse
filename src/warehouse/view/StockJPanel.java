@@ -530,8 +530,7 @@ public class StockJPanel extends javax.swing.JPanel {
             stockOut.setQuantity(exportQuantity);
             stockOut.setIdProduct(stockDAO.getProductUUIDByName(productName));
             stockOut.setIdWarehouse(warehouseId);
-            //            stockOut.setUsername(user.getUsername());
-            stockOut.setUsername("user1");
+            stockOut.setUsername(user.getUsername());
             stockOut.setUpdatedDate(new Date());
             stockOut.setStatus(EStatus.PROCESSING);
 

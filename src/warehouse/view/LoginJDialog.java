@@ -3,6 +3,7 @@ package warehouse.view;
 import warehouse.dao.AccountDAO;
 import warehouse.entity.Account;
 import warehouse.utils.Auth;
+import warehouse.utils.Hash;
 import warehouse.utils.MessageBox;
 
 public class LoginJDialog extends javax.swing.JDialog {
@@ -18,8 +19,7 @@ public class LoginJDialog extends javax.swing.JDialog {
 
     void signin() {
         String username = txtUsername.getText();
-         // when add new user add hashCode()
-        String password = new String(txtPassword.getPassword());
+        String password = Hash.hashSHA256(new String(txtPassword.getPassword()));
         Account account;
         
         if (username.isEmpty() || password.isEmpty()) {
@@ -43,7 +43,6 @@ public class LoginJDialog extends javax.swing.JDialog {
         }
         
         Auth.user = account;
-        MessageBox.success(this, "Đăng nhập thành công!");
         
         this.dispose();
     }

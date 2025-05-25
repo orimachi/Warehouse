@@ -739,10 +739,6 @@
                   <Dimension value="[200, 52]"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jpnStatisticsMouseEntered"/>
-                <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jpnStatisticsMouseExited"/>
-              </Events>
 
               <Layout>
                 <DimensionLayout dim="0">

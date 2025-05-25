@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.List;
 import java.util.UUID;
 import javax.swing.table.DefaultTableModel;
+import warehouse.bean.EPageSize;
 import warehouse.component.Pagination;
 import warehouse.component.cell.ActionCellEditor;
 import warehouse.component.cell.TableActionCellRender;
@@ -42,7 +43,7 @@ public class WarehouseJPanel extends javax.swing.JPanel {
         });
     }
     WarehouseDAO warehouseDAO = new WarehouseDAO();
-    int pageSize = 3;
+    int pageSize = EPageSize.SMALL.getSize();
 
     private void loadDataTblWarehouse() {
         DefaultTableModel model = (DefaultTableModel) tblWarehouse.getModel();
@@ -96,12 +97,12 @@ public class WarehouseJPanel extends javax.swing.JPanel {
         return true;
     }
 
-     private boolean validateIDSupplier() {
-        String idSupplier = txtID.getText();
+     private boolean validateID() {
+        String id = txtID.getText();
         String name = txtName.getText();
         List<Warehouse> list = warehouseDAO.selectAll();
         for (Warehouse warehouse : list) {
-            if (idSupplier.equals(warehouse.getId().toString())) {
+            if (id.equals(warehouse.getId().toString())) {
                 MessageBox.warning(this, "IDSupplier already exist your cant insert use update");
                 return false;
             } else if(name.equals(warehouse.getName())){
@@ -145,7 +146,7 @@ public class WarehouseJPanel extends javax.swing.JPanel {
 
     private void insert() {
         try {
-            if (validateInformation() == true) {
+            if (validateInformation() == true && validateID() == true) {
                 Warehouse warehouse = getInformationForm();
                 warehouseDAO.insert(warehouse);
                 MessageBox.success(this, "Insert supplier success");
