@@ -3,6 +3,7 @@ package warehouse.view;
 import java.awt.Color;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import warehouse.bean.EPageSize;
 import warehouse.bean.ERole;
 import warehouse.component.Pagination;
 import warehouse.component.cell.ActionCellEditor;
@@ -44,7 +45,7 @@ public class AccountJPanel extends javax.swing.JPanel {
 
     }
     AccountDAO accountDAO = new AccountDAO();
-    int pageSize = 1;
+    int pageSize = EPageSize.SMALL.getSize();
 
     private void loadDataTblAccounts() {
         DefaultTableModel model = (DefaultTableModel) tblAccounts.getModel();

@@ -15,7 +15,7 @@ import warehouse.view.ChartJPanel;
 import warehouse.view.HomePage;
 import warehouse.view.ProductJPanel;
 import warehouse.view.StockInJPanel;
-import warehouse.view.StockOutJPanel;
+import warehouse.view.StockJPanel;
 import warehouse.view.SupplierJPanel;
 import warehouse.view.WarehouseJPanel;
 
@@ -77,13 +77,10 @@ public class SwitchScreen {
                     node = new WarehouseJPanel();
                     break;
                 case "stock":
-                    node = new StockOutJPanel();
+                    node = new StockJPanel();
                     break;
                 case "stockin":
                     node = new StockInJPanel();
-                    break;
-                case "stockout":
-                    node = new StockOutJPanel();
                     break;
                 case "account":
                     node = new AccountJPanel();
@@ -122,8 +119,10 @@ public class SwitchScreen {
 
         @Override
         public void mouseEntered(MouseEvent e) {
-            jpnItem.setBackground(new Color(96, 100, 191));
-            jlbItem.setBackground(new Color(96, 100, 191));
+            if (!kindSelected.equalsIgnoreCase(kind)) {
+                jpnItem.setBackground(new Color(52, 152, 219));
+                jlbItem.setBackground(new Color(52, 152, 219));
+            }
         }
 
         @Override

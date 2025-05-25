@@ -27,7 +27,7 @@ public class MainJFrame extends javax.swing.JFrame {
         listDanhMuc.add(new Category("supplier", jpnSuppliers, jbSuppliers));
         listDanhMuc.add(new Category("stock", jpnStock, jbStock));
         listDanhMuc.add(new Category("stockin", jpnStockIn, jbStockIn));
-        listDanhMuc.add(new Category("stockout", jpnStockOut, jbStockOut));
+       
         if (Auth.isLogin()&& Auth.isManager() == true) {
             listDanhMuc.add(new Category("account", jpnManagerAccount, jbManagerAccount));
             listDanhMuc.add(new Category("managerStockIn", jpnManagerStockIn, jbManagerStockIn));
@@ -80,8 +80,6 @@ public class MainJFrame extends javax.swing.JFrame {
         jbStock = new javax.swing.JLabel();
         jpnStockIn = new javax.swing.JPanel();
         jbStockIn = new javax.swing.JLabel();
-        jpnStockOut = new javax.swing.JPanel();
-        jbStockOut = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jpnProduct = new javax.swing.JPanel();
@@ -109,6 +107,9 @@ public class MainJFrame extends javax.swing.JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
@@ -140,14 +141,6 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jpnTrangChu.setBackground(new java.awt.Color(51, 51, 51));
         jpnTrangChu.setPreferredSize(new java.awt.Dimension(300, 50));
-        jpnTrangChu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jpnTrangChuMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jpnTrangChuMouseExited(evt);
-            }
-        });
 
         jbTrangChu.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jbTrangChu.setForeground(new java.awt.Color(255, 255, 255));
@@ -173,14 +166,6 @@ public class MainJFrame extends javax.swing.JFrame {
 
         jpnSuppliers.setBackground(new java.awt.Color(51, 51, 51));
         jpnSuppliers.setPreferredSize(new java.awt.Dimension(300, 50));
-        jpnSuppliers.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jpnSuppliersMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jpnSuppliersMouseExited(evt);
-            }
-        });
 
         jbSuppliers.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jbSuppliers.setForeground(new java.awt.Color(255, 255, 255));
@@ -195,7 +180,7 @@ public class MainJFrame extends javax.swing.JFrame {
             jpnSuppliersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnSuppliersLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jbSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jbSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jpnSuppliersLayout.setVerticalGroup(
@@ -204,15 +189,8 @@ public class MainJFrame extends javax.swing.JFrame {
         );
 
         jpnWarehouse.setBackground(new java.awt.Color(51, 51, 51));
+        jpnWarehouse.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jpnWarehouse.setPreferredSize(new java.awt.Dimension(300, 50));
-        jpnWarehouse.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jpnWarehouseMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jpnWarehouseMouseExited(evt);
-            }
-        });
 
         jbWarehouse.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jbWarehouse.setForeground(new java.awt.Color(255, 255, 255));
@@ -239,15 +217,8 @@ public class MainJFrame extends javax.swing.JFrame {
         );
 
         jpnStock.setBackground(new java.awt.Color(51, 51, 51));
+        jpnStock.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jpnStock.setPreferredSize(new java.awt.Dimension(300, 50));
-        jpnStock.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jpnStockMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jpnStockMouseExited(evt);
-            }
-        });
 
         jbStock.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jbStock.setForeground(new java.awt.Color(255, 255, 255));
@@ -260,10 +231,9 @@ public class MainJFrame extends javax.swing.JFrame {
         jpnStock.setLayout(jpnStockLayout);
         jpnStockLayout.setHorizontalGroup(
             jpnStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnStockLayout.createSequentialGroup()
+            .addGroup(jpnStockLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jbStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jbStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpnStockLayout.setVerticalGroup(
             jpnStockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -274,16 +244,9 @@ public class MainJFrame extends javax.swing.JFrame {
         );
 
         jpnStockIn.setBackground(new java.awt.Color(51, 51, 51));
+        jpnStockIn.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jpnStockIn.setMaximumSize(new java.awt.Dimension(288, 38));
         jpnStockIn.setPreferredSize(new java.awt.Dimension(300, 50));
-        jpnStockIn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jpnStockInMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jpnStockInMouseExited(evt);
-            }
-        });
 
         jbStockIn.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jbStockIn.setForeground(new java.awt.Color(255, 255, 255));
@@ -298,46 +261,13 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(jpnStockInLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jbStockIn, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jpnStockInLayout.setVerticalGroup(
             jpnStockInLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpnStockInLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jbStockIn, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        jpnStockOut.setBackground(new java.awt.Color(51, 51, 51));
-        jpnStockOut.setPreferredSize(new java.awt.Dimension(300, 50));
-        jpnStockOut.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jpnStockOutMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jpnStockOutMouseExited(evt);
-            }
-        });
-
-        jbStockOut.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jbStockOut.setForeground(new java.awt.Color(255, 255, 255));
-        jbStockOut.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jbStockOut.setText("STOCK OUT");
-        jbStockOut.setPreferredSize(new java.awt.Dimension(82, 17));
-
-        javax.swing.GroupLayout jpnStockOutLayout = new javax.swing.GroupLayout(jpnStockOut);
-        jpnStockOut.setLayout(jpnStockOutLayout);
-        jpnStockOutLayout.setHorizontalGroup(
-            jpnStockOutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpnStockOutLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jbStockOut, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))
-        );
-        jpnStockOutLayout.setVerticalGroup(
-            jpnStockOutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpnStockOutLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jbStockOut, javax.swing.GroupLayout.DEFAULT_SIZE, 38, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -350,14 +280,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jSeparator2.setForeground(new java.awt.Color(255, 255, 255));
 
         jpnProduct.setBackground(new java.awt.Color(51, 51, 51));
-        jpnProduct.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jpnProductMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jpnProductMouseExited(evt);
-            }
-        });
+        jpnProduct.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
         jbProduct.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jbProduct.setForeground(new java.awt.Color(255, 255, 255));
@@ -380,14 +303,7 @@ public class MainJFrame extends javax.swing.JFrame {
         );
 
         jpnManagerAccount.setBackground(new java.awt.Color(51, 51, 51));
-        jpnManagerAccount.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jpnManagerAccountMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jpnManagerAccountMouseExited(evt);
-            }
-        });
+        jpnManagerAccount.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
         jbManagerAccount.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jbManagerAccount.setForeground(new java.awt.Color(255, 255, 255));
@@ -408,19 +324,11 @@ public class MainJFrame extends javax.swing.JFrame {
             jpnManagerAccountLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpnManagerAccountLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jbManagerAccount, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                .addComponent(jbManagerAccount, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jpnManagerStockIn.setBackground(new java.awt.Color(51, 51, 51));
-        jpnManagerStockIn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jpnManagerStockInMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jpnManagerStockInMouseExited(evt);
-            }
-        });
 
         jbManagerStockIn.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jbManagerStockIn.setForeground(new java.awt.Color(255, 255, 255));
@@ -441,20 +349,12 @@ public class MainJFrame extends javax.swing.JFrame {
             jpnManagerStockInLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnManagerStockInLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jbManagerStockIn, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                .addComponent(jbManagerStockIn, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jpnManagerStockOut.setBackground(new java.awt.Color(51, 51, 51));
         jpnManagerStockOut.setPreferredSize(new java.awt.Dimension(200, 52));
-        jpnManagerStockOut.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jpnManagerStockOutMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                jpnManagerStockOutMouseExited(evt);
-            }
-        });
 
         jbManagerStockOut.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jbManagerStockOut.setForeground(new java.awt.Color(255, 255, 255));
@@ -475,7 +375,7 @@ public class MainJFrame extends javax.swing.JFrame {
             jpnManagerStockOutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpnManagerStockOutLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jbManagerStockOut, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                .addComponent(jbManagerStockOut, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -538,11 +438,10 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addGroup(jbnMenuLayout.createSequentialGroup()
                         .addGroup(jbnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jbnMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jpnTrangChu, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                                .addComponent(jpnSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                                .addComponent(jpnWarehouse, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                                .addComponent(jpnStock, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                                .addComponent(jpnStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jpnSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                                .addComponent(jpnWarehouse, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                                .addComponent(jpnStock, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                                .addComponent(jpnTrangChu, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE))
                             .addGroup(jbnMenuLayout.createSequentialGroup()
                                 .addGap(19, 19, 19)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -568,29 +467,27 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(jbUsername))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpnTrangChu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpnSuppliers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpnWarehouse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpnStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpnStockIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jpnStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpnProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpnManagerAccount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpnManagerStockIn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jpnManagerStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jpnManagerStockOut, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpnStatistics, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31))
         );
@@ -602,11 +499,11 @@ public class MainJFrame extends javax.swing.JFrame {
         jpnView.setLayout(jpnViewLayout);
         jpnViewLayout.setHorizontalGroup(
             jpnViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 926, Short.MAX_VALUE)
+            .addGap(0, 920, Short.MAX_VALUE)
         );
         jpnViewLayout.setVerticalGroup(
             jpnViewLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 903, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jpnMainLayout = new javax.swing.GroupLayout(jpnMain);
@@ -616,7 +513,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(jpnMainLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(jbnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jpnView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpnMainLayout.setVerticalGroup(
@@ -625,9 +522,7 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addGroup(jpnMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jbnMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jpnMainLayout.createSequentialGroup()
-                        .addComponent(jpnView, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jpnView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         mnHeThong.setText("Hệ thống");
@@ -714,86 +609,6 @@ public class MainJFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_mnDoiMatKhauActionPerformed
 
-    private void jpnTrangChuMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnTrangChuMouseEntered
-        jpnTrangChu.setBackground(new Color(0, 153, 51));
-    }//GEN-LAST:event_jpnTrangChuMouseEntered
-
-    private void jpnTrangChuMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnTrangChuMouseExited
-        jpnTrangChu.setBackground(new Color(51, 51, 51));
-    }//GEN-LAST:event_jpnTrangChuMouseExited
-
-    private void jpnSuppliersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnSuppliersMouseEntered
-        jpnSuppliers.setBackground(new Color(0, 153, 51));
-    }//GEN-LAST:event_jpnSuppliersMouseEntered
-
-    private void jpnSuppliersMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnSuppliersMouseExited
-        jpnSuppliers.setBackground(new Color(51, 51, 51));
-    }//GEN-LAST:event_jpnSuppliersMouseExited
-
-    private void jpnWarehouseMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnWarehouseMouseEntered
-        jpnWarehouse.setBackground(new Color(0, 153, 51));
-    }//GEN-LAST:event_jpnWarehouseMouseEntered
-
-    private void jpnWarehouseMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnWarehouseMouseExited
-        jpnWarehouse.setBackground(new Color(51, 51, 51));
-    }//GEN-LAST:event_jpnWarehouseMouseExited
-
-    private void jpnStockMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnStockMouseEntered
-        jpnStock.setBackground(new Color(0, 153, 51));
-    }//GEN-LAST:event_jpnStockMouseEntered
-
-    private void jpnStockMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnStockMouseExited
-        jpnStock.setBackground(new Color(51, 51, 51));
-    }//GEN-LAST:event_jpnStockMouseExited
-
-    private void jpnStockInMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnStockInMouseEntered
-        jpnStockIn.setBackground(new Color(0, 153, 51));
-    }//GEN-LAST:event_jpnStockInMouseEntered
-
-    private void jpnStockInMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnStockInMouseExited
-        jpnStockIn.setBackground(new Color(51, 51, 51));
-    }//GEN-LAST:event_jpnStockInMouseExited
-
-    private void jpnStockOutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnStockOutMouseEntered
-        jpnStockOut.setBackground(new Color(0, 153, 51));
-    }//GEN-LAST:event_jpnStockOutMouseEntered
-
-    private void jpnStockOutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnStockOutMouseExited
-        jpnStockOut.setBackground(new Color(51, 51, 51));
-    }//GEN-LAST:event_jpnStockOutMouseExited
-
-    private void jpnProductMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnProductMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jpnProductMouseEntered
-
-    private void jpnProductMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnProductMouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jpnProductMouseExited
-
-    private void jpnManagerAccountMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnManagerAccountMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jpnManagerAccountMouseEntered
-
-    private void jpnManagerAccountMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnManagerAccountMouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jpnManagerAccountMouseExited
-
-    private void jpnManagerStockInMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnManagerStockInMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jpnManagerStockInMouseEntered
-
-    private void jpnManagerStockInMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnManagerStockInMouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jpnManagerStockInMouseExited
-
-    private void jpnManagerStockOutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnManagerStockOutMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jpnManagerStockOutMouseEntered
-
-    private void jpnManagerStockOutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnManagerStockOutMouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jpnManagerStockOutMouseExited
-
     private void jpnStatisticsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnStatisticsMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_jpnStatisticsMouseEntered
@@ -801,6 +616,9 @@ public class MainJFrame extends javax.swing.JFrame {
     private void jpnStatisticsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpnStatisticsMouseExited
         // TODO add your handling code here:
     }//GEN-LAST:event_jpnStatisticsMouseExited
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+    }//GEN-LAST:event_formWindowOpened
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -817,7 +635,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jbStatistics;
     private javax.swing.JLabel jbStock;
     private javax.swing.JLabel jbStockIn;
-    private javax.swing.JLabel jbStockOut;
     private javax.swing.JLabel jbSuppliers;
     private javax.swing.JLabel jbTrangChu;
     private javax.swing.JLabel jbUsername;
@@ -831,7 +648,6 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jpnStatistics;
     private javax.swing.JPanel jpnStock;
     private javax.swing.JPanel jpnStockIn;
-    private javax.swing.JPanel jpnStockOut;
     private javax.swing.JPanel jpnSuppliers;
     private javax.swing.JPanel jpnTrangChu;
     private javax.swing.JPanel jpnView;

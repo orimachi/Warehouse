@@ -251,18 +251,10 @@ public class SupplierJPanel extends javax.swing.JPanel {
         txtsearchBarSupplier = new warehouse.component.SearchBar();
         paginationSuppliers = new warehouse.component.Pagination();
 
-        btnAdd.setBackground(new java.awt.Color(0, 0, 0));
+        btnAdd.setBackground(new java.awt.Color(52, 152, 219));
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("ADD");
         btnAdd.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnAddMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnAddMouseExited(evt);
-            }
-        });
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -273,14 +265,6 @@ public class SupplierJPanel extends javax.swing.JPanel {
         btnUpdate.setForeground(new java.awt.Color(255, 255, 255));
         btnUpdate.setText("UPDATE");
         btnUpdate.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnUpdateMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnUpdateMouseExited(evt);
-            }
-        });
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -291,14 +275,6 @@ public class SupplierJPanel extends javax.swing.JPanel {
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("DELETE");
         btnDelete.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnDelete.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnDeleteMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnDeleteMouseExited(evt);
-            }
-        });
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -309,14 +285,6 @@ public class SupplierJPanel extends javax.swing.JPanel {
         btnReset.setForeground(new java.awt.Color(255, 255, 255));
         btnReset.setText("RESET");
         btnReset.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        btnReset.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnResetMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnResetMouseExited(evt);
-            }
-        });
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnResetActionPerformed(evt);
@@ -336,7 +304,7 @@ public class SupplierJPanel extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -352,7 +320,6 @@ public class SupplierJPanel extends javax.swing.JPanel {
         });
         jScrollPane3.setViewportView(tblSuppliers);
         if (tblSuppliers.getColumnModel().getColumnCount() > 0) {
-            tblSuppliers.getColumnModel().getColumn(4).setResizable(false);
             tblSuppliers.getColumnModel().getColumn(4).setPreferredWidth(30);
         }
 
@@ -473,49 +440,17 @@ public class SupplierJPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAddMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseEntered
-        btnAdd.setBackground(new Color(52, 152, 219));
-    }//GEN-LAST:event_btnAddMouseEntered
-
-    private void btnAddMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseExited
-        btnAdd.setBackground(new Color(0, 0, 0));
-    }//GEN-LAST:event_btnAddMouseExited
-
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         this.insertSupplier();
     }//GEN-LAST:event_btnAddActionPerformed
-
-    private void btnUpdateMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnUpdateMouseEntered
-
-    private void btnUpdateMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnUpdateMouseExited
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         this.updateSupplier();
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void btnDeleteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDeleteMouseEntered
-
-    private void btnDeleteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDeleteMouseExited
-
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         this.deleteSupplier();
     }//GEN-LAST:event_btnDeleteActionPerformed
-
-    private void btnResetMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnResetMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnResetMouseEntered
-
-    private void btnResetMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnResetMouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnResetMouseExited
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         this.resetButton();

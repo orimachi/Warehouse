@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.List;
 import java.util.UUID;
 import javax.swing.table.DefaultTableModel;
+import warehouse.bean.EPageSize;
 import warehouse.bean.EStatus;
 import warehouse.component.Pagination;
 import warehouse.component.pagination.EventPagination;
@@ -29,7 +30,7 @@ public class AdminStockInJPanel extends javax.swing.JPanel {
     ProductDAO productDAO = new ProductDAO();
     SuppliersDAO suppliersDAO = new SuppliersDAO();
     WarehouseDAO warehouseDAO = new WarehouseDAO();
-    int pageSize = 5;
+    int pageSize = EPageSize.SMALL.getSize();
 
     private void controlButtonByStatus(EStatus status) {
         if (status.equals(EStatus.ACCEPT) || status.equals(EStatus.CANCEL)) {
@@ -237,6 +238,8 @@ public class AdminStockInJPanel extends javax.swing.JPanel {
             }
         });
         jScrollPane3.setViewportView(tblAdminStockIn);
+
+        paginationAdminStockIn.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 

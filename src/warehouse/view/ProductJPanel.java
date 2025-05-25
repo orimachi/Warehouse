@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.swing.table.DefaultTableModel;
 import warehouse.bean.ECalcUnit;
 import warehouse.bean.ECategory;
+import warehouse.bean.EPageSize;
 import warehouse.component.Pagination;
 import warehouse.component.cell.ActionCellEditor;
 import warehouse.component.cell.TableActionCellRender;
@@ -51,7 +52,7 @@ public class ProductJPanel extends javax.swing.JPanel {
 
     SuppliersDAO suppliersDAO = new SuppliersDAO();
     ProductDAO productDAO = new ProductDAO();
-    int pageSize = 5;
+    int pageSize = EPageSize.MEDIUM.getSize();
 
     private void loadDataTblSearchByNameProduct(String keyword) {
         DefaultTableModel model = (DefaultTableModel) tblProducts.getModel();
@@ -490,7 +491,7 @@ public class ProductJPanel extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -505,6 +506,8 @@ public class ProductJPanel extends javax.swing.JPanel {
             }
         });
         jScrollPane3.setViewportView(tblProducts);
+
+        paginationProduct.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

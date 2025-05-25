@@ -26,7 +26,12 @@ public class ChartJPanel extends javax.swing.JPanel {
         mostImportedProduct();
         mostSellProduct();
         statictisProduct();
+        chart.start();
     }
+
+    StockInDAO stockInDAO = new StockInDAO();
+    ProductDAO productDAO = new ProductDAO();
+    StockOutDAO stockOutDAO = new StockOutDAO();
 
     private void statictisProduct() {
         List<StockIn> stockInList = new StockInDAO().selectAll();
@@ -64,8 +69,6 @@ public class ChartJPanel extends javax.swing.JPanel {
         allProductIds.addAll(mapOut.keySet());
         allProductIds.addAll(mapStock.keySet());
 
-        ProductDAO productDAO = new ProductDAO();
-
         for (UUID productId : allProductIds) {
             int inQty = mapIn.getOrDefault(productId, 0);
             int outQty = mapOut.getOrDefault(productId, 0);
@@ -74,25 +77,22 @@ public class ChartJPanel extends javax.swing.JPanel {
             int totalHandled = inQty;
             double percentSold = (totalHandled == 0) ? 0 : (outQty * 100.0 / totalHandled);
 
-//    String name = productDAO.findById(productId).getName();
-            String name = productId.toString();
+            String name = productDAO.getNameByUUID(productId);
 
             chart.addData(new ModelChart(
                     name,
                     new double[]{
-                        inQty, 
-                        outQty, 
-                        stockQty, 
-                        percentSold 
+                        inQty,
+                        outQty,
+                        stockQty,
+                        percentSold
                     }
             ));
         }
     }
 
     private void mostImportedProduct() {
-        StockInDAO stockInDAO = new StockInDAO();
         List<StockIn> list = stockInDAO.selectAll();
-
         pieChart1.clearData();
         pieChart1.setChartType(PieChart.PeiChartType.DONUT_CHART);
 
@@ -119,7 +119,7 @@ public class ChartJPanel extends javax.swing.JPanel {
         for (Map.Entry<UUID, Integer> entry : mapQuantity.entrySet()) {
             UUID idProduct = entry.getKey();
             int quantity = entry.getValue();
-            String name = String.valueOf(idProduct);  // Hàm lấy tên sản phẩm
+            String name = productDAO.getNameByUUID(idProduct);
             Color color = colors[colorIndex % colors.length];
             pieChart1.addData(new ModelPieChart(name, quantity, color));
             colorIndex++;
@@ -127,7 +127,6 @@ public class ChartJPanel extends javax.swing.JPanel {
     }
 
     private void mostSellProduct() {
-        StockOutDAO stockOutDAO = new StockOutDAO();
         List<StockOut> list = stockOutDAO.selectAll();
 
         pieChart2.clearData();
@@ -157,7 +156,7 @@ public class ChartJPanel extends javax.swing.JPanel {
         for (Map.Entry<UUID, Integer> entry : mapQuantity.entrySet()) {
             UUID idProduct = entry.getKey();
             int quantity = entry.getValue();
-            String name = idProduct.toString();
+            String name = productDAO.getNameByUUID(idProduct);
             Color color = colors[colorIndex % colors.length];
             pieChart2.addData(new ModelPieChart(name, quantity, color));
             colorIndex++;
@@ -171,53 +170,58 @@ public class ChartJPanel extends javax.swing.JPanel {
         chart = new warehouse.component.chart.barchart.Chart();
         pieChart1 = new warehouse.component.chart.piechart.PieChart();
         pieChart2 = new warehouse.component.chart.piechart.PieChart();
-        pieChart3 = new warehouse.component.chart.piechart.PieChart();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel1.setText("Most Stock Out Product");
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel2.setText("Most Import Product");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addGap(169, 169, 169)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(211, 211, 211))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(91, 91, 91)
-                        .addComponent(pieChart3, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(pieChart2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(74, 74, 74)
-                        .addComponent(pieChart1, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(120, Short.MAX_VALUE))
+                        .addComponent(pieChart2, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addComponent(pieChart1, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, 904, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(pieChart1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(pieChart2, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(pieChart1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pieChart2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
-                        .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(19, 19, 19))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(pieChart3, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(chart, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(43, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private warehouse.component.chart.barchart.Chart chart;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private warehouse.component.chart.piechart.PieChart pieChart1;
     private warehouse.component.chart.piechart.PieChart pieChart2;
-    private warehouse.component.chart.piechart.PieChart pieChart3;
     // End of variables declaration//GEN-END:variables
 }
