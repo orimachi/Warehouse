@@ -12,6 +12,7 @@ import warehouse.component.pagination.EventPagination;
 import warehouse.component.pagination.PaginationItemRenderStyle1;
 import warehouse.dao.AccountDAO;
 import warehouse.entity.Account;
+import warehouse.utils.Hash;
 import warehouse.utils.MessageBox;
 
 public class AccountJPanel extends javax.swing.JPanel {
@@ -125,7 +126,7 @@ public class AccountJPanel extends javax.swing.JPanel {
         Account account = new Account();
         String password = new String(txtPassword.getPassword());
         account.setUsername(txtUsername.getText());
-        account.setPassword(String.valueOf(password.hashCode()));
+        account.setPassword(Hash.hashSHA256(password));
         account.setRole(ERole.valueOf(String.valueOf(cbbRole.getSelectedItem())));
         return account;
     }
@@ -142,9 +143,21 @@ public class AccountJPanel extends javax.swing.JPanel {
         cbbRole.setSelectedItem(account.getRole().name());
     }
 
+    private boolean validateName() {
+        String name = txtUsername.getText();
+        List<Account> list = accountDAO.selectAll();
+        for (Account account : list) {
+            if (name.equals(account.getUsername())) {
+                MessageBox.warning(this, "Name already exist choice another name");
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void insertAccount() {
         try {
-            if (validateInformation() == true) {
+            if (validateInformation() == true && validateName() == true) {
                 Account account = getInformationForm();
                 accountDAO.insert(account);
                 MessageBox.success(this, "Insert account success");
@@ -174,6 +187,9 @@ public class AccountJPanel extends javax.swing.JPanel {
 
     private void deleteAccount() {
         int row = tblAccounts.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
         String idAccount = tblAccounts.getValueAt(row, 0).toString().isEmpty() ? txtUsername.getText() : tblAccounts.getValueAt(row, 0).toString();
         try {
             if (!idAccount.isEmpty()) {
@@ -193,6 +209,9 @@ public class AccountJPanel extends javax.swing.JPanel {
 
     private void selectAccount() {
         int row = tblAccounts.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
         String idProduct = tblAccounts.getValueAt(row, 0).toString();
         Account account = accountDAO.selectById(idProduct);
         setInformationForm(account);

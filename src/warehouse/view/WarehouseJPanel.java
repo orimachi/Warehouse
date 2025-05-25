@@ -18,7 +18,6 @@ public class WarehouseJPanel extends javax.swing.JPanel {
 
     public WarehouseJPanel() {
         initComponents();
-//        controlButton();
         loadDataTblWarehouse();
         loadPagination();
 
@@ -44,12 +43,6 @@ public class WarehouseJPanel extends javax.swing.JPanel {
     }
     WarehouseDAO warehouseDAO = new WarehouseDAO();
     int pageSize = 3;
-
-    private void controlButton() {
-        boolean hasId = !txtID.getText().trim().isEmpty();
-        btnUpdate.setEnabled(hasId);
-        btnDelete.setEnabled(hasId);
-    }
 
     private void loadDataTblWarehouse() {
         DefaultTableModel model = (DefaultTableModel) tblWarehouse.getModel();
@@ -103,9 +96,33 @@ public class WarehouseJPanel extends javax.swing.JPanel {
         return true;
     }
 
+     private boolean validateIDSupplier() {
+        String idSupplier = txtID.getText();
+        String name = txtName.getText();
+        List<Warehouse> list = warehouseDAO.selectAll();
+        for (Warehouse warehouse : list) {
+            if (idSupplier.equals(warehouse.getId().toString())) {
+                MessageBox.warning(this, "IDSupplier already exist your cant insert use update");
+                return false;
+            } else if(name.equals(warehouse.getName())){
+                MessageBox.warning(this, "Name already exist choice another name");
+                return false;
+            }
+        }
+        return true;
+    }
+    
     private Warehouse getInformationForm() {
         Warehouse warehouse = new Warehouse();
-        warehouse.setId(UUID.fromString(txtID.getText()));
+        String idText = txtID.getText().trim();
+        if (!idText.isEmpty()) {
+            try {
+                warehouse.setId(UUID.fromString(idText));
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                throw new RuntimeException("ID không hợp lệ: " + idText);
+            }
+        }
         warehouse.setName(txtName.getText());
         warehouse.setAddress(txtAddress.getText());
         warehouse.setPhoneNumber(txtPhoneNumber.getText());
@@ -158,6 +175,9 @@ public class WarehouseJPanel extends javax.swing.JPanel {
 
     private void delete() {
         int row = tblWarehouse.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
         String idProduct = tblWarehouse.getValueAt(row, 0).toString().isEmpty() ? txtID.getText() : tblWarehouse.getValueAt(row, 0).toString();
         try {
             if (!idProduct.isEmpty()) {
@@ -178,6 +198,9 @@ public class WarehouseJPanel extends javax.swing.JPanel {
 
     private void selectWarehouse() {
         int row = tblWarehouse.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
         String id = tblWarehouse.getValueAt(row, 0).toString();
         Warehouse warehouse = warehouseDAO.selectById(UUID.fromString(id));
         setInformationForm(warehouse);

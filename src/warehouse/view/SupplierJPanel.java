@@ -18,7 +18,6 @@ public class SupplierJPanel extends javax.swing.JPanel {
 
     public SupplierJPanel() {
         initComponents();
-//        controlButton();
         loadDataTblSuppliers();
         loadPagination();
 
@@ -46,12 +45,6 @@ public class SupplierJPanel extends javax.swing.JPanel {
 
     SuppliersDAO supplierDAO = new SuppliersDAO();
     int pageSize = 3;
-
-    private void controlButton() {
-        boolean hasId = !txtIDSupplier.getText().trim().isEmpty();
-        btnUpdate.setEnabled(hasId);
-        btnDelete.setEnabled(hasId);
-    }
 
     private void loadDataTblSuppliers() {
         DefaultTableModel model = (DefaultTableModel) tblSuppliers.getModel();
@@ -89,10 +82,14 @@ public class SupplierJPanel extends javax.swing.JPanel {
 
     private boolean validateIDSupplier() {
         String idSupplier = txtIDSupplier.getText();
+        String name = txtName.getText();
         List<Suppliers> list = supplierDAO.selectAll();
         for (Suppliers supplier : list) {
             if (idSupplier.equals(supplier.getId().toString())) {
                 MessageBox.warning(this, "IDSupplier already exist your cant insert use update");
+                return false;
+            } else if(name.equals(supplier.getName())){
+                 MessageBox.warning(this, "Name already exist choice another name");
                 return false;
             }
         }
@@ -105,13 +102,13 @@ public class SupplierJPanel extends javax.swing.JPanel {
         String phone = txtPhoneNumber.getText();
 
         if (name.isEmpty() == true) {
-            MessageBox.warning(this, "Please enter name supplier");
+            MessageBox.warning(this, "Name supplier is required!");
             return false;
         } else if (address.isEmpty() == true) {
-            MessageBox.warning(this, "Please enter address supplier");
+            MessageBox.warning(this, "Address supplier is required!");
             return false;
         } else if (phone.isEmpty() == true) {
-            MessageBox.warning(this, "Please enter phone number supplier");
+            MessageBox.warning(this, "Phone supplier is required!");
             return false;
         }
         return true;
@@ -119,7 +116,16 @@ public class SupplierJPanel extends javax.swing.JPanel {
 
     private Suppliers getInformationForm() {
         Suppliers supplier = new Suppliers();
-        supplier.setId(UUID.fromString(txtIDSupplier.getText()));
+
+        String idText = txtIDSupplier.getText().trim();
+        if (!idText.isEmpty()) {
+            try {
+                supplier.setId(UUID.fromString(idText));
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                throw new RuntimeException("ID không hợp lệ: " + idText);
+            }
+        }
         supplier.setName(txtName.getText());
         supplier.setAddress(txtAddress.getText());
         supplier.setPhoneNumber(txtPhoneNumber.getText());
@@ -172,6 +178,9 @@ public class SupplierJPanel extends javax.swing.JPanel {
 
     private void deleteSupplier() {
         int row = tblSuppliers.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
         String idProduct = tblSuppliers.getValueAt(row, 0).toString().isEmpty() ? txtIDSupplier.getText() : tblSuppliers.getValueAt(row, 0).toString();
         try {
             if (!idProduct.isEmpty()) {
@@ -192,6 +201,10 @@ public class SupplierJPanel extends javax.swing.JPanel {
 
     private void selectSupplier() {
         int row = tblSuppliers.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
+
         String idProduct = tblSuppliers.getValueAt(row, 0).toString();
         Suppliers supplier = supplierDAO.selectById(UUID.fromString(idProduct));
         setSupplierInformationForm(supplier);

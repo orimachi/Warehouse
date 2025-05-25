@@ -22,7 +22,6 @@ public class ProductJPanel extends javax.swing.JPanel {
 
     public ProductJPanel() {
         initComponents();
-//        controlButton();
         loadDataCBBCalcUnit();
         loadDataCBBSupplier();
         loadDataCBBCategory();
@@ -43,8 +42,7 @@ public class ProductJPanel extends javax.swing.JPanel {
 
         tblProducts.getColumnModel().getColumn(6).setCellRenderer(new TableActionCellRender());
         tblProducts.getColumnModel().getColumn(6).setCellEditor(new ActionCellEditor(event));
-        
-        
+
         txtsearchBarProduct.setSearchListener(e -> {
             String keyword = txtsearchBarProduct.getSearchText();
             loadDataTblSearchByNameProduct(keyword);
@@ -55,13 +53,6 @@ public class ProductJPanel extends javax.swing.JPanel {
     ProductDAO productDAO = new ProductDAO();
     int pageSize = 5;
 
-    private void controlButton(){
-        if(txtIDProduct.getText().isEmpty()){
-            btnUpdate.setEnabled(false);
-            btnDelete.setEnabled(false);
-        }
-    }
-    
     private void loadDataTblSearchByNameProduct(String keyword) {
         DefaultTableModel model = (DefaultTableModel) tblProducts.getModel();
         model.setRowCount(0);
@@ -83,8 +74,7 @@ public class ProductJPanel extends javax.swing.JPanel {
             });
         }
     }
-    
-    
+
     private void loadDataTblProducts() {
         DefaultTableModel model = (DefaultTableModel) tblProducts.getModel();
         model.setRowCount(0);
@@ -113,11 +103,11 @@ public class ProductJPanel extends javax.swing.JPanel {
         int current = Pagination.getCurrentPage(list, pageSize);
         paginationProduct.setPagegination(current, totalPage);
         paginationProduct.setPaginationItemRender(new PaginationItemRenderStyle1());
-        
-        paginationProduct.addEventPagination(new EventPagination(){
+
+        paginationProduct.addEventPagination(new EventPagination() {
             @Override
             public void pageChanged(int page) {
-                  loadDataTblProducts(); 
+                loadDataTblProducts();
             }
         });
     }
@@ -158,27 +148,51 @@ public class ProductJPanel extends javax.swing.JPanel {
         String idSupplier = cbbSuppliers.getSelectedItem().toString();
 
         if (name.isEmpty() == true) {
-            MessageBox.warning(this, "Please enter name product");
+            MessageBox.warning(this, "Name product is required!");
             return false;
         } else if (description.isEmpty() == true) {
-            MessageBox.warning(this, "Please enter description product");
+            MessageBox.warning(this, "Description product is required!");
             return false;
         } else if (calcUnit == null || calcUnit.startsWith("--")) {
-            MessageBox.warning(this, "Please choice caculation unit product");
+            MessageBox.warning(this, "Caculation unit product is required!");
             return false;
         } else if (category == null || category.startsWith("--")) {
-            MessageBox.warning(this, "Please choice category product");
+            MessageBox.warning(this, "Category product is required!");
             return false;
         } else if (idSupplier == null || idSupplier.startsWith("--")) {
-            MessageBox.warning(this, "Please choice supplier product");
+            MessageBox.warning(this, "Suppliers product is required!");
             return false;
+        }
+        return true;
+    }
+
+    private boolean validateID() {
+        String idSupplier = txtIDProduct.getText();
+        String name = txtName.getText();
+        List<Product> list = productDAO.selectAll();
+        for (Product product : list) {
+            if (idSupplier.equals(product.getId().toString())) {
+                MessageBox.warning(this, "IDSupplier already exist your cant insert use update");
+                return false;
+            } else if (name.equals(product.getName())) {
+                MessageBox.warning(this, "Name already exist choice another name");
+                return false;
+            }
         }
         return true;
     }
 
     private Product getInformationForm() {
         Product product = new Product();
-        product.setId(UUID.fromString(txtIDProduct.getText()));
+        String idText = txtIDProduct.getText().trim();
+        if (!idText.isEmpty()) {
+            try {
+                product.setId(UUID.fromString(idText));
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+                throw new RuntimeException("ID không hợp lệ: " + idText);
+            }
+        }
         product.setName(txtName.getText());
         product.setDescription(txtDescription.getText());
         product.setCalcUnit(ECalcUnit.valueOf(String.valueOf(cbbCalcUnit.getSelectedItem())));
@@ -207,7 +221,7 @@ public class ProductJPanel extends javax.swing.JPanel {
 
     private void insertProduct() {
         try {
-            if (validateInformation() == true) {
+            if (validateInformation() == true && validateID() == true) {
                 Product product = getInformationForm();
                 productDAO.insert(product);
                 MessageBox.success(this, "Insert product success");
@@ -236,6 +250,9 @@ public class ProductJPanel extends javax.swing.JPanel {
 
     private void deleteProduct() {
         int row = tblProducts.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
         String idProduct = tblProducts.getValueAt(row, 0).toString().isEmpty() ? txtIDProduct.getText() : tblProducts.getValueAt(row, 0).toString();
         try {
             if (!idProduct.isEmpty()) {
@@ -255,6 +272,9 @@ public class ProductJPanel extends javax.swing.JPanel {
 
     private void selectProduct() {
         int row = tblProducts.getSelectedRow();
+        if (row == -1) {
+            return;
+        }
         String idProduct = tblProducts.getValueAt(row, 0).toString();
         Product product = productDAO.selectById(UUID.fromString(idProduct));
         setProductInformationForm(product);
@@ -585,9 +605,9 @@ public class ProductJPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void tblProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductsMouseClicked
-       if(evt.getClickCount() == 2){
-           this.selectProduct();
-       }
+        if (evt.getClickCount() == 2) {
+            this.selectProduct();
+        }
     }//GEN-LAST:event_tblProductsMouseClicked
 
 

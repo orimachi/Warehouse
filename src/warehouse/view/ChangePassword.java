@@ -5,6 +5,7 @@ import warehouse.bean.ERole;
 import warehouse.dao.AccountDAO;
 import warehouse.entity.Account;
 import warehouse.utils.Auth;
+import warehouse.utils.Hash;
 import warehouse.utils.MessageBox;
 
 public class ChangePassword extends javax.swing.JFrame {
@@ -38,7 +39,7 @@ public class ChangePassword extends javax.swing.JFrame {
             return;
         }
 
-        if (!String.valueOf(account.getPassword().hashCode()).equals(String.valueOf(currentPass.hashCode()))) {
+        if (!String.valueOf(account.getPassword()).equals(Hash.hashSHA256(currentPass))) {
             MessageBox.warning(this, "Current password is incorrect!");
         }
 
@@ -51,7 +52,7 @@ public class ChangePassword extends javax.swing.JFrame {
                 account.setRole(ERole.MANAGER);
             }
             account.setRole(ERole.STAFF);
-            account.setPassword(String.valueOf(newPass.hashCode()));
+            account.setPassword(Hash.hashSHA256(newPass));
             accountDAO.update(account);
             MessageBox.infomation(this, "Password changed successfully");
         }
@@ -100,7 +101,7 @@ public class ChangePassword extends javax.swing.JFrame {
 
         btnConfirm.setBackground(new java.awt.Color(0, 0, 0));
         btnConfirm.setForeground(new java.awt.Color(255, 255, 255));
-        btnConfirm.setText("Confirm");
+        btnConfirm.setText("CONFIRM");
         btnConfirm.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnConfirm.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -118,7 +119,7 @@ public class ChangePassword extends javax.swing.JFrame {
 
         btnCancel.setBackground(new java.awt.Color(231, 76, 60));
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancel.setText("DELETE");
+        btnCancel.setText("CANCEL");
         btnCancel.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         btnCancel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
